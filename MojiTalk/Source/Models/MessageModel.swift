@@ -6,7 +6,7 @@ enum MessageSender {
 }
 
 struct Message: Identifiable, Equatable {
-    let id = UUID()
+    var id = UUID()
     let content: String
     let sender: MessageSender
     let timestamp: Date

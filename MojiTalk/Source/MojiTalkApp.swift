@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 @main
 struct MojiTalkApp: App {
@@ -6,7 +7,8 @@ struct MojiTalkApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ChatView()
+                .preferredColorScheme(.dark)
                 .environmentObject(appState)
         }
     }

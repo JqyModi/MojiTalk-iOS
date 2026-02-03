@@ -2,24 +2,24 @@
 
 ## 🔴 P0: 核心通信与基础 UI (对话闭环)
 ### 1. 基础架构与数据模型
-- [ ] 定义 `Message` 核心数据模型 (ID, 内容, 角色 [User/AI], 时间戳)
-- [ ] 搭建 `GlobalAppState` 状态管理 (基于 `@StateObject`)
-- [ ] 封装基础网络请求层 (Swift Concurrency)
+- [x] 定义 `Message` 核心数据模型 (ID, 内容, 角色 [User/AI], 时间戳)
+- [x] 搭建 `GlobalAppState` 状态管理 (基于 `@StateObject`)
+- [x] 封装基础网络请求层 (Swift Concurrency)
 
 ### 2. 构建 SwiftUI 对话界面
-- [ ] 实现 `ChatView` 容器布局 (`ZStack` + `VStack`)
-- [ ] 实现消息流滚动视图 (`ScrollView` + `LazyVStack` + `ScrollViewReader` 自动滚动到底部)
-- [ ] 编写自定义消息气泡组件
-    - [ ] 用户气泡 (右侧, 品牌主色)
-    - [ ] AI 气泡 (左侧, 背景中色)
-- [ ] 编写底部交互输入栏
-    - [ ] 响应式 `TextField` (支持多行增长)
-    - [ ] 发送按钮逻辑
+- [x] 实现 `ChatView` 容器布局 (`ZStack` + `VStack`)
+- [x] 实现消息流滚动视图 (`ScrollView` + `LazyVStack` + `ScrollViewReader` 自动滚动到底部)
+- [x] 编写自定义消息气泡组件
+    - [x] 用户气泡 (右侧, 品牌主色)
+    - [x] AI 气泡 (左侧, 背景中色)
+- [x] 编写底部交互输入栏
+    - [x] 响应式 `TextField` (支持多行增长)
+    - [x] 发送按钮逻辑
 
 ### 3. SSE 流式数据集成
-- [ ] 构建 `SSENetworkManager` (利用 `URLSession.bytes(from:delegate:)`)
-- [ ] 实现 SSE 事件流解析器
-- [ ] 实现界面的响应式更新 ( incremental content updates )
+- [x] 构建 `SSENetworkManager` (利用 `URLSession.bytes(from:delegate:)`)
+- [x] 实现 SSE 事件流解析器
+- [x] 实现界面的响应式更新 ( incremental content updates )
 
 ---
 

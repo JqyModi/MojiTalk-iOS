@@ -323,49 +323,77 @@ struct UserProfileView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack(spacing: 24) {
-            Rectangle()
-                .fill(Color.gray.opacity(0.3))
-                .frame(width: 40, height: 4)
-                .cornerRadius(2)
-                .padding(.top, 8)
+        ZStack {
+            // Background
+            DesignSystem.Colors.primary
+                .ignoresSafeArea()
             
-            HStack(spacing: 16) {
-                Image(systemName: "person.crop.circle.fill")
-                    .font(.system(size: 50))
-                    .foregroundColor(DesignSystem.Colors.secondary)
+            VStack(spacing: 30) {
+                // Handle indicator
+                Capsule()
+                    .fill(Color.white.opacity(0.1))
+                    .frame(width: 40, height: 4)
+                    .padding(.top, 10)
                 
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("当前账号")
-                        .font(.caption)
-                        .foregroundColor(.gray)
-                    Text("Guest_User") // 真实场景应从 AccountManager 获取
-                        .font(.headline)
-                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                // Profile Info
+                VStack(spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .fill(DesignSystem.Colors.accent.opacity(0.1))
+                            .frame(width: 80, height: 80)
+                        
+                        Image(systemName: "person.fill")
+                            .font(.system(size: 36))
+                            .foregroundColor(DesignSystem.Colors.accent)
+                    }
+                    
+                    VStack(spacing: 4) {
+                        Text("Guest_User")
+                            .font(DesignSystem.Fonts.heading(size: 20))
+                            .foregroundColor(.white)
+                        
+                        Text("当前账号")
+                            .font(DesignSystem.Fonts.body(size: 14))
+                            .foregroundColor(.white.opacity(0.4))
+                    }
                 }
+                .padding(.top, 10)
                 
                 Spacer()
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 10)
-            
-            Button(action: onLogout) {
-                HStack {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                    Text("退出登录")
+                
+                // Logout Button
+                Button(action: onLogout) {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                        Text("退出登录")
+                    }
+                    .font(DesignSystem.Fonts.heading(size: 16))
+                    .foregroundColor(DesignSystem.Colors.primary)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.white.opacity(0.9)) // High contrast for danger/logout or use accent?
+                    // Re-reading UI/UX: Accent is for core CTA. Logout is usually destructive.
+                    // Let's use a subtle style for logout to look "Premium" but clear.
+                    // Or keep it consistent with Login button style but maybe different color?
+                    // Let's use Color.red for destructive but styled nicely.
+                    // Actually, let's use a glass outline for a cleaner look or just a solid white/accent.
+                    // User requested consistency. Login button is Accent background.
+                    // Let's make this one Red background for clarity, or Dark Grey.
+                    // Let's go with a specialized 'Destructive' style.
+                    .background(Color(hex: "ef4444")) // Lucide Red-500 equivalent
+                    .cornerRadius(20)
                 }
-                .fontWeight(.medium)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity)
-                .padding()
-                .background(Color.red.opacity(0.8))
-                .cornerRadius(12)
+                .padding(.horizontal, 40)
+                .padding(.bottom, 20)
+                
+                // Copyright / Version
+                Text("MOJiTalk MVP v0.2")
+                    .font(.caption2)
+                    .foregroundColor(.white.opacity(0.2))
+                    .padding(.bottom, 10)
             }
-            .padding(.horizontal, 24)
-            
-            Spacer()
         }
-        .background(Color.white)
+        .preferredColorScheme(.dark)
     }
 }
 

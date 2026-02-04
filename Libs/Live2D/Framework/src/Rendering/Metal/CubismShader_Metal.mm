@@ -108,6 +108,211 @@ void CubismShader_Metal::DeleteInstance()
 }
 
 
+
+// String literal for our shader source
+static const char* kCubismShaderSource = R"(
+#include <metal_stdlib>
+using namespace metal;
+
+typedef enum MetalVertexInputIndex
+{
+    MetalVertexInputIndexVertices = 0,
+    MetalVertexInputUVs = 1,
+    MetalVertexInputIndexUniforms = 2,
+} MetalVertexInputIndex;
+
+typedef struct
+{
+    simd::float4x4 matrix;
+    simd::float4x4 clipMatrix;
+    float4 channelFlag;
+    float4 baseColor;
+    float4 multiplyColor;
+    float4 screenColor;
+
+} CubismShaderUniforms;
+
+struct NormalRasterizerData
+{
+    float4 position [[ position ]];
+    float2 texCoord;
+};
+
+struct MaskedRasterizerData
+{
+    float4 position [[ position ]];
+    float2 texCoord;
+    float4 myPos;
+};
+
+vertex MaskedRasterizerData
+VertShaderSrcSetupMask(uint vertexID [[ vertex_id ]],
+             constant float2 *vertexArray [[ buffer(MetalVertexInputIndexVertices) ]],
+             constant float2 *uvArray [[ buffer(MetalVertexInputUVs) ]],
+             constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]])
+{
+    MaskedRasterizerData out;
+    float2 vert = vertexArray[vertexID];
+    float2 uv = uvArray[vertexID];
+    float4 pos = float4(vert.x, vert.y, 0.0, 1.0);
+    out.position = uniforms.clipMatrix * pos;
+    out.myPos = uniforms.clipMatrix * pos;
+    out.texCoord = uv;
+    out.texCoord.y = 1.0 - out.texCoord.y;
+    return out;
+}
+
+fragment float4
+FragShaderSrcSetupMask(MaskedRasterizerData in [[stage_in]],
+                       texture2d<float> texture [[ texture(0) ]],
+                       constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                       sampler smp [[sampler(0)]])
+{
+    float isInside =
+        step(uniforms.baseColor.x, in.myPos.x/in.myPos.w)
+        * step(uniforms.baseColor.y, in.myPos.y/in.myPos.w)
+        * step(in.myPos.x/in.myPos.w, uniforms.baseColor.z)
+        * step(in.myPos.y/in.myPos.w, uniforms.baseColor.w);
+    float4 gl_FragColor = float4(uniforms.channelFlag * texture.sample(smp, in.texCoord).a * isInside);
+    return gl_FragColor;
+}
+
+vertex NormalRasterizerData
+VertShaderSrc(uint vertexID [[ vertex_id ]],
+              constant float2 *vertexArray [[ buffer(MetalVertexInputIndexVertices) ]],
+              constant float2 *uvArray [[ buffer(MetalVertexInputUVs) ]],
+             constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]])
+{
+    NormalRasterizerData out;
+    float2 vert = vertexArray[vertexID];
+    float2 uv = uvArray[vertexID];
+    float4 pos = float4(vert.x, vert.y, 0.0, 1.0);
+    out.position = uniforms.matrix * pos;
+    out.texCoord = uv;
+    out.texCoord.y = 1.0 - out.texCoord.y;
+    return out;
+}
+
+vertex MaskedRasterizerData
+VertShaderSrcMasked(uint vertexID [[ vertex_id ]],
+            constant float2 *vertexArray [[ buffer(MetalVertexInputIndexVertices) ]],
+            constant float2 *uvArray [[ buffer(MetalVertexInputUVs) ]],
+            constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]])
+{
+    MaskedRasterizerData out;
+    float2 vert = vertexArray[vertexID];
+    float2 uv = uvArray[vertexID];
+    float4 pos = float4(vert.x, vert.y, 0.0, 1.0);
+    out.position = uniforms.matrix * pos;
+    out.myPos = uniforms.clipMatrix * pos;
+    out.myPos = float4(out.myPos.x, 1.0 - out.myPos.y, out.myPos.zw);
+    out.texCoord = uv;
+    out.texCoord.y = 1.0 - out.texCoord.y;
+    return out;
+}
+
+fragment float4
+FragShaderSrc(NormalRasterizerData in [[stage_in]],
+              texture2d<float> texture [[ texture(0) ]],
+              constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+              sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = texColor.rgb + uniforms.screenColor.rgb - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 color = texColor * uniforms.baseColor;
+    float4 gl_FragColor = float4(color.rgb * color.a,  color.a);
+    return gl_FragColor;
+}
+
+fragment float4
+FragShaderSrcPremultipliedAlpha(MaskedRasterizerData in [[stage_in]],
+                        texture2d<float> texture [[ texture(0) ]],
+                        constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                        sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = (texColor.rgb + uniforms.screenColor.rgb * texColor.a) - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 gl_FragColor = texColor * uniforms.baseColor;
+    return gl_FragColor;
+}
+
+fragment float4
+FragShaderSrcMask(MaskedRasterizerData in [[stage_in]],
+                    texture2d<float> texture0 [[ texture(0) ]],
+                    texture2d<float> texture1 [[ texture(1) ]],
+                    constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                    sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture0.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = texColor.rgb + uniforms.screenColor.rgb - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 col_formask = texColor * uniforms.baseColor;
+    col_formask.rgb = col_formask.rgb  * col_formask.a ;
+    float4 clipMask = (1.0 - texture1.sample(smp, in.myPos.xy / in.myPos.w)) * uniforms.channelFlag;
+    float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;
+    col_formask = col_formask * maskVal;
+    float4 gl_FragColor = col_formask;
+    return gl_FragColor;
+}
+
+fragment float4
+FragShaderSrcMaskInverted(MaskedRasterizerData in [[stage_in]],
+                    texture2d<float> texture0 [[ texture(0) ]],
+                    texture2d<float> texture1 [[ texture(1) ]],
+                    constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                    sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture0.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = texColor.rgb + uniforms.screenColor.rgb - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 col_formask = texColor * uniforms.baseColor;
+    col_formask.rgb = col_formask.rgb  * col_formask.a ;
+    float4 clipMask = (1.0 - texture1.sample(smp, in.myPos.xy / in.myPos.w)) * uniforms.channelFlag;
+    float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;
+    col_formask = col_formask * (1.0 - maskVal);
+    float4 gl_FragColor = col_formask;
+    return gl_FragColor;
+}
+
+fragment float4
+FragShaderSrcMaskPremultipliedAlpha(MaskedRasterizerData in [[stage_in]],
+                    texture2d<float> texture0 [[ texture(0) ]],
+                    texture2d<float> texture1 [[ texture(1) ]],
+                                    constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                                    sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture0.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = (texColor.rgb + uniforms.screenColor.rgb * texColor.a) - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 col_formask = texColor * uniforms.baseColor;
+    float4 clipMask = (1.0 - texture1.sample(smp, in.myPos.xy / in.myPos.w)) * uniforms.channelFlag;
+    float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;
+    col_formask = col_formask * maskVal;
+    float4 gl_FragColor = col_formask;
+    return gl_FragColor;
+}
+
+fragment float4
+FragShaderSrcMaskInvertedPremultipliedAlpha(MaskedRasterizerData in [[stage_in]],
+                    texture2d<float> texture0 [[ texture(0) ]],
+                    texture2d<float> texture1 [[ texture(1) ]],
+                    constant CubismShaderUniforms &uniforms  [[ buffer(MetalVertexInputIndexUniforms) ]],
+                    sampler smp [[sampler(0)]])
+{
+    float4 texColor = texture0.sample(smp, in.texCoord);
+    texColor.rgb = texColor.rgb * uniforms.multiplyColor.rgb;
+    texColor.rgb = (texColor.rgb + uniforms.screenColor.rgb * texColor.a) - (texColor.rgb * uniforms.screenColor.rgb);
+    float4 col_formask = texColor * uniforms.baseColor;
+    float4 clipMask = (1.0 - texture1.sample(smp, in.myPos.xy / in.myPos.w)) * uniforms.channelFlag;
+    float maskVal = clipMask.r + clipMask.g + clipMask.b + clipMask.a;
+    col_formask = col_formask * (1.0 - maskVal);
+    float4 gl_FragColor = col_formask;
+    return gl_FragColor;
+}
+)";
+
 void CubismShader_Metal::GenerateShaders(CubismRenderer_Metal* renderer)
 {
     for (csmInt32 i = 0; i < ShaderCount; i++)
@@ -115,15 +320,19 @@ void CubismShader_Metal::GenerateShaders(CubismRenderer_Metal* renderer)
         _shaderSets.PushBack(CSM_NEW CubismShaderSet());
     }
 
-    //シェーダライブラリのロード（.metal）
+    //シェーダライブラリのロード（从源码编译，避免 xcodebuild 缺少 Metal Toolchain 问题）
     CubismRenderingInstanceSingleton_Metal *single = [CubismRenderingInstanceSingleton_Metal sharedManager];
     id <MTLDevice> device = [single getMTLDevice];
-    _shaderLib = [device newDefaultLibrary];
+    
+    NSError *error = nil;
+    MTLCompileOptions *options = [[[MTLCompileOptions alloc] init] autorelease];
+    options.languageVersion = MTLLanguageVersion2_1;
+    
+    _shaderLib = [device newLibraryWithSource:[NSString stringWithUTF8String:kCubismShaderSource] options:options error:&error];
 
     if(!_shaderLib)
     {
-        NSLog(@" ERROR: Couldnt create a default shader library");
-        // assert here because if the shader libary isn't loading, nothing good will happen
+        NSLog(@" ERROR: Couldnt create a shader library from source string. Error: %@", error);
         return;
     }
 

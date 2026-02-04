@@ -36,11 +36,24 @@
 - **问题原因**：SDK 提供的 `libLive2DCubismCore_fat.a` 有可能未包含最新的模拟器版 arm64 架构。
 - **解决方案**：在 Podspec 中为模拟器 SDK 排除 `arm64` 架构：`'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64'`。
 
-## 如何验证编译
+### 5. 模拟器符号缺失：`_csmMotionSync_Analyze`
+- **问题原因**：Live2D MotionSync 官方库（`.a`）提供的子架构不完整，导致在 x86_64 模拟器上链接失败。
+- **解决方案**：手动提取 `iphoneos` 和 `iphonesimulator` 的架构，使用 `lipo` 工具合并为 Fat Library，并更新 Podspec 指向该合并库。
+
+### 6. 运行时崩溃与编译错误：`cannot execute tool 'metal'`
+- **问题原因**：
+    - **编译期**：部分 Xcode 环境（如某些内部或受限环境）可能缺少 Metal Toolchain 组件，导致无法编译 `.metal` 文件，报错 `cannot execute tool 'metal'`。
+    - **运行期**：`newDefaultLibrary` 默认从 App 主包寻找 Shader，而在 Framework 模式下 Shader 位于库内部。
+- **解决方案**：
+    - **最终方案**：将 Metal Shader 源码以字符串形式嵌入 `CubismShader_Metal.mm`，并在运行时使用 `newLibraryWithSource:options:error:` 进行实时编译。
+    - **优点**：完美避开 Xcode 编译环境差异和组件缺失问题，无需在 Podspec 中包含 `.metal` 文件，且能确保 Shader 逻辑与库代码强绑定，彻底解决加载路径和工具链报错。
+
+## 如何验证编译与运行
 1. 打开 `MojiTalk.xcworkspace`。
 2. 选择 `MojiTalk` Scheme。
-3. 选择真机设备。
+3. 选择真机或模拟器。
 4. 执行 `Product -> Build`。
+5. 运行查看 Live2D 模型加载情况。
 
 ## 注意事项
 - 如果修改了 `MojiLive2D.podspec` 的结构（如增删文件、修改公开头文件范围），必须在终端执行 `pod install` 以同步工程配置。

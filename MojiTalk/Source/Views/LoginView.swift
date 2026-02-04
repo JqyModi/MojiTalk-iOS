@@ -105,10 +105,24 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                Text("MVP v0.2 | Secure Storage Enabled")
+                VStack(spacing: 8) {
+                    Text("登录即代表您已同意")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                    
+                    HStack(spacing: 4) {
+                        Link("《用户协议》", destination: URL(string: "https://www.mojikaiwa.com/terms")!)
+                        Text("与")
+                            .font(.caption2)
+                            .foregroundColor(.gray)
+                        Link("《隐私政策》", destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
+                    }
                     .font(.caption2)
-                    .foregroundColor(.gray.opacity(0.4))
-                    .padding(.bottom, 20)
+                    .foregroundColor(DesignSystem.Colors.accent)
+                }
+                .padding(.bottom, 20)
+                .offset(y: isAnimating ? 0 : 30)
+                .opacity(isAnimating ? 1 : 0)
             }
         }
         .onAppear {

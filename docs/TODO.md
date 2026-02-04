@@ -58,7 +58,7 @@
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
 - [x] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*
     - [x] 账号注销功能 (Delete Account) - *App Store Guideline 5.1.1(v)*
-- [ ] **[Compliance]** 登录页展示“隐私政策”与“用户协议”入口
+- [x] **[Compliance]** 登录页展示“隐私政策”与“用户协议”入口
 
 ---
 

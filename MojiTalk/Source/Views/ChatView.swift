@@ -87,7 +87,7 @@ struct ChatView: View {
                 viewModel.logout()
                 showUserProfile = false
             })
-            .presentationDetents([.fraction(0.3)])
+            .presentationDetents([.fraction(0.45)])
         }
     }
 }
@@ -347,7 +347,7 @@ struct UserProfileView: View {
                             .foregroundColor(DesignSystem.Colors.accent)
                     }
                     
-                    VStack(spacing: 4) {
+                    VStack(spacing: 12) {
                         Text("Guest_User")
                             .font(DesignSystem.Fonts.heading(size: 20))
                             .foregroundColor(.white)

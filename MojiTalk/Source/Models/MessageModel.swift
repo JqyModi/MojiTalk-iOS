@@ -1,12 +1,12 @@
 import Foundation
 
-enum MessageSender {
+enum MessageSender: String, Codable {
     case user
     case ai
 }
 
-struct Message: Identifiable, Equatable {
-    var id = UUID()
+struct Message: Identifiable, Equatable, Codable {
+    var id: UUID = UUID()
     let content: String
     let sender: MessageSender
     let timestamp: Date

@@ -15,7 +15,24 @@ class ChatViewModel: ObservableObject {
     
     private let ssiService = SSIService()
     private let audioManager = AudioPlayerManager.shared
+    private let storage = MessageStorage.shared
     private var cancellables = Set<AnyCancellable>()
+    
+    init() {
+        // Load saved messages
+        if let savedMessages = storage.loadMessages() {
+            self.messages = savedMessages
+        }
+        
+        // Auto-save when messages change
+        $messages
+            .dropFirst()
+            .debounce(for: .seconds(1), scheduler: RunLoop.main)
+            .sink { [weak self] newMessages in
+                self?.storage.saveMessages(newMessages)
+            }
+            .store(in: &cancellables)
+    }
     
     @MainActor
     func sendMessage() {

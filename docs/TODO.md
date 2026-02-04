@@ -48,10 +48,10 @@
 - [x] **实现真正的模型加载逻辑** (替换 Mock)
 - [x] 实现口型同步 (Audio Power -> L2D Parameter)
 
-### 7. 账号与会话管理
-- [x] 实现极简登录/注册 UI (SwiftUI 风格)
-- [x] 封装 `AccountManager` 处理 Token 存储与有效期
-- [x] 实现对话历史的本地缓存或按需加载
+### 7. 账号与会话管理 (已完成真实实现)
+- [x] 实现完整登录 UI (包含账号密码输入与动画反馈)
+- [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
+- [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
 
 ---
 

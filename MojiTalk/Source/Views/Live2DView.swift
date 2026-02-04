@@ -11,10 +11,24 @@ class Live2DController: ObservableObject {
     
     @Published var currentExpression: String = "idle"
     
-    // Hold reference to the view if needed, or use a delegate pattern
-    // For now, simple pass-through
+    /// Reference to the active MTKView to send commands
+    weak var mtkView: MOJiMTKView?
     
-    // TODO: Connect with MOJiMTKView instance
+    /// Play an audio file and trigger lip sync
+    /// - Parameters:
+    ///   - filePath: Path to the .wav file
+    ///   - targetKey: Unique identifier for the audio
+    func playAudio(filePath: String, targetKey: String = UUID().uuidString) {
+        mtkView?.loadAndPlayAudioFile(filePath, targetKey: targetKey)
+    }
+    
+    func stopAudio() {
+        mtkView?.stopPlayAudio()
+    }
+    
+    func setPlaybackSpeed(_ speed: Float) {
+        mtkView?.setAudioPlaybackSpeed(speed)
+    }
 }
 
 // MARK: - Live2D View
@@ -26,7 +40,8 @@ struct Live2DView: UIViewRepresentable {
         let view = MOJiMTKView(configurationModel: config)
         view.backgroundColor = .clear
         
-        // Adjust content mode if needed, usually MTKView handles scaling internally via Live2D's matrix
+        // Register view with controller
+        Live2DController.shared.mtkView = view
         
         return view
     }

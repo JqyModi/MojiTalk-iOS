@@ -100,6 +100,13 @@ public:
     void OnAudioStopNotification(NSString *targetKey);
     
     void StopAndReleaseAsync();
+
+    /**
+     * @brief 获取音频 RMS 功率 (用于口型同步)
+     * @return 功率值 (0.0 ~ 1.0)
+     */
+    float GetRmsPower();
+
 private:
     
     /**
@@ -162,4 +169,5 @@ private:
     Csm::csmString _currentFilePath; ///< 当前播放的文件路径
     bool _isPaused; ///< 是否暂停
     bool _isPlaying; ///< 是否正在播放
+    float _rmsPower; ///< 当前音频 RMS 功率
 };

@@ -46,7 +46,7 @@
     - [x] 修正真机构建下的沙盒权限与架构链接问题
 - [x] 搬运并重构 Objective-C++ Wrapper 桥接层
 - [x] **实现真正的模型加载逻辑** (替换 Mock)
-- [ ] 实现口型同步 (Audio Power -> L2D Parameter)
+- [x] 实现口型同步 (Audio Power -> L2D Parameter)
 
 ### 7. 账号与会话管理
 - [x] 实现极简登录/注册 UI (SwiftUI 风格)

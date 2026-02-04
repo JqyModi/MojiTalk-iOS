@@ -161,7 +161,8 @@ L2DAudioManager::L2DAudioManager() :
     _isLoadFile(false),
     _playbackSpeed(1.0f),
     _isPaused(false),
-    _isPlaying(false)
+    _isPlaying(false),
+    _rmsPower(0.0f)
 {
 }
 
@@ -201,6 +202,16 @@ void L2DAudioManager::CallBackForAudioFile(void* customData, AudioQueueRef queue
 
     AudioQueueEnqueueBuffer(queue, buffer, 0, NULL);
 
+    // 计算 RMS 功率作为口型同步的参考
+    float sum = 0.0f;
+    for (csmUint64 i = 0; i < data->_queueBufferSampleCount; i++) {
+        float val = samples[i * data->_channels + data->_useChannel];
+        sum += val * val;
+    }
+    float rms = (data->_queueBufferSampleCount > 0) ? sqrtf(sum / data->_queueBufferSampleCount) : 0.0f;
+    
+    // 简单的平滑处理
+    data->_rmsPower = data->_rmsPower * 0.7f + rms * 0.3f;
 }
 
 void L2DAudioManager::OnAudioStopNotification(NSString *targetKey)
@@ -360,4 +371,9 @@ bool L2DAudioManager::IsPlaying() const
 Csm::csmString L2DAudioManager::GetCurrentFilePath() const
 {
     return _currentFilePath;
+}
+
+float L2DAudioManager::GetRmsPower()
+{
+    return _rmsPower;
 }

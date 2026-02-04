@@ -296,9 +296,17 @@ void L2DModel::SetupModel(CubismModelMotionSyncSettingJson* setting)
     // 获取唇同步 ID
     {
         csmInt32 lipSyncIdCount = _modelSetting->GetLipSyncParameterCount();
-        for (csmInt32 i = 0; i < lipSyncIdCount; ++i)
+        if (lipSyncIdCount > 0)
         {
-            _lipSyncIds.PushBack(_modelSetting->GetLipSyncParameterId(i));
+            for (csmInt32 i = 0; i < lipSyncIdCount; ++i)
+            {
+                _lipSyncIds.PushBack(_modelSetting->GetLipSyncParameterId(i));
+            }
+        }
+        else
+        {
+            // 如果 model3.json 中没有配置，默认添加标准口型参数 ParamMouthOpenY
+            _lipSyncIds.PushBack(CubismFramework::GetIdManager()->GetId(ParamMouthOpenY));
         }
     }
 
@@ -476,10 +484,23 @@ void L2DModel::Update(const Float32 deltaTime)
     if (_soundData.IsPlay()) {
         if (_motionSync != NULL) {
             _motionSync->UpdateParameters(_model, deltaTime);
+        } else {
+            // 没有 MotionSync 时，使用 RMS 功率进行基础口型同步
+            const float power = _soundData.GetRmsPower();
+            // 将 RMS 映射到口型参数 (0.0 ~ 1.0)
+            // 乘以 3.0 ~ 5.0 的系数以增强效果，具体视音量而定
+            float value = power * 4.0f;
+            if (value > 1.0f) value = 1.0f;
+            
+            for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i) {
+                _model->AddParameterValue(_lipSyncIds[i], value);
+            }
         }
     } else {
-        const auto cid = L2DDefine::CubismFramework::GetIdManager()->GetId((const char*)ParamMouthOpenY);
-        _model->AddParameterValue(cid, 0.0f);
+        // 停止播放时，确保嘴巴闭合
+        for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i) {
+            _model->SetParameterValue(_lipSyncIds[i], 0.0f);
+        }
     }
     
     // 更新姿势

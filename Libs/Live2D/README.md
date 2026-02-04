@@ -48,6 +48,15 @@
     - **最终方案**：将 Metal Shader 源码以字符串形式嵌入 `CubismShader_Metal.mm`，并在运行时使用 `newLibraryWithSource:options:error:` 进行实时编译。
     - **优点**：完美避开 Xcode 编译环境差异和组件缺失问题，无需在 Podspec 中包含 `.metal` 文件，且能确保 Shader 逻辑与库代码强绑定，彻底解决加载路径和工具链报错。
 
+## 功能实现说明
+
+### 1. 口型同步 (Lip Sync)
+- **原理**：通过 `L2DAudioManager` 在播放音频时实时计算 PCM 数据的 **RMS (Root Mean Square) 功率**。
+- **集成**：
+    - 优先使用 Live2D 官方的 **MotionSync** 引擎（如果模型包含 `.motionsync3.json`）。
+    - 兜底方案：如果模型未配置 MotionSync，会自动将音频功率映射到 `ParamMouthOpenY` 等口型参数，实现基础的音量驱动型口型同步。
+- **调用**：通过 `Live2DController.shared.playAudio(filePath:targetKey:)` 触发。
+
 ## 如何验证编译与运行
 1. 打开 `MojiTalk.xcworkspace`。
 2. 选择 `MojiTalk` Scheme。

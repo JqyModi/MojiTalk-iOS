@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
+    @State private var showUserProfile = false
     
     var body: some View {
         ZStack {
@@ -18,6 +19,22 @@ struct ChatView: View {
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
+                // Header (User Profile)
+                HStack {
+                    Spacer()
+                    Button(action: { showUserProfile = true }) {
+                        Image(systemName: "person.circle.fill")
+                            .font(.system(size: 28))
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding()
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                    }
+                    .padding(.top, 40) // Status bar spacing
+                    .padding(.trailing, 20)
+                }
+                .zIndex(1)
+                
                 // 3. Chat Stream
                 ScrollViewReader { proxy in
                     ScrollView {
@@ -64,6 +81,13 @@ struct ChatView: View {
         .sheet(isPresented: $viewModel.showToolResult) {
             ToolResultView(title: viewModel.toolTitle, content: viewModel.toolResultContent)
                 .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $showUserProfile) {
+            UserProfileView(onLogout: {
+                viewModel.logout()
+                showUserProfile = false
+            })
+            .presentationDetents([.fraction(0.3)])
         }
     }
 }
@@ -291,6 +315,57 @@ struct ControlPanel: View {
             }
         }
         recordStartTime = nil
+    }
+}
+
+struct UserProfileView: View {
+    var onLogout: () -> Void
+    @Environment(\.dismiss) var dismiss
+    
+    var body: some View {
+        VStack(spacing: 24) {
+            Rectangle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: 40, height: 4)
+                .cornerRadius(2)
+                .padding(.top, 8)
+            
+            HStack(spacing: 16) {
+                Image(systemName: "person.crop.circle.fill")
+                    .font(.system(size: 50))
+                    .foregroundColor(DesignSystem.Colors.secondary)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("当前账号")
+                        .font(.caption)
+                        .foregroundColor(.gray)
+                    Text("Guest_User") // 真实场景应从 AccountManager 获取
+                        .font(.headline)
+                        .foregroundColor(DesignSystem.Colors.textPrimary)
+                }
+                
+                Spacer()
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 10)
+            
+            Button(action: onLogout) {
+                HStack {
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                    Text("退出登录")
+                }
+                .fontWeight(.medium)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(Color.red.opacity(0.8))
+                .cornerRadius(12)
+            }
+            .padding(.horizontal, 24)
+            
+            Spacer()
+        }
+        .background(Color.white)
     }
 }
 

@@ -56,8 +56,8 @@
 - [x] 实现完整登录 UI (包含账号密码输入与动画反馈)
 - [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
-- [ ] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*
-    - [ ] 账号注销功能 (Delete Account) - *App Store Guideline 5.1.1(v)*
+- [x] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*
+    - [x] 账号注销功能 (Delete Account) - *App Store Guideline 5.1.1(v)*
 - [ ] **[Compliance]** 登录页展示“隐私政策”与“用户协议”入口
 
 ---

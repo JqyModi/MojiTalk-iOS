@@ -16,6 +16,7 @@ class ChatViewModel: ObservableObject {
     private let ssiService = SSIService()
     private let audioManager = AudioPlayerManager.shared
     private let storage = MessageStorage.shared
+    private let accountManager = AccountManager.shared
     private var cancellables = Set<AnyCancellable>()
     
     init() {
@@ -170,5 +171,11 @@ class ChatViewModel: ObservableObject {
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
             self.toolResultContent = "【语法点解析】\n1. 内容：\(message.content)\n2. 结构：名词+谓语\n3. 建议：这里使用了丁寧語，非常礼貌。"
         }
+    }
+    
+    func logout() {
+        accountManager.logout()
+        // Clear local messages instantly for privacy
+        messages = []
     }
 }

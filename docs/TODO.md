@@ -20,6 +20,7 @@
 - [x] 构建 `SSENetworkManager` (利用 `URLSession.bytes(from:delegate:)`)
 - [x] 实现 SSE 事件流解析器
 - [x] 实现界面的响应式更新 ( incremental content updates )
+- [ ] **[Refine]** 对接真实后端 SSE 接口 (当前为 Local Mock)
 
 ---
 
@@ -28,11 +29,14 @@
 - [x] 封装 `AudioPlayerManager` (基于 `AVFoundation`)
 - [x] 点击消息气泡触发 TTS 获取逻辑
 - [x] 实现播放状态反馈 UI (小喇叭动画)
+- [ ] **[MVP 补漏]** 基础语音输入 (录音按钮与文件发送模拟)
 
 ### 5. AI 辅助工具集
 - [x] 实现消息长按菜单 (`contextMenu`)
 - [x] 接入现有“翻译”接口并展示结果
+    - [ ] **[Refine]** 对接真实翻译 API (当前为 Delay Mock)
 - [x] 接入“语法解析”功能并实现结果展示弹窗
+    - [ ] **[Refine]** 对接真实语法分析 API (当前为 Delay Mock)
 
 ---
 

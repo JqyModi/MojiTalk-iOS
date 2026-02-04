@@ -64,8 +64,8 @@
 
 ## ⚪ P3: 优化与打磨 (UI/UX Refinement)
 ### 8. 视觉与交互体验
-- [ ] **[Transition]** 优化登录 -> 对话的转场动画
-- [ ] **[Dark Mode]** 全局深色模式适配自查 (LoginView / ChatView)
+- [x] **[Transition]** 优化登录 -> 对话的转场动画
+- [x] **[Dark Mode]** 全局深色模式适配自查 (LoginView / ChatView)
 - [ ] **[Keyboard]** 键盘弹出/收起的避让动画优化
 - [ ] **[Loading]** 统一 Loading 态设计 (避免生硬的转圈)
 - [ ] **[Compliance]** 检查 Info.plist 权限文案 (如 NSMicrophoneUsageDescription)

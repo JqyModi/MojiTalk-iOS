@@ -16,18 +16,26 @@ struct MojiTalkApp: App {
 
     var body: some Scene {
         WindowGroup {
-            Group {
+            ZStack {
                 if accountManager.isLoggedIn {
                     ChatView()
-                        .transition(.opacity)
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .scale(scale: 0.95)),
+                            removal: .opacity.combined(with: .scale(scale: 1.05))
+                        ))
+                        .zIndex(1)
                 } else {
                     LoginView()
-                        .transition(.opacity)
+                        .transition(.asymmetric(
+                            insertion: .opacity.combined(with: .scale(scale: 1.05)),
+                            removal: .opacity.combined(with: .scale(scale: 0.95))
+                        ))
+                        .zIndex(0)
                 }
             }
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(.dark) // Force Dark Mode for Premium feel
             .environmentObject(appState)
-            .animation(.easeInOut, value: accountManager.isLoggedIn)
+            .animation(.spring(response: 0.5, dampingFraction: 0.8), value: accountManager.isLoggedIn)
         }
     }
 }

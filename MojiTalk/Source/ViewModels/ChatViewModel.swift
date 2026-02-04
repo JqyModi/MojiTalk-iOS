@@ -40,12 +40,30 @@ class ChatViewModel: ObservableObject {
         guard !trimmedText.isEmpty else { return }
         
         // 1. Add User Message
-        let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date())
+        let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date(), type: .text)
         messages.append(userMessage)
         inputText = ""
         
         // 2. Mock AI Streaming Start
         startAISession(with: trimmedText)
+    }
+    
+    @MainActor
+    func sendVoiceMessage(url: URL, duration: TimeInterval) {
+        // 1. Create Audio Message
+        let message = Message(
+            content: "[语音消息] \(Int(duration))s",
+            sender: .user,
+            timestamp: Date(),
+            type: .audio,
+            audioDuration: duration
+        )
+        messages.append(message)
+        
+        // 2. Trigger AI Response (Mock ASR)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.startAISession(with: "（模拟语音转文字结果）语音消息已收到。")
+        }
     }
     
     @MainActor

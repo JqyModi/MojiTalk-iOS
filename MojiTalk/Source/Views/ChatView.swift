@@ -50,9 +50,13 @@ struct ChatView: View {
             // 3. Floating Smart Input
             VStack {
                 Spacer()
-                ControlPanel(inputText: $viewModel.inputText, onSend: {
-                    viewModel.sendMessage()
-                })
+                ControlPanel(
+                    inputText: $viewModel.inputText,
+                    onSend: { viewModel.sendMessage() },
+                    onVoiceSend: { url, duration in
+                        viewModel.sendVoiceMessage(url: url, duration: duration)
+                    }
+                )
                 .padding(.horizontal)
                 .padding(.bottom, 20)
             }
@@ -81,36 +85,43 @@ struct MessageBubbleView: View {
                         playbackIcon
                     }
                     
-                    Text(message.content)
-                        .font(DesignSystem.Fonts.body(size: 17))
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 20)
-                                .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
+                    Group {
+                        if message.type == .audio {
+                            audioContent
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                        .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
                                 )
-                                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
-                        )
-                        .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
-                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
-                        .onTapGesture {
-                            // 点击文字也可以触发播放
-                            onPlay?()
+                                .foregroundColor(.white)
+                        } else {
+                            textContent
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                        )
+                                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+                                )
+                                .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
                         }
-                        .contextMenu {
-                            Button(action: { onTranslate?() }) {
-                                Label("翻译", systemImage: "character.book.closed")
-                            }
-                            Button(action: { onAnalyze?() }) {
-                                Label("语法分析", systemImage: "text.magnifyingglass")
-                            }
-                            Button(action: { UIPasteboard.general.string = message.content }) {
-                                Label("复制", systemImage: "doc.on.doc")
-                            }
+                    }
+                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+                    .onTapGesture {
+                        onPlay?()
+                    }
+                    .contextMenu {
+                        Button(action: { onTranslate?() }) {
+                            Label("翻译", systemImage: "character.book.closed")
                         }
+                        Button(action: { onAnalyze?() }) {
+                            Label("语法分析", systemImage: "text.magnifyingglass")
+                        }
+                        Button(action: { UIPasteboard.general.string = message.content }) {
+                            Label("复制", systemImage: "doc.on.doc")
+                        }
+                    }
                 }
             }
             
@@ -136,6 +147,26 @@ struct MessageBubbleView: View {
             .buttonStyle(.plain)
             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: audioManager.playingMessageId)
         }
+    }
+    
+    @ViewBuilder
+    private var audioContent: some View {
+        HStack(spacing: 6) {
+            Image(systemName: "waveform")
+                .opacity(audioManager.playingMessageId == message.id ? 0.5 : 1.0)
+                .animation(audioManager.playingMessageId == message.id ? Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true) : .default, value: audioManager.playingMessageId)
+            Text(String(format: "%ds", Int(message.audioDuration ?? 0)))
+                .font(.caption)
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 10)
+    }
+    
+    private var textContent: some View {
+        Text(message.content)
+            .font(DesignSystem.Fonts.body(size: 17))
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
     }
 }
 
@@ -169,11 +200,41 @@ struct ToolResultView: View {
 struct ControlPanel: View {
     @Binding var inputText: String
     var onSend: () -> Void
+    var onVoiceSend: (URL, TimeInterval) -> Void
+    
+    @StateObject private var audioRecorder = AudioRecorderManager.shared
+    @State private var isRecording = false
+    @State private var recordStartTime: Date?
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 12) {
+            // Voice Button
+            if inputText.isEmpty {
+                Button(action: {}) {
+                    Image(systemName: isRecording ? "waveform.circle.fill" : "mic.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(isRecording ? .red : .white.opacity(0.8))
+                        .frame(width: 44, height: 44)
+                        .background(Color.white.opacity(isRecording ? 0.2 : 0.1))
+                        .clipShape(Circle())
+                        .scaleEffect(isRecording ? 1.2 : 1.0)
+                }
+                .simultaneousGesture(
+                    DragGesture(minimumDistance: 0)
+                        .onChanged { _ in
+                            if !isRecording {
+                                startRecording()
+                            }
+                        }
+                        .onEnded { _ in
+                            stopRecording()
+                        }
+                )
+                .animation(.spring(), value: isRecording)
+            }
+            
             // Input Field
-            TextField("输入日语或中国语...", text: $inputText, axis: .vertical)
+            TextField(isRecording ? "正在录音..." : "输入日语或中国语...", text: $inputText, axis: .vertical)
                 .lineLimit(1...5)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -184,25 +245,52 @@ struct ControlPanel: View {
                         .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
                 )
                 .font(.system(size: 16))
+                .disabled(isRecording)
             
             // Send Button
-            Button(action: onSend) {
-                Image(systemName: "paperplane.fill")
-                    .font(.system(size: 20, weight: .semibold))
-                    .foregroundColor(.white)
-                    .frame(width: 44, height: 44)
-                    .background(
-                        Circle()
-                            .fill(inputText.isEmpty ? Color.gray.opacity(0.3) : DesignSystem.Colors.accent)
-                    )
-                    .shadow(color:DesignSystem.Colors.accent.opacity(inputText.isEmpty ? 0 : 0.3), radius: 10)
+            if !inputText.isEmpty {
+                Button(action: onSend) {
+                    Image(systemName: "paperplane.fill")
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(.white)
+                        .frame(width: 44, height: 44)
+                        .background(
+                            Circle()
+                                .fill(DesignSystem.Colors.accent)
+                        )
+                        .shadow(color: DesignSystem.Colors.accent.opacity(0.3), radius: 10)
+                }
+                .transition(.scale)
             }
-            .disabled(inputText.isEmpty)
         }
         .padding(8)
         .background(.ultraThinMaterial)
         .cornerRadius(35)
         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
+        .onAppear {
+            audioRecorder.requestPermission()
+        }
+    }
+    
+    private func startRecording() {
+        isRecording = true
+        recordStartTime = Date()
+        let _ = audioRecorder.startRecording()
+    }
+    
+    private func stopRecording() {
+        isRecording = false
+        audioRecorder.stopRecording()
+        
+        if let startTime = recordStartTime {
+            let duration = Date().timeIntervalSince(startTime)
+            if duration > 1.0 { // Minimum duration
+                 // Mock: In real app, we pass the recorder's file URL
+                let mockURL = URL(fileURLWithPath: NSTemporaryDirectory())
+                onVoiceSend(mockURL, duration)
+            }
+        }
+        recordStartTime = nil
     }
 }
 

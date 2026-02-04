@@ -5,14 +5,21 @@ enum MessageSender: String, Codable {
     case ai
 }
 
+enum MessageType: String, Codable, Equatable {
+    case text
+    case audio
+}
+
 struct Message: Identifiable, Equatable, Codable {
     var id: UUID = UUID()
     let content: String
     let sender: MessageSender
     let timestamp: Date
+    var type: MessageType = .text
+    var audioDuration: TimeInterval? = nil
     var isStreaming: Bool = false
     
     static func == (lhs: Message, rhs: Message) -> Bool {
-        lhs.id == rhs.id && lhs.content == rhs.content && lhs.isStreaming == rhs.isStreaming
+        lhs.id == rhs.id && lhs.content == rhs.content && lhs.isStreaming == rhs.isStreaming && lhs.type == rhs.type
     }
 }

@@ -1,10 +1,18 @@
 import SwiftUI
 import Combine
+import MojiLive2D
 
 @main
 struct MojiTalkApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var accountManager = AccountManager.shared
+
+    init() {
+        // Initialize Live2D Framework
+        L2DCubism.setup()
+        // Unzip models to Documents directory
+        MOJiL2DFileManager.unzipL2DFilesIfNeeded()
+    }
 
     var body: some Scene {
         WindowGroup {

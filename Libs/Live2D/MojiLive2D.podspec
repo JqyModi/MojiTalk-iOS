@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
   s.exclude_files = '**/*_Win.cpp', '**/*_Win.hpp', '**/*Windows.cpp'
   
   # Core Library & MotionSync Library
-  s.vendored_libraries = 'Core/lib/ios/libLive2DCubismCore_fat.a', 'MotionSync/Core/CRI/lib/iOS/Release-iphoneos/libLive2DCubismMotionSyncEngine_CRI.a'
+  s.vendored_libraries = 'Core/lib/ios/libLive2DCubismCore_fat.a', 'MotionSync/Core/CRI/lib/iOS/libLive2DCubismMotionSyncEngine_CRI_fat.a'
 
   # Preserve directory structure for headers
   s.header_mappings_dir = '.'

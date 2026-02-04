@@ -36,7 +36,7 @@
   ],
   "vendored_libraries": [
     "Core/lib/ios/libLive2DCubismCore_fat.a",
-    "MotionSync/Core/CRI/lib/iOS/Release-iphoneos/libLive2DCubismMotionSyncEngine_CRI.a"
+    "MotionSync/Core/CRI/lib/iOS/libLive2DCubismMotionSyncEngine_CRI_fat.a"
   ],
   "header_mappings_dir": ".",
   "public_header_files": [

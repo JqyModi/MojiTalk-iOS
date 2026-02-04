@@ -20,11 +20,8 @@ class Live2DController: ObservableObject {
 // MARK: - Live2D View
 struct Live2DView: UIViewRepresentable {
     func makeUIView(context: Context) -> MOJiMTKView {
-        // Basic configuration
-        let config = MOJiL2DConfigurationModel()
-        // TODO: Set valid model path
-        // config.modelDirPath = ...
-        // config.fileName = ...
+        // Load target model (defaulting to suzu)
+        let config = MOJiL2DFileManager.L2DModelType.suzu.toConfigurationModel()
         
         let view = MOJiMTKView(configurationModel: config)
         view.backgroundColor = .clear

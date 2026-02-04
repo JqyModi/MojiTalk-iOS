@@ -4,12 +4,22 @@ import Combine
 @main
 struct MojiTalkApp: App {
     @StateObject private var appState = AppState()
+    @StateObject private var accountManager = AccountManager.shared
 
     var body: some Scene {
         WindowGroup {
-            ChatView()
-                .preferredColorScheme(.dark)
-                .environmentObject(appState)
+            Group {
+                if accountManager.isLoggedIn {
+                    ChatView()
+                        .transition(.opacity)
+                } else {
+                    LoginView()
+                        .transition(.opacity)
+                }
+            }
+            .preferredColorScheme(.dark)
+            .environmentObject(appState)
+            .animation(.easeInOut, value: accountManager.isLoggedIn)
         }
     }
 }

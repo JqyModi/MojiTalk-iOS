@@ -11,8 +11,14 @@ struct ChatView: View {
                            endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
+            // 2. Live2D Layer (Background Character)
+            Live2DView()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .opacity(0.6) // Blend with background
+                .ignoresSafeArea()
+            
             VStack(spacing: 0) {
-                // 2. Chat Stream
+                // 3. Chat Stream
                 ScrollViewReader { proxy in
                     ScrollView {
                         LazyVStack(spacing: 20) {

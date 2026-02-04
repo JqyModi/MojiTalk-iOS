@@ -1,0 +1,69 @@
+{
+  "name": "MojiLive2D",
+  "version": "0.1.0",
+  "summary": "Live2D Cubism SDK for MojiTalk (with MotionSync)",
+  "description": "Local integration of Live2D Cubism SDK, MotionSync and Wrapper.",
+  "homepage": "https://github.com/example/MojiLive2D",
+  "license": {
+    "type": "Proprietary"
+  },
+  "authors": {
+    "Author": "author@example.com"
+  },
+  "source": {
+    "path": "."
+  },
+  "platforms": {
+    "ios": "13.0"
+  },
+  "requires_arc": "Bridge/**/*.{h,m,mm}",
+  "preserve_paths": [
+    "Core/include/**/*.h",
+    "Framework/src/**/*",
+    "MotionSync/Framework/src/**/*"
+  ],
+  "source_files": [
+    "Framework/src/**/*.{h,hpp,c,cpp,m,mm}",
+    "Bridge/**/*.{h,m,mm}",
+    "MotionSync/Framework/src/**/*.{h,hpp,c,cpp}",
+    "Core/include/**/*.{h,hpp}",
+    "MotionSync/Core/include/**/*.{h,hpp}"
+  ],
+  "exclude_files": [
+    "**/*_Win.cpp",
+    "**/*_Win.hpp",
+    "**/*Windows.cpp"
+  ],
+  "vendored_libraries": [
+    "Core/lib/ios/libLive2DCubismCore_fat.a",
+    "MotionSync/Core/CRI/lib/iOS/Release-iphoneos/libLive2DCubismMotionSyncEngine_CRI.a"
+  ],
+  "header_mappings_dir": ".",
+  "public_header_files": [
+    "Bridge/L2DCubism.h",
+    "Bridge/MOJiMTKView.h",
+    "Bridge/MOJiL2DConfigurationModel.h"
+  ],
+  "frameworks": [
+    "Metal",
+    "MetalKit",
+    "CoreGraphics",
+    "QuartzCore",
+    "AudioToolbox",
+    "AVFoundation"
+  ],
+  "libraries": "c++",
+  "pod_target_xcconfig": {
+    "CLANG_CXX_LANGUAGE_STANDARD": "c++14",
+    "CLANG_CXX_LIBRARY": "libc++",
+    "HEADER_SEARCH_PATHS": "\"${PODS_TARGET_SRCROOT}/Core/include\" \"${PODS_TARGET_SRCROOT}/Framework/src\" \"${PODS_TARGET_SRCROOT}/Bridge\" \"${PODS_TARGET_SRCROOT}/MotionSync/Framework/src\" \"${PODS_TARGET_SRCROOT}/MotionSync/Core/include\"",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64",
+    "ALWAYS_SEARCH_USER_PATHS": "YES",
+    "USE_HEADERMAP": "NO"
+  },
+  "user_target_xcconfig": {
+    "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/MojiLive2D/Core/include\" \"${PODS_ROOT}/MojiLive2D/Framework/src\" \"${PODS_ROOT}/MojiLive2D/Bridge\" \"${PODS_ROOT}/MojiLive2D/MotionSync/Framework/src\" \"${PODS_ROOT}/MojiLive2D/MotionSync/Core/include\"",
+    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64",
+    "ALWAYS_SEARCH_USER_PATHS": "YES"
+  }
+}

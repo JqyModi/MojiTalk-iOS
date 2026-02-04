@@ -1,0 +1,6 @@
+framework module MojiLive2D {
+  umbrella header "MojiLive2D-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,16 @@
+PODS:
+  - MojiLive2D (0.1.0)
+
+DEPENDENCIES:
+  - MojiLive2D (from `./Libs/Live2D`)
+
+EXTERNAL SOURCES:
+  MojiLive2D:
+    :path: "./Libs/Live2D"
+
+SPEC CHECKSUMS:
+  MojiLive2D: a38738b0cc73a70eb2fa4833bbd29e08c9f6603a
+
+PODFILE CHECKSUM: b6c6a316671fe69ed318e6fb8ce530f1984fe060
+
+COCOAPODS: 1.16.2

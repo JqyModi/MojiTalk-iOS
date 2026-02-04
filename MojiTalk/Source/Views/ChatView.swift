@@ -17,11 +17,16 @@ struct ChatView: View {
                     ScrollView {
                         LazyVStack(spacing: 20) {
                             ForEach(viewModel.messages) { message in
-                                MessageBubbleView(message: message)
-                                    .transition(.asymmetric(
-                                        insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
-                                        removal: .opacity
-                                    ))
+                                MessageBubbleView(
+                                    message: message,
+                                    onTranslate: { viewModel.translate(message: message) },
+                                    onAnalyze: { viewModel.analyzeGrammar(message: message) },
+                                    onPlay: { viewModel.playTTS(for: message) }
+                                )
+                                .transition(.asymmetric(
+                                    insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
+                                    removal: .opacity
+                                ))
                             }
                         }
                         .padding(.horizontal)
@@ -46,36 +51,105 @@ struct ChatView: View {
                 .padding(.bottom, 20)
             }
         }
+        .sheet(isPresented: $viewModel.showToolResult) {
+            ToolResultView(title: viewModel.toolTitle, content: viewModel.toolResultContent)
+                .presentationDetents([.medium])
+        }
     }
 }
 
 struct MessageBubbleView: View {
     let message: Message
+    @StateObject private var audioManager = AudioPlayerManager.shared
+    var onTranslate: (() -> Void)? = nil
+    var onAnalyze: (() -> Void)? = nil
+    var onPlay: (() -> Void)? = nil
     
     var body: some View {
-        HStack {
+        HStack(alignment: .bottom, spacing: 8) {
             if message.sender == .user { Spacer() }
             
             VStack(alignment: message.sender == .user ? .trailing : .leading, spacing: 4) {
-                Text(message.content)
-                    .font(DesignSystem.Fonts.body(size: 17))
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
-                            .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
-                            )
-                            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
-                    )
-                    .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+                HStack(alignment: .bottom, spacing: 8) {
+                    if message.sender == .ai {
+                        playbackIcon
+                    }
+                    
+                    Text(message.content)
+                        .font(DesignSystem.Fonts.body(size: 17))
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
+                                .background(
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                )
+                                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
+                        )
+                        .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
+                        .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+                        .contextMenu {
+                            Button(action: { onTranslate?() }) {
+                                Label("翻译", systemImage: "character.book.closed")
+                            }
+                            Button(action: { onAnalyze?() }) {
+                                Label("语法分析", systemImage: "text.magnifyingglass")
+                            }
+                            Button(action: { UIPasteboard.general.string = message.content }) {
+                                Label("复制", systemImage: "doc.on.doc")
+                            }
+                        }
+                }
+            }
+            .onTapGesture {
+                onPlay?()
             }
             
             if message.sender == .ai { Spacer() }
         }
+    }
+    
+    @ViewBuilder
+    private var playbackIcon: some View {
+        if message.sender == .ai && !message.content.isEmpty {
+            Image(systemName: audioManager.playingMessageId == message.id ? "speaker.wave.2.fill" : "speaker.wave.2")
+                .font(.system(size: 14))
+                .foregroundColor(DesignSystem.Colors.accent)
+                .padding(8)
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
+                .scaleEffect(audioManager.playingMessageId == message.id ? 1.2 : 1.0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: audioManager.playingMessageId)
+        }
+    }
+}
+
+struct ToolResultView: View {
+    let title: String
+    let content: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Text(title)
+                    .font(DesignSystem.Fonts.heading(size: 20))
+                Spacer()
+                Image(systemName: "sparkles")
+                    .foregroundColor(DesignSystem.Colors.accent)
+            }
+            
+            ScrollView {
+                Text(content)
+                    .font(DesignSystem.Fonts.body(size: 16))
+                    .lineSpacing(6)
+            }
+            
+            Spacer()
+        }
+        .padding(24)
+        .background(DesignSystem.Colors.primary.ignoresSafeArea())
     }
 }
 

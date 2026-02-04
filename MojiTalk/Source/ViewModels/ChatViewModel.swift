@@ -8,8 +8,13 @@ class ChatViewModel: ObservableObject {
     ]
     @Published var inputText: String = ""
     @Published var isStreaming: Bool = false
+    @Published var selectedMessageForTools: Message? = nil
+    @Published var showToolResult: Bool = false
+    @Published var toolResultContent: String = ""
+    @Published var toolTitle: String = ""
     
     private let ssiService = SSIService()
+    private let audioManager = AudioPlayerManager.shared
     private var cancellables = Set<AnyCancellable>()
     
     @MainActor
@@ -57,6 +62,47 @@ class ChatViewModel: ObservableObject {
                     }
                 }
             }
+        }
+    }
+    
+    // MARK: - P1 Tools
+    
+    func playTTS(for message: Message) {
+        // Mocking a TTS URL
+        // In reality, this would call a TTS API
+        print("Playing TTS for: \(message.content)")
+        // For now, we just toggle the playing state in the manager for UI feedback
+        // AudioPlayerManager.shared.playAudio(from: URL(string: "...")!, messageId: message.id)
+        
+        // Mock feedback
+        AudioPlayerManager.shared.playingMessageId = message.id
+        AudioPlayerManager.shared.isPlaying = true
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            AudioPlayerManager.shared.isPlaying = false
+            AudioPlayerManager.shared.playingMessageId = nil
+        }
+    }
+    
+    func translate(message: Message) {
+        toolTitle = "AI 翻译"
+        toolResultContent = "正在翻译..."
+        showToolResult = true
+        
+        // Mock translation
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.toolResultContent = "这是对消息内容「\(message.content)」的 AI 翻译结果。通常这里会显示更加精准的日语->中文释义。"
+        }
+    }
+    
+    func analyzeGrammar(message: Message) {
+        toolTitle = "语法解析"
+        toolResultContent = "正在分析语法..."
+        showToolResult = true
+        
+        // Mock grammar analysis
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
+            self.toolResultContent = "【语法点解析】\n1. 内容：\(message.content)\n2. 结构：名词+谓语\n3. 建议：这里使用了丁寧語，非常礼貌。"
         }
     }
 }

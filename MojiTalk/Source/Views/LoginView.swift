@@ -83,8 +83,7 @@ struct LoginView: View {
                 }) {
                     HStack {
                         if isLoggingIn {
-                            ProgressView()
-                                .progressViewStyle(CircularProgressViewStyle(tint: DesignSystem.Colors.primary))
+                            LiquidLoadingView()
                                 .padding(.trailing, 10)
                         }
                         

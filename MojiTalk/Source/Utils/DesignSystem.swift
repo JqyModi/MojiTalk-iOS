@@ -52,3 +52,30 @@ extension Color {
         )
     }
 }
+
+public struct LiquidLoadingView: View {
+    @State private var isAnimating = false
+    
+    public init() {}
+    
+    public var body: some View {
+        HStack(spacing: 6) {
+            ForEach(0..<3) { index in
+                Circle()
+                    .fill(DesignSystem.Colors.accent)
+                    .frame(width: 8, height: 8)
+                    .scaleEffect(isAnimating ? 1.2 : 0.8)
+                    .opacity(isAnimating ? 1.0 : 0.4)
+                    .animation(
+                        .easeInOut(duration: 0.6)
+                        .repeatForever(autoreverses: true)
+                        .delay(0.15 * Double(index)),
+                        value: isAnimating
+                    )
+            }
+        }
+        .onAppear {
+            isAnimating = true
+        }
+    }
+}

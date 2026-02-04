@@ -85,7 +85,7 @@ struct LoginView: View {
                         if isLoggingIn {
                             ProgressView()
                                 .progressViewStyle(CircularProgressViewStyle(tint: DesignSystem.Colors.primary))
-                                .padding(.right, 10)
+                                .padding(.trailing, 10)
                         }
                         
                         Text(isLoggingIn ? "正在登录..." : "登 录")

@@ -37,16 +37,21 @@
 ---
 
 ## 🔵 P2: 角色系统与业务框架
-### 6. Live2D 桥接集成
-- [ ] 创建 `Live2DView` (实现 `UIViewRepresentable`)
-- [ ] 集成现有的 Live2D Native SDK 核心库
-- [ ] 实现基础 idle 动画加载
-- [ ] 实现简单的口型同步 (Lip-Sync) 映射
+### 6. Live2D 桥接集成 (P2 - 进展显著)
+- [x] 创建 `Live2DView` 基础容器 (UIViewRepresentable UI层)
+- [x] 调研并迁移 Live2D 核心实现 (集成 Core & Framework)
+- [x] 建立模块化集成方案 (`MojiLive2D` Pod 模块)
+    - [x] 完成多级头文件路径修正
+    - [x] 解决 C++ 接口泄漏导致的 Swift 模块编译失败问题
+    - [x] 修正真机构建下的沙盒权限与架构链接问题
+- [x] 搬运并重构 Objective-C++ Wrapper 桥接层
+- [ ] **实现真正的模型加载逻辑** (替换 Mock)
+- [ ] 实现口型同步 (Audio Power -> L2D Parameter)
 
 ### 7. 账号与会话管理
-- [ ] 实现极简登录/注册 UI (SwiftUI 风格)
-- [ ] 封装 `AccountManager` 处理 Token 存储与有效期
-- [ ] 实现对话历史的本地缓存或按需加载
+- [x] 实现极简登录/注册 UI (SwiftUI 风格)
+- [x] 封装 `AccountManager` 处理 Token 存储与有效期
+- [x] 实现对话历史的本地缓存或按需加载
 
 ---
 

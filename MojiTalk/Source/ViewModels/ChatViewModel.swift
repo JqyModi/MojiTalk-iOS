@@ -68,20 +68,51 @@ class ChatViewModel: ObservableObject {
     // MARK: - P1 Tools
     
     func playTTS(for message: Message) {
-        // Mocking a TTS URL
-        // In reality, this would call a TTS API
-        print("Playing TTS for: \(message.content)")
-        // For now, we just toggle the playing state in the manager for UI feedback
-        // AudioPlayerManager.shared.playAudio(from: URL(string: "...")!, messageId: message.id)
+        print("DEBUG: playTTS triggered for: \(message.content)")
         
-        // Mock feedback
+        // 1. 同步 UI 状态（控制气泡上的状态图标）
         AudioPlayerManager.shared.playingMessageId = message.id
         AudioPlayerManager.shared.isPlaying = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-            AudioPlayerManager.shared.isPlaying = false
-            AudioPlayerManager.shared.playingMessageId = nil
+        // 2. 触发 Live2D 口型同步播放
+        // 依次尝试：Bundle资源 -> 沙盒资源 -> 系统测试音频
+        let testPath = getTestAudioPath()
+        
+        if let path = testPath {
+            print("DEBUG: Playing audio from \(path)")
+            Live2DController.shared.playAudio(filePath: path, targetKey: message.id.uuidString)
+            
+            // 模拟播放时长 UI 回收（实际应对接播放完成回调）
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                if AudioPlayerManager.shared.playingMessageId == message.id {
+                    AudioPlayerManager.shared.isPlaying = false
+                    AudioPlayerManager.shared.playingMessageId = nil
+                }
+            }
+        } else {
+            print("WARNING: No test audio found. Lip sync cannot be verified visually with sound.")
+            // 纯 Mock 状态
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                AudioPlayerManager.shared.isPlaying = false
+                AudioPlayerManager.shared.playingMessageId = nil
+            }
         }
+    }
+    
+    private func getTestAudioPath() -> String? {
+        // 1. 尝试工程打包进去的资源
+        if let path = Bundle.main.path(forResource: "test", ofType: "wav") { return path }
+        
+        // 2. 尝试 Sandbox Documents (手动放入验证)
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+        let testWav = docs?.appendingPathComponent("test.wav").path
+        if let p = testWav, FileManager.default.fileExists(atPath: p) { return p }
+        
+        // 3. 兜底：如果是在模拟器，且本地有转换好的文件路径（硬编码仅供调试）
+        let hardcodedPath = "/Users/modi/Documents/数据迁移/xcode/Project/MainApp/mojikaiwa-ios/MojiTalk/MojiTalk/Resources/Audio/test.wav"
+        if FileManager.default.fileExists(atPath: hardcodedPath) { return hardcodedPath }
+        
+        return nil
     }
     
     func translate(message: Message) {

@@ -48,6 +48,14 @@
     - **最终方案**：将 Metal Shader 源码以字符串形式嵌入 `CubismShader_Metal.mm`，并在运行时使用 `newLibraryWithSource:options:error:` 进行实时编译。
     - **优点**：完美避开 Xcode 编译环境差异和组件缺失问题，无需在 Podspec 中包含 `.metal` 文件，且能确保 Shader 逻辑与库代码强绑定，彻底解决加载路径和工具链报错。
 
+### 7. 口型同步 (Lip Sync) 无效或幅度过小
+- **问题现象**：音频正常播放，但模型嘴巴不动，或者仅微弱颤动。
+- **解决方案与排查步骤**：
+    1. **关联音频缓冲区**：对于支持 **MotionSync** 的模型（如 Suzu），必须显式调用 `_motionSync->SetSoundBuffer(0, _soundData.GetBuffer())`。
+    2. **强制覆盖动作 (Motion Overwrite)**：应使用 `SetParameterValue` 而非 `Add` 类方法，以确保音频功率能覆盖预录制动作的口型。
+    3. **参数 ID 校验**：通过打印 `_model->GetParameterId(i)->GetString().GetRawString()` 确认模型实际使用的唇形 ID。
+    4. **映射逻辑调整**：将 RMS 功率乘以 **7.0~10.0** 倍以增强视觉张力，并增加简单的平滑滤波防抖。
+
 ## 功能实现说明
 
 ### 1. 口型同步 (Lip Sync)

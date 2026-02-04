@@ -199,8 +199,12 @@ void L2DModel::SetupModel(CubismModelMotionSyncSettingJson* setting)
 
         if (!_motionSync)
         {
+            DeleteBuffer(buffer, path.GetRawString());
             return;
         }
+
+        // 将音频管理器的 buffer 与 MotionSync 关联
+        _motionSync->SetSoundBuffer(0, _soundData.GetBuffer());
 
         DeleteBuffer(buffer, path.GetRawString());
     }
@@ -482,21 +486,17 @@ void L2DModel::Update(const Float32 deltaTime)
     }
 
     if (_soundData.IsPlay()) {
-        if (_motionSync != NULL) {
-            _motionSync->UpdateParameters(_model, deltaTime);
-        } else {
-            // 没有 MotionSync 时，使用 RMS 功率进行基础口型同步
-            const float power = _soundData.GetRmsPower();
-            // 将 RMS 映射到口型参数 (0.0 ~ 1.0)
-            // 乘以 3.0 ~ 5.0 的系数以增强效果，具体视音量而定
-            float value = power * 4.0f;
-            if (value > 1.0f) value = 1.0f;
-            
-            for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i) {
-                _model->AddParameterValue(_lipSyncIds[i], value);
-            }
+        const float power = _soundData.GetRmsPower();
+        // 将 RMS 映射到 [0, 1] 范围。通常 RMS 在 0.05~0.2 之间，乘以 6-8 倍比较合适
+        float value = power * 7.0f; 
+        if (value > 1.0f) value = 1.0f;
+        
+        // 动态设置唇形参数
+        for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i) {
+            _model->SetParameterValue(_lipSyncIds[i], value); 
         }
-    } else {
+    }
+ else {
         // 停止播放时，确保嘴巴闭合
         for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i) {
             _model->SetParameterValue(_lipSyncIds[i], 0.0f);

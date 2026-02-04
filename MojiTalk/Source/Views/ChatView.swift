@@ -66,7 +66,7 @@ struct ChatView: View {
 
 struct MessageBubbleView: View {
     let message: Message
-    @StateObject private var audioManager = AudioPlayerManager.shared
+    @ObservedObject private var audioManager = AudioPlayerManager.shared
     var onTranslate: (() -> Void)? = nil
     var onAnalyze: (() -> Void)? = nil
     var onPlay: (() -> Void)? = nil
@@ -96,6 +96,10 @@ struct MessageBubbleView: View {
                         )
                         .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
                         .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
+                        .onTapGesture {
+                            // 点击文字也可以触发播放
+                            onPlay?()
+                        }
                         .contextMenu {
                             Button(action: { onTranslate?() }) {
                                 Label("翻译", systemImage: "character.book.closed")
@@ -109,9 +113,6 @@ struct MessageBubbleView: View {
                         }
                 }
             }
-            .onTapGesture {
-                onPlay?()
-            }
             
             if message.sender == .ai { Spacer() }
         }
@@ -120,14 +121,20 @@ struct MessageBubbleView: View {
     @ViewBuilder
     private var playbackIcon: some View {
         if message.sender == .ai && !message.content.isEmpty {
-            Image(systemName: audioManager.playingMessageId == message.id ? "speaker.wave.2.fill" : "speaker.wave.2")
-                .font(.system(size: 14))
-                .foregroundColor(DesignSystem.Colors.accent)
-                .padding(8)
-                .background(.ultraThinMaterial)
-                .clipShape(Circle())
-                .scaleEffect(audioManager.playingMessageId == message.id ? 1.2 : 1.0)
-                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: audioManager.playingMessageId)
+            Button(action: {
+                print("DEBUG: Speaker icon tapped for \(message.id)")
+                onPlay?()
+            }) {
+                Image(systemName: audioManager.playingMessageId == message.id ? "speaker.wave.2.fill" : "speaker.wave.2")
+                    .font(.system(size: 14))
+                    .foregroundColor(DesignSystem.Colors.accent)
+                    .padding(8)
+                    .background(.ultraThinMaterial)
+                    .clipShape(Circle())
+                    .scaleEffect(audioManager.playingMessageId == message.id ? 1.2 : 1.0)
+            }
+            .buttonStyle(.plain)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: audioManager.playingMessageId)
         }
     }
 }

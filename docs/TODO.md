@@ -56,12 +56,17 @@
 - [x] 实现完整登录 UI (包含账号密码输入与动画反馈)
 - [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
+- [ ] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*
 
 ---
 
-## ⚪ P3: 优化与打磨
-### 8. 性能与体验优化
-- [ ] 打磨界面转场动画 (Transition)
-- [ ] 适配 Dark Mode 全局色值
-- [ ] 优化大数据量下的消息流渲染性能 (List 优化)
+## ⚪ P3: 优化与打磨 (UI/UX Refinement)
+### 8. 视觉与交互体验
+- [ ] **[Transition]** 优化登录 -> 对话的转场动画
+- [ ] **[Dark Mode]** 全局深色模式适配自查 (LoginView / ChatView)
+- [ ] **[Keyboard]** 键盘弹出/收起的避让动画优化
+- [ ] **[Loading]** 统一 Loading 态设计 (避免生硬的转圈)
+
+### 9. 性能优化
+- [ ] 优化消息列表 (`LazyVStack`) 在长列表下的滚动性能
 - [ ] 弱网环境下的重试逻辑 UI 反馈

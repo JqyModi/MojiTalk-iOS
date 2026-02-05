@@ -27,7 +27,9 @@ struct ChatView: View {
                                 message: message,
                                 onTranslate: { viewModel.translate(message: message) },
                                 onAnalyze: { viewModel.analyzeGrammar(message: message) },
-                                onPlay: { viewModel.playTTS(for: message) }
+                                onPlay: { viewModel.playTTS(for: message) },
+                                onReport: { viewModel.reportMessage(message) },
+                                onRetry: { viewModel.resendMessage(message) }
                             )
                             .id(message.id) // Ensure explicit ID for scrolling
                             .transition(.asymmetric(
@@ -114,6 +116,8 @@ struct MessageBubbleView: View {
     var onTranslate: (() -> Void)? = nil
     var onAnalyze: (() -> Void)? = nil
     var onPlay: (() -> Void)? = nil
+    var onReport: (() -> Void)? = nil
+    var onRetry: (() -> Void)? = nil
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 8) {
@@ -123,6 +127,15 @@ struct MessageBubbleView: View {
                 HStack(alignment: .bottom, spacing: 8) {
                     if message.sender == .ai {
                         playbackIcon
+                    }
+                    
+                    if message.sender == .user && message.status == .failed {
+                        Button(action: { onRetry?() }) {
+                            Image(systemName: "exclamationmark.circle.fill")
+                                .foregroundColor(.red)
+                                .font(.system(size: 20))
+                        }
+                        .buttonStyle(.plain)
                     }
                     
                     Group {
@@ -160,6 +173,12 @@ struct MessageBubbleView: View {
                         }
                         Button(action: { UIPasteboard.general.string = message.content }) {
                             Label("复制", systemImage: "doc.on.doc")
+                        }
+                        
+                        Divider()
+                        
+                        Button(role: .destructive, action: { onReport?() }) {
+                            Label("反馈内容问题", systemImage: "exclamationmark.bubble")
                         }
                     }
                 }

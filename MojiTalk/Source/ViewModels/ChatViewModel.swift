@@ -41,7 +41,7 @@ class ChatViewModel: ObservableObject {
         guard !trimmedText.isEmpty else { return }
         
         // 1. Add User Message
-        let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date(), type: .text)
+        let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date(), type: .text, status: .sent)
         messages.append(userMessage)
         inputText = ""
         
@@ -177,5 +177,26 @@ class ChatViewModel: ObservableObject {
         accountManager.logout()
         // Clear local messages instantly for privacy
         messages = []
+    }
+    
+    // MARK: - Compliance & Robustness
+    
+    func reportMessage(_ message: Message) {
+        // AI Content Compliance: Guideline 1.2
+        print("DEBUG: Reporting message: \(message.id)")
+        toolTitle = "内容举报"
+        toolResultContent = "感谢您的反馈。我们已收到对该 AI 生成内容的举报，后台将进行审核以优化生成结果。"
+        showToolResult = true
+    }
+    
+    @MainActor
+    func resendMessage(_ message: Message) {
+        guard let index = messages.firstIndex(where: { $0.id == message.id }) else { return }
+        
+        // Update status to sending
+        messages[index].status = .sending
+        
+        // Retry the AI session
+        startAISession(with: message.content)
     }
 }

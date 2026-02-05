@@ -37,6 +37,7 @@
     - [ ] **[Refine]** 对接真实翻译 API (当前为 Delay Mock)
 - [x] 接入“语法解析”功能并实现结果展示弹窗
     - [ ] **[Refine]** 对接真实语法分析 API (当前为 Delay Mock)
+- [ ] **[Compliance]** 消息长按菜单支持“反馈/举报”AI 不当内容
 
 ---
 
@@ -68,8 +69,21 @@
 - [x] **[Dark Mode]** 全局深色模式适配自查 (LoginView / ChatView)
 - [x] **[Keyboard]** 键盘弹出/收起的避让动画优化
 - [x] **[Loading]** 统一 Loading 态设计 (避免生硬的转圈)
-- [ ] **[Compliance]** 检查 Info.plist 权限文案 (如 NSMicrophoneUsageDescription)
+- [x] **[Compliance]** 检查 Info.plist 权限文案 (如 NSMicrophoneUsageDescription)
+- [ ] **[Assets]** 配置 Launch Screen (启动图)
+- [ ] **[Assets]** 制作并配置全尺寸 App Icon
 
-### 9. 性能优化
+### 9. 鲁棒性与性能
+- [ ] **[Retry]** 消息发送失败/流断开的 UI 重试引导
 - [ ] 优化消息列表 (`LazyVStack`) 在长列表下的滚动性能
 - [ ] 弱网环境下的重试逻辑 UI 反馈
+
+---
+
+## 📦 P4: App Store 上架元数据准备
+- [ ] **法律文档发布**：将隐私政策和用户协议部署至静态网页
+- [ ] **审核准备**：配置 App Store Connect 测试账号及审核备注
+- [ ] **预览图制作**：
+    - [ ] 6.5 英寸 (iPhone 14/13/12 Pro Max) 截图 (5张)
+    - [ ] 5.5 英寸 (iPhone 8 Plus) 截图 (5张)
+- [ ] **营销文案**：编写多语言 App 描述、关键词及技术支持 URL

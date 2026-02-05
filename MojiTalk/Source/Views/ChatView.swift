@@ -103,7 +103,7 @@ struct ChatView: View {
                 viewModel.logout()
                 showUserProfile = false
             })
-            .presentationDetents([.fraction(0.45)])
+            .presentationDetents([.fraction(0.5)])
         }
     }
 }
@@ -406,7 +406,7 @@ struct UserProfileView: View {
                 Text("MOJiTalk MVP v0.2")
                     .font(.caption2)
                     .foregroundColor(.white.opacity(0.2))
-                    .padding(.bottom, 44)
+                    .padding(.bottom, 10)
             }
         }
         .preferredColorScheme(.dark)

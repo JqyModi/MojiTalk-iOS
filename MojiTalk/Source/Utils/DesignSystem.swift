@@ -53,16 +53,19 @@ extension Color {
     }
 }
 
-public struct LiquidLoadingView: View {
+struct LiquidLoadingView: View {
     @State private var isAnimating = false
+    private let color: Color
     
-    public init() {}
+    init(color: Color = DesignSystem.Colors.accent) {
+        self.color = color
+    }
     
     public var body: some View {
         HStack(spacing: 6) {
             ForEach(0..<3) { index in
                 Circle()
-                    .fill(DesignSystem.Colors.accent)
+                    .fill(color)
                     .frame(width: 8, height: 8)
                     .scaleEffect(isAnimating ? 1.2 : 0.8)
                     .opacity(isAnimating ? 1.0 : 0.4)

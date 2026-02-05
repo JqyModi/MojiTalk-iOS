@@ -18,7 +18,7 @@ struct LoginView: View {
                 .frame(width: 400, height: 400)
                 .offset(x: 150, y: -250)
             
-            VStack {
+            VStack(spacing: 0) {
                 Spacer()
                 
                 // Logo Section
@@ -81,18 +81,21 @@ struct LoginView: View {
                     isLoggingIn = true
                     accountManager.login(account: account)
                 }) {
-                    HStack {
+                    ZStack {
                         if isLoggingIn {
-                            LiquidLoadingView()
-                                .padding(.trailing, 10)
+                            HStack {
+                                LiquidLoadingView(color: DesignSystem.Colors.primary)
+                                    .padding(.leading, 24)
+                                Spacer()
+                            }
                         }
                         
                         Text(isLoggingIn ? "正在登录..." : "登 录")
+                            .font(DesignSystem.Fonts.heading(size: 18))
                     }
-                    .font(DesignSystem.Fonts.heading(size: 18))
                     .foregroundColor(DesignSystem.Colors.primary)
                     .frame(maxWidth: .infinity)
-                    .padding()
+                    .frame(height: 56)
                     .background(DesignSystem.Colors.accent)
                     .cornerRadius(30)
                     .shadow(color: DesignSystem.Colors.accent.opacity(0.4), radius: 10, x: 0, y: 5)
@@ -104,22 +107,28 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                VStack(spacing: 8) {
-                    Text("登录即代表您已同意")
-                        .font(.caption2)
-                        .foregroundColor(.gray)
-                    
-                    HStack(spacing: 4) {
-                        Link("《用户协议》", destination: URL(string: "https://www.mojikaiwa.com/terms")!)
-                        Text("与")
+                VStack(spacing: 12) {
+                    VStack(spacing: 4) {
+                        Text("登录即代表您已同意")
                             .font(.caption2)
                             .foregroundColor(.gray)
-                        Link("《隐私政策》", destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
+                        
+                        HStack(spacing: 4) {
+                            Link("《用户协议》", destination: URL(string: "https://www.mojikaiwa.com/terms")!)
+                            Text("与")
+                                .font(.caption2)
+                                .foregroundColor(.gray)
+                            Link("《隐私政策》", destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
+                        }
                     }
-                    .font(.caption2)
-                    .foregroundColor(DesignSystem.Colors.accent)
+                    
+                    Text("MVP v0.2 | Secure Storage Enabled")
+                        .font(.system(size: 10))
+                        .foregroundColor(.white.opacity(0.2))
                 }
-                .padding(.bottom, 20)
+                .font(.caption2)
+                .foregroundColor(DesignSystem.Colors.accent)
+                .padding(.bottom, 40)
                 .offset(y: isAnimating ? 0 : 30)
                 .opacity(isAnimating ? 1 : 0)
             }

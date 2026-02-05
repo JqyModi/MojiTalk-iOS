@@ -18,68 +18,69 @@ struct ChatView: View {
                 .opacity(0.6) // Blend with background
                 .ignoresSafeArea()
             
-            VStack(spacing: 0) {
-                // Header (User Profile)
-                HStack {
-                    Spacer()
-                    Button(action: { showUserProfile = true }) {
-                        Image(systemName: "person.circle.fill")
-                            .font(.system(size: 28))
-                            .foregroundColor(.white.opacity(0.8))
-                            .padding()
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
+            // 3. Chat Stream
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(spacing: 20) {
+                        ForEach(viewModel.messages) { message in
+                            MessageBubbleView(
+                                message: message,
+                                onTranslate: { viewModel.translate(message: message) },
+                                onAnalyze: { viewModel.analyzeGrammar(message: message) },
+                                onPlay: { viewModel.playTTS(for: message) }
+                            )
+                            .id(message.id) // Ensure explicit ID for scrolling
+                            .transition(.asymmetric(
+                                insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
+                                removal: .opacity
+                            ))
+                        }
                     }
-                    .padding(.top, 40) // Status bar spacing
-                    .padding(.trailing, 20)
+                    .padding(.horizontal)
+                    .padding(.top, 100) // Large top padding to avoid being under the floating header
+                    .padding(.bottom, 120) // Bottom padding for input panel
                 }
-                .zIndex(1)
-                
-                // 3. Chat Stream
-                ScrollViewReader { proxy in
-                    ScrollView {
-                        LazyVStack(spacing: 20) {
-                            ForEach(viewModel.messages) { message in
-                                MessageBubbleView(
-                                    message: message,
-                                    onTranslate: { viewModel.translate(message: message) },
-                                    onAnalyze: { viewModel.analyzeGrammar(message: message) },
-                                    onPlay: { viewModel.playTTS(for: message) }
-                                )
-                                .id(message.id) // Ensure explicit ID for scrolling
-                                .transition(.asymmetric(
-                                    insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
-                                    removal: .opacity
-                                ))
-                            }
+                .scrollDismissesKeyboard(.interactively)
+                .onTapGesture {
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                }
+                .onChange(of: viewModel.messages) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                            proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
                         }
-                        .padding(.horizontal)
-                        .padding(.top, 20)
-                        .padding(.bottom, 100)
                     }
-                    .scrollDismissesKeyboard(.interactively) // iOS 16+ Keyboard Dismissal
-                    .onTapGesture {
-                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    }
-                    .onChange(of: viewModel.messages) { _ in
-                        // Delay slightly to ensure layout update before scrolling
+                }
+                .onChange(of: viewModel.isStreaming) { isStreaming in
+                    if isStreaming {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                            withAnimation {
                                 proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
-                            }
-                        }
-                    }
-                    .onChange(of: viewModel.isStreaming) { isStreaming in
-                        if isStreaming {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                withAnimation {
-                                    proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
-                                }
                             }
                         }
                     }
                 }
             }
+            .ignoresSafeArea(.container, edges: .top) // Fill up to the very top
+            
+            // 4. Floating Header (User Profile)
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: { showUserProfile = true }) {
+                        Image(systemName: "person.fill")
+                            .font(.system(size: 18, weight: .bold)) // Smaller icon
+                            .foregroundColor(.white.opacity(0.9))
+                            .padding(12) // Smaller padding
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 10)
+                    }
+                    .padding(.trailing, 20)
+                }
+                Spacer()
+            }
+            .padding(.top, 10) // Small adjustment above safe area
             
             // 3. Floating Smart Input
             VStack {

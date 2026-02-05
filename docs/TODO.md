@@ -20,7 +20,7 @@
 - [x] 构建 `SSENetworkManager` (利用 `URLSession.bytes(from:delegate:)`)
 - [x] 实现 SSE 事件流解析器
 - [x] 实现界面的响应式更新 ( incremental content updates )
-- [ ] **[Refine]** 对接真实后端 SSE 接口 (当前为 Local Mock)
+- [x] **[Refine]** 对接真实后端 SSE 接口 (阿里通义千问 Qwen)
 
 ---
 

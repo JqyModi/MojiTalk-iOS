@@ -12,6 +12,9 @@ class ChatViewModel: ObservableObject {
     @Published var showToolResult: Bool = false
     @Published var toolResultContent: String = ""
     @Published var toolTitle: String = ""
+    @Published var textToTranslate: String = ""
+    @Published var showSystemTranslation: Bool = false
+    @Published var isDetailedAnalysis: Bool = false // Tracks if user wants more detail
     
     private let ssiService = SSIService()
     private let audioManager = AudioPlayerManager.shared
@@ -73,30 +76,35 @@ class ChatViewModel: ObservableObject {
         
         // Create an empty AI message to be populated
         let aiMessageId = UUID()
-        var aiMessage = Message(id: aiMessageId, content: "", sender: .ai, timestamp: Date(), isStreaming: true)
+        let aiMessage = Message(id: aiMessageId, content: "", sender: .ai, timestamp: Date(), isStreaming: true)
         messages.append(aiMessage)
         
-        // Here we would normally call ssiService.connect(to: ...)
-        // For MVP, we simulate the stream
-        simulateStream(for: aiMessageId)
-    }
-    
-    @MainActor
-    private func simulateStream(for id: UUID) {
-        let fullResponse = "这是一个流式回复测试。使用 SwiftUI 和 Combine 能够非常平滑地更新界面内容。"
-        let words = fullResponse.map { String($0) }
-        var currentText = ""
-        
-        for (index, char) in words.enumerated() {
-            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.05) {
-                if let idx = self.messages.firstIndex(where: { $0.id == id }) {
-                    currentText += char
-                    self.messages[idx] = Message(id: id, content: currentText, sender: .ai, timestamp: self.messages[idx].timestamp, isStreaming: index < words.count - 1)
-                    
-                    if index == words.count - 1 {
-                        self.isStreaming = false
+        Task {
+            do {
+                // Use the last N messages for context (e.g., last 10)
+                let context = Array(messages.suffix(10))
+                let stream = ssiService.connect(messages: context)
+                
+                var accumulatedText = ""
+                for try await delta in stream {
+                    accumulatedText += delta
+                    if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
+                        messages[index].content = accumulatedText
                     }
                 }
+                
+                // Finalize message
+                if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
+                    messages[index].isStreaming = false
+                }
+                isStreaming = false
+            } catch {
+                print("ERROR: SSE stream failed: \(error)")
+                if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
+                    messages[index].content = "抱歉，对话服务暂时不可用，请稍后再试。"
+                    messages[index].status = .failed
+                }
+                isStreaming = false
             }
         }
     }
@@ -152,24 +160,74 @@ class ChatViewModel: ObservableObject {
     }
     
     func translate(message: Message) {
-        toolTitle = "AI 翻译"
-        toolResultContent = "正在翻译..."
-        showToolResult = true
-        
-        // Mock translation
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.toolResultContent = "这是对消息内容「\(message.content)」的 AI 翻译结果。通常这里会显示更加精准的日语->中文释义。"
+        if #available(iOS 17.4, *) {
+            // Use Apple's Translation Framework (0 cost)
+            self.textToTranslate = message.content
+            self.showSystemTranslation = true
+        } else {
+            // Fallback for older iOS versions: Use AI Translation (reusing Qwen)
+            aiTranslate(message: message)
         }
     }
     
-    func analyzeGrammar(message: Message) {
-        toolTitle = "语法解析"
-        toolResultContent = "正在分析语法..."
+    @MainActor
+    private func aiTranslate(message: Message) {
+        toolTitle = "AI 翻译"
+        toolResultContent = "AI 正在翻译并润色中..."
         showToolResult = true
         
-        // Mock grammar analysis
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) {
-            self.toolResultContent = "【语法点解析】\n1. 内容：\(message.content)\n2. 结构：名词+谓语\n3. 建议：这里使用了丁寧語，非常礼貌。"
+        Task {
+            do {
+                let translatePrompt = Message(
+                    content: "请将以下日语翻译成地道的中文，如果原文是中文则翻译成日语。只需输出翻译结果，不要有其他解释。原文：\"\(message.content)\"",
+                    sender: .user,
+                    timestamp: Date()
+                )
+                
+                let stream = ssiService.connect(messages: [translatePrompt])
+                
+                var accumulatedText = ""
+                for try await delta in stream {
+                    accumulatedText += delta
+                    self.toolResultContent = accumulatedText
+                }
+            } catch {
+                self.toolResultContent = "暂时无法连接翻译服务器，请检查网络。"
+            }
+        }
+    }
+    
+    @MainActor
+    func analyzeGrammar(message: Message, detailed: Bool = false) {
+        isDetailedAnalysis = detailed
+        toolTitle = detailed ? "深度语法解析" : "语法精讲"
+        
+        if !detailed {
+            toolResultContent = "正在提取核心语法项..."
+        } else {
+            toolResultContent += "\n\n---\n⏳ 正在加载详细补充..."
+        }
+        
+        showToolResult = true
+        
+        Task {
+            do {
+                let promptContent = detailed ?
+                    "请针对刚才的句子 \"\(message.content)\" 提供更深层的语境、文化背景及易错点分析。" :
+                    "请作为日语私教，对句子 \"\(message.content)\" 进行极简解析。格式要求：【核心语感】（15字内）+【关键语法】（1项）+【地道用法】（1点）。严禁啰嗦。"
+                
+                let grammarPrompt = Message(content: promptContent, sender: .user, timestamp: Date())
+                let stream = ssiService.connect(messages: [grammarPrompt])
+                
+                var accumulatedText = detailed ? toolResultContent.replacingOccurrences(of: "\n\n---\n⏳ 正在加载详细补充...", with: "\n\n--- [深度补充] ---\n") : ""
+                
+                for try await delta in stream {
+                    accumulatedText += delta
+                    self.toolResultContent = accumulatedText
+                }
+            } catch {
+                self.toolResultContent = "暂时无法连接解析服务器。"
+            }
         }
     }
     

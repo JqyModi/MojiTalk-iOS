@@ -1,4 +1,5 @@
 import SwiftUI
+import Translation
 
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
@@ -26,7 +27,10 @@ struct ChatView: View {
                             MessageBubbleView(
                                 message: message,
                                 onTranslate: { viewModel.translate(message: message) },
-                                onAnalyze: { viewModel.analyzeGrammar(message: message) },
+                                onAnalyze: { 
+                                    viewModel.selectedMessageForTools = message
+                                    viewModel.analyzeGrammar(message: message) 
+                                },
                                 onPlay: { viewModel.playTTS(for: message) },
                                 onReport: { viewModel.reportMessage(message) },
                                 onRetry: { viewModel.resendMessage(message) }
@@ -97,8 +101,17 @@ struct ChatView: View {
             }
         }
         .sheet(isPresented: $viewModel.showToolResult) {
-            ToolResultView(title: viewModel.toolTitle, content: viewModel.toolResultContent)
-                .presentationDetents([.medium])
+            ToolResultView(
+                title: viewModel.toolTitle,
+                content: viewModel.toolResultContent,
+                showMoreButton: !viewModel.isDetailedAnalysis && viewModel.toolTitle == "语法精讲",
+                onMore: {
+                    if let msg = viewModel.selectedMessageForTools {
+                        viewModel.analyzeGrammar(message: msg, detailed: true)
+                    }
+                }
+            )
+            .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showUserProfile) {
             UserProfileView(onLogout: {
@@ -106,6 +119,19 @@ struct ChatView: View {
                 showUserProfile = false
             })
             .presentationDetents([.fraction(0.5)])
+        }
+        .applyTranslation(isPresented: $viewModel.showSystemTranslation, text: viewModel.textToTranslate)
+    }
+}
+
+// MARK: - Compatibility Extensions
+extension View {
+    @ViewBuilder
+    func applyTranslation(isPresented: Binding<Bool>, text: String) -> some View {
+        if #available(iOS 17.4, *) {
+            self.translationPresentation(isPresented: isPresented, text: text)
+        } else {
+            self
         }
     }
 }
@@ -150,12 +176,17 @@ struct MessageBubbleView: View {
                             textContent
                                 .background(
                                     RoundedRectangle(cornerRadius: 20)
-                                        .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : .white.opacity(0.1))
+                                        .fill(message.sender == .user ? DesignSystem.Colors.accent.opacity(0.9) : Color.white.opacity(0.1))
                                         .background(
-                                            RoundedRectangle(cornerRadius: 20)
-                                                .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                            ZStack {
+                                                if message.sender == .ai {
+                                                    RoundedRectangle(cornerRadius: 20)
+                                                        .fill(.ultraThinMaterial)
+                                                }
+                                                RoundedRectangle(cornerRadius: 20)
+                                                    .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                                            }
                                         )
-                                        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20))
                                 )
                                 .foregroundColor(message.sender == .user ? .white : .white.opacity(0.9))
                         }
@@ -232,6 +263,8 @@ struct MessageBubbleView: View {
 struct ToolResultView: View {
     let title: String
     let content: String
+    var showMoreButton: Bool = false
+    var onMore: (() -> Void)? = nil
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
@@ -244,10 +277,31 @@ struct ToolResultView: View {
             }
             
             ScrollView {
-                Text(content)
-                    .font(DesignSystem.Fonts.body(size: 16))
-                    .lineSpacing(6)
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(content)
+                        .font(DesignSystem.Fonts.body(size: 16))
+                        .lineSpacing(8)
+                        .foregroundColor(.white.opacity(0.9))
+                    
+                    if showMoreButton {
+                        Button(action: { onMore?() }) {
+                            HStack {
+                                Text("查看详细解析")
+                                Image(systemName: "chevron.down.circle")
+                            }
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(DesignSystem.Colors.accent)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(DesignSystem.Colors.accent.opacity(0.1))
+                            .cornerRadius(12)
+                        }
+                        .padding(.top, 8)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
+            .padding(.bottom, 20)
             
             Spacer()
         }

@@ -81,16 +81,12 @@ struct LoginView: View {
                     isLoggingIn = true
                     accountManager.login(account: account)
                 }) {
-                    ZStack {
+                    HStack(spacing: 12) {
                         if isLoggingIn {
-                            HStack {
-                                LiquidLoadingView(color: DesignSystem.Colors.primary)
-                                    .padding(.leading, 24)
-                                Spacer()
-                            }
+                            LiquidLoadingView(color: DesignSystem.Colors.primary)
                         }
                         
-                        Text(isLoggingIn ? "正在登录..." : "登 录")
+                        Text(isLoggingIn ? "正在登录" : "登 录")
                             .font(DesignSystem.Fonts.heading(size: 18))
                     }
                     .foregroundColor(DesignSystem.Colors.primary)
@@ -128,7 +124,7 @@ struct LoginView: View {
                 }
                 .font(.caption2)
                 .foregroundColor(DesignSystem.Colors.accent)
-                .padding(.bottom, 40)
+                .padding(.bottom, 60) // Increased padding to safely clear Home Bar
                 .offset(y: isAnimating ? 0 : 30)
                 .opacity(isAnimating ? 1 : 0)
             }

@@ -46,6 +46,7 @@ struct ChatView: View {
                                     onAnalyze: { viewModel.analyzeGrammar(message: message) },
                                     onPlay: { viewModel.playTTS(for: message) }
                                 )
+                                .id(message.id) // Ensure explicit ID for scrolling
                                 .transition(.asymmetric(
                                     insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
                                     removal: .opacity
@@ -56,9 +57,25 @@ struct ChatView: View {
                         .padding(.top, 20)
                         .padding(.bottom, 100)
                     }
+                    .scrollDismissesKeyboard(.interactively) // iOS 16+ Keyboard Dismissal
+                    .onTapGesture {
+                        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    }
                     .onChange(of: viewModel.messages) { _ in
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                            proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
+                        // Delay slightly to ensure layout update before scrolling
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                                proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
+                            }
+                        }
+                    }
+                    .onChange(of: viewModel.isStreaming) { isStreaming in
+                        if isStreaming {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                withAnimation {
+                                    proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
+                                }
+                            }
                         }
                     }
                 }

@@ -82,3 +82,17 @@ struct LiquidLoadingView: View {
         }
     }
 }
+
+// MARK: - View Extensions for Keyboard Handling
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+    
+    /// Adds tap to dismiss and interactive scroll dismissal (if applicable)
+    func unifiedKeyboardDismiss() -> some View {
+        self.onTapGesture {
+            hideKeyboard()
+        }
+    }
+}

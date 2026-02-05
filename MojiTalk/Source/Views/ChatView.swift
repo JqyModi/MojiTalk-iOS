@@ -41,9 +41,7 @@ struct ChatView: View {
                     .padding(.bottom, 120) // Bottom padding for input panel
                 }
                 .scrollDismissesKeyboard(.interactively)
-                .onTapGesture {
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                }
+                .unifiedKeyboardDismiss()
                 .onChange(of: viewModel.messages) { _ in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
@@ -408,7 +406,7 @@ struct UserProfileView: View {
                 Text("MOJiTalk MVP v0.2")
                     .font(.caption2)
                     .foregroundColor(.white.opacity(0.2))
-                    .padding(.bottom, 10)
+                    .padding(.bottom, 44)
             }
         }
         .preferredColorScheme(.dark)

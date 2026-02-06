@@ -1,6 +1,5 @@
 ALWAYS_SEARCH_USER_PATHS = YES
 CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = NO
-EXCLUDED_ARCHS[sdk=iphonesimulator*] = arm64
 FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/MojiLive2D" "${PODS_CONFIGURATION_BUILD_DIR}/SSZipArchive"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/MojiLive2D/MojiLive2D.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/SSZipArchive/SSZipArchive.framework/Headers" "${PODS_ROOT}/MojiLive2D/Core/include" "${PODS_ROOT}/MojiLive2D/Framework/src" "${PODS_ROOT}/MojiLive2D/Bridge" "${PODS_ROOT}/MojiLive2D/MotionSync/Framework/src" "${PODS_ROOT}/MojiLive2D/MotionSync/Core/include"

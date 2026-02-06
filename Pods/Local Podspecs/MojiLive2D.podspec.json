@@ -57,13 +57,11 @@
     "CLANG_CXX_LANGUAGE_STANDARD": "c++14",
     "CLANG_CXX_LIBRARY": "libc++",
     "HEADER_SEARCH_PATHS": "\"${PODS_TARGET_SRCROOT}/Core/include\" \"${PODS_TARGET_SRCROOT}/Framework/src\" \"${PODS_TARGET_SRCROOT}/Bridge\" \"${PODS_TARGET_SRCROOT}/MotionSync/Framework/src\" \"${PODS_TARGET_SRCROOT}/MotionSync/Core/include\"",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64",
     "ALWAYS_SEARCH_USER_PATHS": "YES",
     "USE_HEADERMAP": "NO"
   },
   "user_target_xcconfig": {
     "HEADER_SEARCH_PATHS": "\"${PODS_ROOT}/MojiLive2D/Core/include\" \"${PODS_ROOT}/MojiLive2D/Framework/src\" \"${PODS_ROOT}/MojiLive2D/Bridge\" \"${PODS_ROOT}/MojiLive2D/MotionSync/Framework/src\" \"${PODS_ROOT}/MojiLive2D/MotionSync/Core/include\"",
-    "EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64",
     "ALWAYS_SEARCH_USER_PATHS": "YES"
   }
 }

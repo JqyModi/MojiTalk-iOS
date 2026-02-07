@@ -55,8 +55,10 @@ class ChatViewModel: ObservableObject {
     @MainActor
     func sendVoiceMessage(url: URL, duration: TimeInterval) {
         // 1. Create Audio Message
+        let messageId = UUID()
         let message = Message(
-            content: "[语音消息] \(Int(duration))s",
+            id: messageId,
+            content: "（正在识别中...）",
             sender: .user,
             timestamp: Date(),
             type: .audio,
@@ -64,9 +66,22 @@ class ChatViewModel: ObservableObject {
         )
         messages.append(message)
         
-        // 2. Trigger AI Response (Mock ASR)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.startAISession(with: "（模拟语音转文字结果）语音消息已收到。")
+        // 2. Trigger Real ASR
+        Task {
+            do {
+                let transcription = try await ssiService.transcribe(audioURL: url)
+                if let index = messages.firstIndex(where: { $0.id == messageId }) {
+                    messages[index].content = transcription
+                    // Trigger AI session with the transcribed text
+                    self.startAISession(with: transcription)
+                }
+            } catch {
+                print("ERROR: ASR failed: \(error)")
+                if let index = messages.firstIndex(where: { $0.id == messageId }) {
+                    messages[index].content = "（识别失败，请点击重试）"
+                    messages[index].status = .failed
+                }
+            }
         }
     }
     
@@ -96,6 +111,12 @@ class ChatViewModel: ObservableObject {
                 // Finalize message
                 if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
                     messages[index].isStreaming = false
+                    
+                    // Auto-play TTS if the user just sent a voice message
+                    let lastUserMessage = messages.prefix(index).last(where: { $0.sender == .user })
+                    if lastUserMessage?.type == .audio {
+                        self.playTTS(for: messages[index])
+                    }
                 }
                 isStreaming = false
             } catch {
@@ -112,33 +133,43 @@ class ChatViewModel: ObservableObject {
     // MARK: - P1 Tools
     
     func playTTS(for message: Message) {
-        print("DEBUG: playTTS triggered for: \(message.content)")
+        print("DEBUG: Real TTS triggered for: \(message.content)")
         
-        // 1. 同步 UI 状态（控制气泡上的状态图标）
+        // 1. 同步 UI 状态
         AudioPlayerManager.shared.playingMessageId = message.id
         AudioPlayerManager.shared.isPlaying = true
         
-        // 2. 触发 Live2D 口型同步播放
-        // 依次尝试：Bundle资源 -> 沙盒资源 -> 系统测试音频
-        let testPath = getTestAudioPath()
-        
-        if let path = testPath {
-            print("DEBUG: Playing audio from \(path)")
-            Live2DController.shared.playAudio(filePath: path, targetKey: message.id.uuidString)
-            
-            // 模拟播放时长 UI 回收（实际应对接播放完成回调）
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                if AudioPlayerManager.shared.playingMessageId == message.id {
+        Task {
+            do {
+                // 2. 调用 SSIService 合成语音
+                let audioData = try await ssiService.synthesize(text: message.content)
+                
+                // 3. 将二进制数据写入临时文件，以便 Live2DController 能够读取并进行口型同步
+                let tempDir = FileManager.default.temporaryDirectory
+                let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).mp3")
+                try audioData.write(to: tempURL)
+                
+                await MainActor.run {
+                    // 4. 触发 Live2D 播放音频并进行口型同步
+                    Live2DController.shared.playAudio(filePath: tempURL.path, targetKey: message.id.uuidString)
+                    
+                    // 5. 更新播放状态监听器（可选，因为 Live2DController 内部有其状态管理）
+                    // 我们这里为了保持 UI 层一致性，继续使用 AudioPlayerManager 模拟
+                    // 真实场景下，Live2DController 应该提供回调
+                    let estimatedDuration = Double(audioData.count) / 16000.0 * 2.5 // 极其粗略估算
+                    DispatchQueue.main.asyncAfter(deadline: .now() + estimatedDuration) {
+                        if AudioPlayerManager.shared.playingMessageId == message.id {
+                            AudioPlayerManager.shared.isPlaying = false
+                            AudioPlayerManager.shared.playingMessageId = nil
+                        }
+                    }
+                }
+            } catch {
+                print("ERROR: TTS Synthesis failed: \(error)")
+                await MainActor.run {
                     AudioPlayerManager.shared.isPlaying = false
                     AudioPlayerManager.shared.playingMessageId = nil
                 }
-            }
-        } else {
-            print("WARNING: No test audio found. Lip sync cannot be verified visually with sound.")
-            // 纯 Mock 状态
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                AudioPlayerManager.shared.isPlaying = false
-                AudioPlayerManager.shared.playingMessageId = nil
             }
         }
     }

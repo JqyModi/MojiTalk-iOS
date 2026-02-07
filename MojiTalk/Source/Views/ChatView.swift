@@ -318,6 +318,7 @@ struct ControlPanel: View {
     @StateObject private var audioRecorder = AudioRecorderManager.shared
     @State private var isRecording = false
     @State private var recordStartTime: Date?
+    @State private var currentRecordingURL: URL?
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 12) {
@@ -388,22 +389,21 @@ struct ControlPanel: View {
     private func startRecording() {
         isRecording = true
         recordStartTime = Date()
-        let _ = audioRecorder.startRecording()
+        currentRecordingURL = audioRecorder.startRecording()
     }
     
     private func stopRecording() {
         isRecording = false
         audioRecorder.stopRecording()
         
-        if let startTime = recordStartTime {
+        if let startTime = recordStartTime, let audioURL = currentRecordingURL {
             let duration = Date().timeIntervalSince(startTime)
             if duration > 1.0 { // Minimum duration
-                 // Mock: In real app, we pass the recorder's file URL
-                let mockURL = URL(fileURLWithPath: NSTemporaryDirectory())
-                onVoiceSend(mockURL, duration)
+                onVoiceSend(audioURL, duration)
             }
         }
         recordStartTime = nil
+        currentRecordingURL = nil
     }
 }
 

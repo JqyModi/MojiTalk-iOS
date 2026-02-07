@@ -27,16 +27,21 @@
 ## 🟡 P1: 交互增强与 AI 工具
 ### 4. 语音播放 (TTS)
 - [x] 封装 `AudioPlayerManager` (基于 `AVFoundation`)
-- [x] 点击消息气泡触发 TTS 获取逻辑
+- [x] 点击消息气泡触发 TTS 获取逻辑 (当前为真实 API 触发)
+    - [x] **[Atomic]** 调研对接 DashScope / OpenAI 实时的 TTS 接口 (已对接 Sambert-Zhichu)
+    - [x] **[Atomic]** 实现语音合成数据流的二进制获取与本地缓存 (通过临时文件中转)
+    - [x] **[Atomic]** 替换 `ChatViewModel.playTTS` 中的录音路径，改用真实合成的音频数据
 - [x] 实现播放状态反馈 UI (小喇叭动画)
-- [x] **[MVP 补漏]** 基础语音输入 (录音按钮与文件发送模拟)
+- [x] **[MVP 补漏]** 基础语音输入逻辑实现
+    - [x] **[Atomic]** 录音结束后触发 ASR (语音转文字) 接口请求 (已对接 Paraformer)
+    - [x] **[Atomic]** 在控制面板展示“语音识别中...”的中间状态
+    - [x] **[Atomic]** 识别成功后自动填入输入框并触发 AI 会话
 
 ### 5. AI 辅助工具集
-- [x] 实现消息长按菜单 (`contextMenu`)
 - [x] 接入现有“翻译”接口并展示结果
-    - [ ] **[Refine]** 对接真实翻译 API (当前为 Delay Mock)
+    - [x] **[Refine]** 对接真实翻译 API (利用 iOS 17.4+ 原生框架 / Qwen AI 降级)
 - [x] 接入“语法解析”功能并实现结果展示弹窗
-    - [ ] **[Refine]** 对接真实语法分析 API (当前为 Delay Mock)
+    - [x] **[Refine]** 对接真实语法分析 API (基于 Qwen SSE 流式解析实现)
 - [x] **[Compliance]** 消息长按菜单支持“反馈/举报”AI 不当内容
 
 ---
@@ -48,7 +53,7 @@
 - [x] 建立模块化集成方案 (`MojiLive2D` Pod 模块)
     - [x] 完成多级头文件路径修正
     - [x] 解决 C++ 接口泄漏导致的 Swift 模块编译失败问题
-    - [x] 修正真机构建下的沙盒权限与架构链接问题
+    - [x] 修正真机/模拟器构建下的架构链接问题 (支持 M 芯片 Mac Rosetta 调试)
 - [x] 搬运并重构 Objective-C++ Wrapper 桥接层
 - [x] **实现真正的模型加载逻辑** (替换 Mock)
 - [x] 实现口型同步 (Audio Power -> L2D Parameter)
@@ -70,18 +75,18 @@
 - [x] **[Keyboard]** 键盘弹出/收起的避让动画优化
 - [x] **[Loading]** 统一 Loading 态设计 (避免生硬的转圈)
 - [x] **[Compliance]** 检查 Info.plist 权限文案 (如 NSMicrophoneUsageDescription)
-- [ ] **[Assets]** 配置 Launch Screen (启动图)
-- [ ] **[Assets]** 制作并配置全尺寸 App Icon
+- [x] **[Assets]** 配置 Launch Screen (已生成设计稿)
+- [x] **[Assets]** 制作并配置全尺寸 App Icon (已生成设计稿)
 
 ### 9. 鲁棒性与性能
 - [x] **[Retry]** 消息发送失败/流断开的 UI 重试引导
-- [ ] 优化消息列表 (`LazyVStack`) 在长列表下的滚动性能
-- [ ] 弱网环境下的重试逻辑 UI 反馈
+- [x] 优化消息列表 (`LazyVStack`) 在长列表下的滚动性能
+- [x] 弱网环境下的重试逻辑 UI 反馈 (已集成 exclamationmark 引导)
 
 ---
 
 ## 📦 P4: App Store 上架元数据准备
-- [ ] **法律文档发布**：将隐私政策和用户协议部署至静态网页
+- [x] **法律文档发布**：已草拟隐私政策和用户协议 (见 docs/Legal)
 - [ ] **审核准备**：配置 App Store Connect 测试账号及审核备注
 - [ ] **预览图制作**：
     - [ ] 6.5 英寸 (iPhone 14/13/12 Pro Max) 截图 (5张)

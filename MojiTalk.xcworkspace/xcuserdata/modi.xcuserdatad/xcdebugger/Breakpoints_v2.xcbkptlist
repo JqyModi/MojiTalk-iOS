@@ -16,7 +16,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "125"
             endingLineNumber = "125"
-            landmarkName = "synthesize(text:)"
+            landmarkName = "transcribe(audioURL:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -39,66 +39,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "5E8D1BC6-7361-4196-B334-1A8ADF6FDC06"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MojiTalk/Source/Services/SSIService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "103"
-            endingLineNumber = "103"
-            landmarkName = "transcribe(audioURL:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "5E8D1BC6-7361-4196-B334-1A8ADF6FDC06 - 25719d87a7632105"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(1) suspend resume partial function for MojiTalk.SSIService.transcribe(audioURL: Foundation.URL) async throws -&gt; Swift.String"
-                  moduleName = "MojiTalk.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/modi/Documents/%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/xcode/Project/MainApp/mojikaiwa-ios/MojiTalk/MojiTalk/Source/Services/SSIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-               <Location
-                  uuid = "5E8D1BC6-7361-4196-B334-1A8ADF6FDC06 - 1df16a37e26b3858"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(2) await resume partial function for MojiTalk.SSIService.transcribe(audioURL: Foundation.URL) async throws -&gt; Swift.String"
-                  moduleName = "MojiTalk.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/modi/Documents/%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/xcode/Project/MainApp/mojikaiwa-ios/MojiTalk/MojiTalk/Source/Services/SSIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-               <Location
-                  uuid = "5E8D1BC6-7361-4196-B334-1A8ADF6FDC06 - 8a658120ea93f00"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "(4) suspend resume partial function for MojiTalk.SSIService.transcribe(audioURL: Foundation.URL) async throws -&gt; Swift.String"
-                  moduleName = "MojiTalk.debug.dylib"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/modi/Documents/%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB/xcode/Project/MainApp/mojikaiwa-ios/MojiTalk/MojiTalk/Source/Services/SSIService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "103"
-                  endingLineNumber = "103">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "8C80A7EE-10C4-4075-B0CE-3F99973A5AF6"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -109,6 +49,38 @@
             startingLineNumber = "79"
             endingLineNumber = "79"
             landmarkName = "sendVoiceMessage(url:duration:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9A5CAB1F-CA8A-4919-8642-749671D47BDE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MojiTalk/Source/Services/SSIService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "transcribe(audioURL:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "478D0711-D630-4CAE-B7AD-7DE923B206D1"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MojiTalk/Source/Services/SSIService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
+            landmarkName = "transcribe(audioURL:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

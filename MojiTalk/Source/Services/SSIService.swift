@@ -77,6 +77,7 @@ class SSIService: ObservableObject {
     
     /// Transcribe audio file to text using ASR
     func transcribe(audioURL: URL) async throws -> String {
+        print("DEBUG: Starting transcription for \(audioURL.path)")
         var request = URLRequest(url: asrEndpoint)
         request.httpMethod = "POST"
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
@@ -85,25 +86,33 @@ class SSIService: ObservableObject {
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
         
         var body = Data()
-        // File part (Note: DashScope transcription compatible mode usually expects 'file', 'model')
+        // File part
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"file\"; filename=\"audio.m4a\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: audio/mpeg\r\n\r\n".data(using: .utf8)!)
+        // Using generic audio/mp4 for m4a/aac
+        body.append("Content-Type: audio/mp4\r\n\r\n".data(using: .utf8)!)
         body.append(try Data(contentsOf: audioURL))
         body.append("\r\n".data(using: .utf8)!)
         
         // Model part
         body.append("--\(boundary)\r\n".data(using: .utf8)!)
         body.append("Content-Disposition: form-data; name=\"model\"\r\n\r\n".data(using: .utf8)!)
-        body.append("paraformer-v1".data(using: .utf8)!) // Standard high-quality ASR model
+        body.append("whisper-1".data(using: .utf8)!) // Using standard OpenAI model name for compatibility
         body.append("\r\n".data(using: .utf8)!)
         
         body.append("--\(boundary)--\r\n".data(using: .utf8)!)
         
         let (data, response) = try await URLSession.shared.upload(for: request, from: body)
         
-        guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {
-            throw SSEError.requestFailed
+        if let httpResponse = response as? HTTPURLResponse {
+            print("DEBUG: ASR Response Status Code: \(httpResponse.statusCode)")
+            if let responseBody = String(data: data, encoding: .utf8) {
+                print("DEBUG: ASR Response Body: \(responseBody)")
+            }
+            
+            guard (200...299).contains(httpResponse.statusCode) else {
+                throw SSEError.requestFailed
+            }
         }
         
         if let result = try? JSONDecoder().decode(TranscriptionResult.self, from: data) {

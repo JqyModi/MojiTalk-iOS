@@ -1,6 +1,7 @@
 import Foundation
 import Combine
 import AVFoundation
+import Speech
 
 class AudioRecorderManager: NSObject, ObservableObject, AVAudioRecorderDelegate {
     static let shared = AudioRecorderManager()
@@ -18,6 +19,33 @@ class AudioRecorderManager: NSObject, ObservableObject, AVAudioRecorderDelegate 
     func requestPermission() {
         AVAudioSession.sharedInstance().requestRecordPermission { allowed in
             print("Microphone permission allowed: \(allowed)")
+        }
+        SFSpeechRecognizer.requestAuthorization { status in
+            print("Speech recognition authorization status: \(status.rawValue)")
+        }
+    }
+    
+    // ... (existing codes)
+    
+    func transcribe(url: URL) async throws -> String {
+        guard let recognizer = SFSpeechRecognizer(), recognizer.isAvailable else {
+            throw NSError(domain: "AudioRecorderManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "Speech recognizer not available"])
+        }
+        
+        let request = SFSpeechURLRecognitionRequest(url: url)
+        request.shouldReportPartialResults = false
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            recognizer.recognitionTask(with: request) { result, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                if let result = result, result.isFinal {
+                    continuation.resume(returning: result.bestTranscription.formattedString)
+                }
+            }
         }
     }
     

@@ -66,17 +66,17 @@ class ChatViewModel: ObservableObject {
         )
         messages.append(message)
         
-        // 2. Trigger Real ASR
+        // 2. Trigger Local ASR (0 cost)
         Task {
             do {
-                let transcription = try await ssiService.transcribe(audioURL: url)
+                let transcription = try await AudioRecorderManager.shared.transcribe(url: url)
                 if let index = messages.firstIndex(where: { $0.id == messageId }) {
                     messages[index].content = transcription
                     // Trigger AI session with the transcribed text
                     self.startAISession(with: transcription)
                 }
             } catch {
-                print("ERROR: ASR failed: \(error)")
+                print("ERROR: Local ASR failed: \(error)")
                 if let index = messages.firstIndex(where: { $0.id == messageId }) {
                     messages[index].content = "（识别失败，请点击重试）"
                     messages[index].status = .failed

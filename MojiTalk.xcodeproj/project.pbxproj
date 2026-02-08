@@ -333,6 +333,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
+		INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -377,6 +378,7 @@
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
+		INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

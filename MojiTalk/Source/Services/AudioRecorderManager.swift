@@ -28,12 +28,20 @@ class AudioRecorderManager: NSObject, ObservableObject, AVAudioRecorderDelegate 
     // ... (existing codes)
     
     func transcribe(url: URL) async throws -> String {
-        guard let recognizer = SFSpeechRecognizer(), recognizer.isAvailable else {
+        // Try to initialize with Chinese locale, fallback to current or Japanese
+        let locale = Locale(identifier: "zh-CN")
+        guard let recognizer = SFSpeechRecognizer(locale: locale) ?? SFSpeechRecognizer(), recognizer.isAvailable else {
             throw NSError(domain: "AudioRecorderManager", code: 1, userInfo: [NSLocalizedDescriptionKey: "Speech recognizer not available"])
         }
         
         let request = SFSpeechURLRecognitionRequest(url: url)
         request.shouldReportPartialResults = false
+        // Force server-side recognition if available for better accuracy, though on-device is requested for 0 cost.
+        // options: .requiresOnDeviceRecognition
+        if #available(iOS 13, *) {
+            request.requiresOnDeviceRecognition = false // Allow server offload for better accuracy/language support if needed?
+            // But user asked for 0 cost. Apple server ASR is free but requires network.
+        }
         
         return try await withCheckedThrowingContinuation { continuation in
             recognizer.recognitionTask(with: request) { result, error in

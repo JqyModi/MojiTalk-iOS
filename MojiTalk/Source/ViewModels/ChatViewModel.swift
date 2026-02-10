@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import Combine
+import AVFoundation
 
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = [
@@ -43,6 +44,8 @@ class ChatViewModel: ObservableObject {
         let trimmedText = inputText.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmedText.isEmpty else { return }
         
+        AudioPlayerManager.shared.stopAll()
+        
         // 1. Add User Message
         let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date(), type: .text, status: .sent)
         messages.append(userMessage)
@@ -54,6 +57,8 @@ class ChatViewModel: ObservableObject {
     
     @MainActor
     func sendVoiceMessage(url: URL, duration: TimeInterval) {
+        AudioPlayerManager.shared.stopAll()
+        
         // 1. Create Audio Message
         let messageId = UUID()
         let message = Message(
@@ -133,42 +138,58 @@ class ChatViewModel: ObservableObject {
     // MARK: - P1 Tools
     
     func playTTS(for message: Message) {
-        print("DEBUG: Real TTS triggered for: \(message.content)")
+        let audioManager = AudioPlayerManager.shared
         
-        // 1. 同步 UI 状态
-        AudioPlayerManager.shared.playingMessageId = message.id
-        AudioPlayerManager.shared.isPlaying = true
+        // 1. Toggle & Debounce Logic
+        if audioManager.playingMessageId == message.id {
+            if audioManager.isPlaying || audioManager.isLoading {
+                print("DEBUG: TTS Toggling stop for: \(message.id)")
+                audioManager.stopAll()
+                return
+            }
+        }
+        
+        // 2. Start new session
+        print("DEBUG: Real TTS triggered for: \(message.content)")
+        audioManager.stopAll() // Stop any previous playback
+        audioManager.playingMessageId = message.id
+        audioManager.isLoading = true
         
         Task {
             do {
-                // 2. 调用 SSIService 合成语音
+                // 3. 调用 SSIService 合成语音
                 let audioData = try await ssiService.synthesize(text: message.content)
                 
-                // 3. 将二进制数据写入临时文件，以便 Live2DController 能够读取并进行口型同步
+                // 4. 获取精准时长
+                let dummyPlayer = try AVAudioPlayer(data: audioData)
+                let exactDuration = dummyPlayer.duration
+                
+                // 5. 将二进制数据写入临时文件，以便 Live2DController 能够读取并进行口型同步
                 let tempDir = FileManager.default.temporaryDirectory
                 let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).mp3")
                 try audioData.write(to: tempURL)
                 
                 await MainActor.run {
-                    // 4. 触发 Live2D 播放音频并进行口型同步
+                    audioManager.isLoading = false
+                    audioManager.isPlaying = true
+                    
+                    // 6. 触发 Live2D 播放音频并进行口型同步
                     Live2DController.shared.playAudio(filePath: tempURL.path, targetKey: message.id.uuidString)
                     
-                    // 5. 更新播放状态监听器（可选，因为 Live2DController 内部有其状态管理）
-                    // 我们这里为了保持 UI 层一致性，继续使用 AudioPlayerManager 模拟
-                    // 真实场景下，Live2DController 应该提供回调
-                    let estimatedDuration = Double(audioData.count) / 16000.0 * 2.5 // 极其粗略估算
-                    DispatchQueue.main.asyncAfter(deadline: .now() + estimatedDuration) {
-                        if AudioPlayerManager.shared.playingMessageId == message.id {
-                            AudioPlayerManager.shared.isPlaying = false
-                            AudioPlayerManager.shared.playingMessageId = nil
+                    // 7. 使用精准时长重置状态
+                    DispatchQueue.main.asyncAfter(deadline: .now() + exactDuration) {
+                        if audioManager.playingMessageId == message.id {
+                            audioManager.isPlaying = false
+                            audioManager.playingMessageId = nil
                         }
                     }
                 }
             } catch {
                 print("ERROR: TTS Synthesis failed: \(error)")
                 await MainActor.run {
-                    AudioPlayerManager.shared.isPlaying = false
-                    AudioPlayerManager.shared.playingMessageId = nil
+                    audioManager.isLoading = false
+                    audioManager.isPlaying = false
+                    audioManager.playingMessageId = nil
                 }
             }
         }

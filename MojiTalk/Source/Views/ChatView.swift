@@ -223,28 +223,42 @@ struct MessageBubbleView: View {
     private var playbackIcon: some View {
         if message.sender == .ai && !message.content.isEmpty {
             Button(action: {
-                print("DEBUG: Speaker icon tapped for \(message.id)")
                 onPlay?()
             }) {
-                Image(systemName: audioManager.playingMessageId == message.id ? "speaker.wave.2.fill" : "speaker.wave.2")
-                    .font(.system(size: 14))
-                    .foregroundColor(DesignSystem.Colors.accent)
-                    .padding(8)
-                    .background(.ultraThinMaterial)
-                    .clipShape(Circle())
-                    .scaleEffect(audioManager.playingMessageId == message.id ? 1.2 : 1.0)
+                ZStack {
+                    if audioManager.playingMessageId == message.id && audioManager.isLoading {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                            .scaleEffect(0.8)
+                    } else {
+                        Image(systemName: audioManager.playingMessageId == message.id && audioManager.isPlaying ? "speaker.wave.2.fill" : "speaker.wave.2")
+                            .font(.system(size: 14))
+                            .foregroundColor(DesignSystem.Colors.accent)
+                    }
+                }
+                .frame(width: 32, height: 32)
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
+                .scaleEffect(audioManager.playingMessageId == message.id && audioManager.isPlaying ? 1.2 : 1.0)
             }
             .buttonStyle(.plain)
             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: audioManager.playingMessageId)
+            .animation(.spring(), value: audioManager.isLoading)
         }
     }
     
     @ViewBuilder
     private var audioContent: some View {
         HStack(spacing: 6) {
-            Image(systemName: "waveform")
-                .opacity(audioManager.playingMessageId == message.id ? 0.5 : 1.0)
-                .animation(audioManager.playingMessageId == message.id ? Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true) : .default, value: audioManager.playingMessageId)
+            if audioManager.playingMessageId == message.id && audioManager.isLoading {
+                ProgressView()
+                    .scaleEffect(0.6)
+                    .frame(width: 14)
+            } else {
+                Image(systemName: "waveform")
+                    .opacity(audioManager.playingMessageId == message.id && audioManager.isPlaying ? 0.5 : 1.0)
+                    .animation(audioManager.playingMessageId == message.id && audioManager.isPlaying ? Animation.easeInOut(duration: 0.5).repeatForever(autoreverses: true) : .default, value: audioManager.isPlaying)
+            }
             Text(String(format: "%ds", Int(message.audioDuration ?? 0)))
                 .font(.caption)
         }

@@ -39,3 +39,9 @@ curl -X POST 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-gen
 - 文档介绍：https://bailian.console.aliyun.com/cn-beijing/?tab=api#/api/?type=model&url=2986952
 - 请求示例：待补充
 - 录音文件识别集成 CURL 响应示例：待补充
+
+
+## Supabase 项目配置信息（建议保存）：
+项目名称：MojiTalk-Auth
+Project URL: https://rrzbufeslmqphlboulwi.supabase.co
+API Key (Anon): sb_publishable_2evChfbaOKKrx0Z_juvmgg_CEhxnaql

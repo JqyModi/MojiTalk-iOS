@@ -58,8 +58,16 @@
 - [x] **实现真正的模型加载逻辑** (替换 Mock)
 - [x] 实现口型同步 (Audio Power -> L2D Parameter)
 
-### 7. 账号与会话管理 (已完成真实实现)
-- [x] 实现完整登录 UI (包含账号密码输入与动画反馈)
+### 7. 账号与会话管理 (Supabase 迁移中)
+- [x] 实现基础登录 UI (包含账号输入与动画反馈)
+- [ ] **[P0] 集成 Supabase Auth SDK**
+    - [ ] 配置 Apple Login 认证提供商
+    - [ ] 配置 Email OTP (邮箱验证码) 发送逻辑
+- [ ] **[P0] 真实用户信息收集与展示**
+    - [ ] 注册成功后自动在 `profiles` 表创建用户记录
+    - [ ] **[New]** 首次登录时随机分配一个头像并持久化至 Supabase Storage/Profile
+    - [ ] **[New]** 重构 `UserProfileView`：展示真实用户名、邮箱及生成的头像，替换 `Guest_User` 占位符
+    - [ ] 记录最后登录时间与频率用于运营统计
 - [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
 - [x] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*

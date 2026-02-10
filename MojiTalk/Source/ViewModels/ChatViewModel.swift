@@ -67,7 +67,8 @@ class ChatViewModel: ObservableObject {
             sender: .user,
             timestamp: Date(),
             type: .audio,
-            audioDuration: duration
+            audioDuration: duration,
+            audioURL: url.path
         )
         messages.append(message)
         
@@ -143,53 +144,89 @@ class ChatViewModel: ObservableObject {
         // 1. Toggle & Debounce Logic
         if audioManager.playingMessageId == message.id {
             if audioManager.isPlaying || audioManager.isLoading {
-                print("DEBUG: TTS Toggling stop for: \(message.id)")
+                print("DEBUG: Playback Toggling stop for: \(message.id)")
                 audioManager.stopAll()
                 return
             }
         }
         
         // 2. Start new session
-        print("DEBUG: Real TTS triggered for: \(message.content)")
         audioManager.stopAll() // Stop any previous playback
         audioManager.playingMessageId = message.id
         audioManager.isLoading = true
         
+        let currentSessionId = message.id
+        
         Task {
             do {
-                // 3. 调用 SSIService 合成语音
-                let audioData = try await ssiService.synthesize(text: message.content)
-                
-                // 4. 获取精准时长
-                let dummyPlayer = try AVAudioPlayer(data: audioData)
-                let exactDuration = dummyPlayer.duration
-                
-                // 5. 将二进制数据写入临时文件，以便 Live2DController 能够读取并进行口型同步
-                let tempDir = FileManager.default.temporaryDirectory
-                let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).mp3")
-                try audioData.write(to: tempURL)
-                
-                await MainActor.run {
-                    audioManager.isLoading = false
-                    audioManager.isPlaying = true
+                if message.sender == .user, let audioPath = message.audioURL {
+                    // --- Case A: User Message - Play original recording ---
+                    let url = URL(fileURLWithPath: audioPath)
+                    let audioData = try Data(contentsOf: url)
                     
-                    // 6. 触发 Live2D 播放音频并进行口型同步
-                    Live2DController.shared.playAudio(filePath: tempURL.path, targetKey: message.id.uuidString)
+                    // Race condition check: still the active message?
+                    guard AudioPlayerManager.shared.playingMessageId == currentSessionId else { return }
                     
-                    // 7. 使用精准时长重置状态
-                    DispatchQueue.main.asyncAfter(deadline: .now() + exactDuration) {
-                        if audioManager.playingMessageId == message.id {
-                            audioManager.isPlaying = false
-                            audioManager.playingMessageId = nil
+                    let dummyPlayer = try AVAudioPlayer(data: audioData)
+                    let exactDuration = dummyPlayer.duration
+                    
+                    await MainActor.run {
+                        guard audioManager.playingMessageId == currentSessionId else { return }
+                        audioManager.isLoading = false
+                        audioManager.isPlaying = true
+                        
+                        // Play local audio data
+                        audioManager.play(data: audioData, messageId: message.id)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + exactDuration) {
+                            if audioManager.playingMessageId == currentSessionId {
+                                audioManager.isPlaying = false
+                                audioManager.playingMessageId = nil
+                            }
+                        }
+                    }
+                } else {
+                    // --- Case B: AI Message - Synthesize TTS ---
+                    let audioData = try await ssiService.synthesize(text: message.content)
+                    
+                    // Race condition check after long async TTS call
+                    guard AudioPlayerManager.shared.playingMessageId == currentSessionId else {
+                        print("DEBUG: TTS result discarded due to session change")
+                        return
+                    }
+                    
+                    let dummyPlayer = try AVAudioPlayer(data: audioData)
+                    let exactDuration = dummyPlayer.duration
+                    
+                    // Save to temp file for Live2D
+                    let tempDir = FileManager.default.temporaryDirectory
+                    let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).mp3")
+                    try audioData.write(to: tempURL)
+                    
+                    await MainActor.run {
+                        guard audioManager.playingMessageId == currentSessionId else { return }
+                        audioManager.isLoading = false
+                        audioManager.isPlaying = true
+                        
+                        // Trigger Live2D lip sync
+                        Live2DController.shared.playAudio(filePath: tempURL.path, targetKey: message.id.uuidString)
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + exactDuration) {
+                            if audioManager.playingMessageId == currentSessionId {
+                                audioManager.isPlaying = false
+                                audioManager.playingMessageId = nil
+                            }
                         }
                     }
                 }
             } catch {
-                print("ERROR: TTS Synthesis failed: \(error)")
+                print("ERROR: Playback failed: \(error)")
                 await MainActor.run {
-                    audioManager.isLoading = false
-                    audioManager.isPlaying = false
-                    audioManager.playingMessageId = nil
+                    if audioManager.playingMessageId == currentSessionId {
+                        audioManager.isLoading = false
+                        audioManager.isPlaying = false
+                        audioManager.playingMessageId = nil
+                    }
                 }
             }
         }

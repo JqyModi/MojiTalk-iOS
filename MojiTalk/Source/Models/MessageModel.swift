@@ -23,6 +23,7 @@ struct Message: Identifiable, Equatable, Codable {
     let timestamp: Date
     var type: MessageType = .text
     var audioDuration: TimeInterval? = nil
+    var audioURL: String? = nil
     var isStreaming: Bool = false
     var status: MessageStatus = .sent
     

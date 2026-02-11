@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C43739947A61460B82A6B1E /* Pods_MojiTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED0845A419C798724EA5291E /* Pods_MojiTalk.framework */; };
+		C5499C7C2F3B875C00C7DE7A /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DF46602A257E3CBF20936EA0 /* Supabase */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C51D39952F325718005A5064 /* MojiTalk */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MojiTalk;
 			sourceTree = "<group>";
 		};
@@ -30,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5499C7C2F3B875C00C7DE7A /* Supabase in Frameworks */,
 				2C43739947A61460B82A6B1E /* Pods_MojiTalk.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -93,6 +97,9 @@
 				C51D39952F325718005A5064 /* MojiTalk */,
 			);
 			name = MojiTalk;
+			packageProductDependencies = (
+				DF46602A257E3CBF20936EA0 /* Supabase */,
+			);
 			productName = MojiTalk;
 			productReference = C51D39932F325718005A5064 /* MojiTalk.app */;
 			productType = "com.apple.product-type.application";
@@ -121,6 +128,9 @@
 			);
 			mainGroup = C51D398A2F325718005A5064;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C51D39942F325718005A5064 /* Products */;
 			projectDirPath = "";
@@ -172,13 +182,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MojiTalk/Pods-MojiTalk-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MojiTalk/Pods-MojiTalk-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -326,15 +332,16 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MojiTalk/MojiTalk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KU3Z84AU8W;
+				DEVELOPMENT_TEAM = ZZG8SS9R2S;
 				ENABLE_PREVIEWS = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
-		INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
-		INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -372,15 +379,16 @@
 				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = MojiTalk/MojiTalk.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = KU3Z84AU8W;
+				DEVELOPMENT_TEAM = ZZG8SS9R2S;
 				ENABLE_PREVIEWS = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
-		INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
-		INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -433,6 +441,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/supabase/supabase-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DF46602A257E3CBF20936EA0 /* Supabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */;
+			productName = Supabase;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C51D398B2F325718005A5064 /* Project object */;
 }

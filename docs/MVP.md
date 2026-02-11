@@ -28,9 +28,9 @@
 
 ### 2.3 业务框架 (Identity & Management)
 - **专业登录体系**：
-  - **Apple 登录**：集成 Sign in with Apple，满足上架强制性要求。
-  - **邮箱验证码登录 (Email OTP)**：通过专业服务（Supabase）发送 6 位数验证码，0 成本实现高到达率的邮箱验证。
-  - **用户信息收集**：利用分析工具或后端数据库记录 UID、注册时间及基本统计数据。
+  - [x] **Apple 登录**：集成 Sign in with Apple (Supabase)，已通过真机验证与 Apple 后台配置。
+  - [x] **邮箱验证码登录 (Email OTP)**：通过 Supabase 实现，确保非苹果用户可用。
+  - [x] **用户信息收集**：实现 profile 自动补全，支持随机分配精美头像。
 - **单场景模式**：默认提供一个万用对话场景，暂不实现复杂的场景切换系统。
 
 #### 2.4 合规与上架必备 (App Store Compliance)

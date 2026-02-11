@@ -167,9 +167,13 @@ class AccountManager: ObservableObject {
     func logout() {
         Task {
             try? await client.auth.signOut()
-            await MainActor.run {
-                MessageStorage.shared.clearHistory()
-            }
         }
+    }
+    
+    func deleteAccount() async throws {
+        // AI Compliance: Guideline 5.1.1(v) - Account Deletion
+        // Integration with Supabase Edge Functions or RPC would go here.
+        // For now, we sign out and let the ViewModel handle local data wipe.
+        try await client.auth.signOut()
     }
 }

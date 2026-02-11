@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import Combine
 import AVFoundation
+import Supabase
 
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = [
@@ -24,8 +25,9 @@ class ChatViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        let userId = accountManager.currentUser?.id.uuidString
         // Load saved messages
-        if let savedMessages = storage.loadMessages() {
+        if let savedMessages = storage.loadMessages(for: userId) {
             self.messages = savedMessages
         }
         
@@ -34,7 +36,10 @@ class ChatViewModel: ObservableObject {
             .dropFirst()
             .debounce(for: .seconds(1), scheduler: RunLoop.main)
             .sink { [weak self] newMessages in
-                self?.storage.saveMessages(newMessages)
+                guard let self = self else { return }
+                let currentUserId = self.accountManager.currentUser?.id.uuidString
+                // Only save if we have a valid user, or if it's the guest session
+                self.storage.saveMessages(newMessages, for: currentUserId)
             }
             .store(in: &cancellables)
     }
@@ -321,9 +326,38 @@ class ChatViewModel: ObservableObject {
     }
     
     func logout() {
+        // Stop any active processes
+        audioManager.stopAll()
+        isStreaming = false
+        
+        // 1. Clear session in account manager
         accountManager.logout()
-        // Clear local messages instantly for privacy
-        messages = []
+        
+        // 2. Clear memory messages instantly for the next user or guest
+        // The previous user's messages are safely saved in their UID-specific file
+        messages = [
+            Message(content: "こんにちは！我是你的日语外教，今天想聊点什么呢？", sender: .ai, timestamp: Date())
+        ]
+    }
+    
+    func deleteAccount() {
+        Task {
+            do {
+                // 1. Clear local history for this specific user
+                let userId = accountManager.currentUser?.id.uuidString
+                storage.clearHistory(for: userId)
+                
+                // 2. Call account manager to delete account (Supabase)
+                // Note: Implementation usually involves calling a service to delete user data
+                try await accountManager.deleteAccount()
+                
+                await MainActor.run {
+                    logout()
+                }
+            } catch {
+                print("ERROR: Delete account failed: \(error)")
+            }
+        }
     }
     
     // MARK: - Compliance & Robustness

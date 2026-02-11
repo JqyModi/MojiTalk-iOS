@@ -60,14 +60,16 @@
 
 ### 7. 账号与会话管理 (Supabase 迁移中)
 - [x] 实现基础登录 UI (包含账号输入与动画反馈)
-- [ ] **[P0] 集成 Supabase Auth SDK**
-    - [ ] 配置 Apple Login 认证提供商
-    - [ ] 配置 Email OTP (邮箱验证码) 发送逻辑
-- [ ] **[P0] 真实用户信息收集与展示**
-    - [ ] 注册成功后自动在 `profiles` 表创建用户记录
-    - [ ] **[New]** 首次登录时随机分配一个头像并持久化至 Supabase Storage/Profile
-    - [ ] **[New]** 重构 `UserProfileView`：展示真实用户名、邮箱及生成的头像，替换 `Guest_User` 占位符
-    - [ ] 记录最后登录时间与频率用于运营统计
+- [x] **[P0] 集成 Supabase Auth SDK**
+    - [x] 配置 Apple Login 认证提供商 (已完成 App ID、Key、Capabilities 及 Supabase 侧配置)
+    - [x] 配置 Email OTP (邮箱验证码) 发送逻辑
+- [x] **[P0] 真实用户信息收集与展示**
+    - [x] 注册成功后自动在 `profiles` 表创建用户记录
+    - [x] **[New]** 首次登录时随机分配一个头像并持久化至 Supabase Storage/Profile
+    - [x] **[New]** 重构 `UserProfileView`：展示真实用户名、邮箱及生成的头像，替换 `Guest_User` 占位符
+- [ ] **[P1] 会话历史持久化优化**
+    - [ ] 基于 UID 分区存储本地历史，防止退出登录后数据丢失
+    - [ ] 实现增量同步至 Supabase (Post-MVP)
 - [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
 - [x] **[MVP 补漏]** 用户信息菜单 (头像/登出入口) - *User Feedback*

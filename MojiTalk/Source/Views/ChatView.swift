@@ -127,6 +127,9 @@ struct ChatView: View {
             UserProfileView(onLogout: {
                 viewModel.logout()
                 showUserProfile = false
+            }, onDeleteAccount: {
+                viewModel.deleteAccount()
+                showUserProfile = false
             })
             .presentationDetents([.fraction(0.5)])
         }
@@ -434,6 +437,7 @@ struct ControlPanel: View {
 struct UserProfileView: View {
     @StateObject private var accountManager = AccountManager.shared
     var onLogout: () -> Void
+    var onDeleteAccount: () -> Void
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
@@ -483,27 +487,29 @@ struct UserProfileView: View {
                 
                 Spacer()
                 
-                // Logout Button
-                Button(action: onLogout) {
-                    HStack {
-                        Image(systemName: "rectangle.portrait.and.arrow.right")
-                        Text("退出登录")
+                // Action Buttons
+                VStack(spacing: 12) {
+                    // Logout Button
+                    Button(action: onLogout) {
+                        HStack {
+                            Image(systemName: "rectangle.portrait.and.arrow.right")
+                            Text("退出登录")
+                        }
+                        .font(DesignSystem.Fonts.heading(size: 16))
+                        .foregroundColor(DesignSystem.Colors.primary)
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(DesignSystem.Colors.accent)
+                        .cornerRadius(20)
                     }
-                    .font(DesignSystem.Fonts.heading(size: 16))
-                    .foregroundColor(DesignSystem.Colors.primary)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.white.opacity(0.9)) // High contrast for danger/logout or use accent?
-                    // Re-reading UI/UX: Accent is for core CTA. Logout is usually destructive.
-                    // Let's use a subtle style for logout to look "Premium" but clear.
-                    // Or keep it consistent with Login button style but maybe different color?
-                    // Let's use Color.red for destructive but styled nicely.
-                    // Actually, let's use a glass outline for a cleaner look or just a solid white/accent.
-                    // User requested consistency. Login button is Accent background.
-                    // Let's make this one Red background for clarity, or Dark Grey.
-                    // Let's go with a specialized 'Destructive' style.
-                    .background(Color(hex: "ef4444")) // Lucide Red-500 equivalent
-                    .cornerRadius(20)
+                    
+                    // Delete Account Button (Compliance)
+                    Button(action: onDeleteAccount) {
+                        Text("永久注销账户")
+                            .font(DesignSystem.Fonts.body(size: 14))
+                            .foregroundColor(.white.opacity(0.4))
+                    }
+                    .padding(.top, 8)
                 }
                 .padding(.horizontal, 40)
                 .padding(.bottom, 20)

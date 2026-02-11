@@ -67,8 +67,8 @@
     - [x] 注册成功后自动在 `profiles` 表创建用户记录
     - [x] **[New]** 首次登录时随机分配一个头像并持久化至 Supabase Storage/Profile
     - [x] **[New]** 重构 `UserProfileView`：展示真实用户名、邮箱及生成的头像，替换 `Guest_User` 占位符
-- [ ] **[P1] 会话历史持久化优化**
-    - [ ] 基于 UID 分区存储本地历史，防止退出登录后数据丢失
+- [x] **[P1] 会话历史持久化优化**
+    - [x] 基于 UID 分区存储本地历史，防止退出登录后数据丢失
     - [ ] 实现增量同步至 Supabase (Post-MVP)
 - [x] 封装 `AccountManager` 处理 Token 持久化存储与过期检查逻辑 (7天有效期)
 - [x] 实现对话历史的本地磁盘缓存 (`JSON Persistence`)
@@ -97,7 +97,7 @@
 
 ## 📦 P4: App Store 上架元数据准备
 - [x] **法律文档发布**：已草拟隐私政策和用户协议 (见 docs/Legal)
-- [ ] **审核准备**：配置 App Store Connect 测试账号及审核备注
+- [x] **审核准备**：配置 App Store Connect 测试账号及审核备注
 - [ ] **预览图制作**：
     - [ ] 6.5 英寸 (iPhone 14/13/12 Pro Max) 截图 (5张)
     - [ ] 5.5 英寸 (iPhone 8 Plus) 截图 (5张)

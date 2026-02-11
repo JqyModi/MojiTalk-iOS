@@ -17,7 +17,11 @@ struct MojiTalkApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
-                if accountManager.isLoggedIn {
+                if accountManager.isInitializing {
+                    // Initializing state: show a blank dark background or splash
+                    DesignSystem.Colors.primary
+                        .ignoresSafeArea()
+                } else if accountManager.isLoggedIn {
                     ChatView()
                         .transition(.asymmetric(
                             insertion: .opacity.combined(with: .scale(scale: 0.95)),
@@ -33,9 +37,10 @@ struct MojiTalkApp: App {
                         .zIndex(0)
                 }
             }
-            .preferredColorScheme(.dark) // Force Dark Mode for Premium feel
+            .preferredColorScheme(.dark)
             .environmentObject(appState)
             .animation(.spring(response: 0.5, dampingFraction: 0.8), value: accountManager.isLoggedIn)
+            .animation(.easeInOut, value: accountManager.isInitializing)
         }
     }
 }

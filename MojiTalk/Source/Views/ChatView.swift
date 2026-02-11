@@ -1,8 +1,10 @@
 import SwiftUI
+import Supabase
 import Translation
 
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
+    @ObservedObject private var accountManager = AccountManager.shared
     @State private var showUserProfile = false
     
     var body: some View {
@@ -72,13 +74,21 @@ struct ChatView: View {
                 HStack {
                     Spacer()
                     Button(action: { showUserProfile = true }) {
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 18, weight: .bold)) // Smaller icon
-                            .foregroundColor(.white.opacity(0.9))
-                            .padding(12) // Smaller padding
-                            .background(.ultraThinMaterial)
-                            .clipShape(Circle())
-                            .shadow(color: .black.opacity(0.2), radius: 10)
+                        Group {
+                            if let avatar = accountManager.profile?.avatarUrl {
+                                Image(avatar)
+                                    .resizable()
+                                    .scaledToFill()
+                            } else {
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 18, weight: .bold))
+                            }
+                        }
+                        .frame(width: 44, height: 44)
+                        .foregroundColor(.white.opacity(0.9))
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.2), radius: 10)
                     }
                     .padding(.trailing, 20)
                 }
@@ -422,6 +432,7 @@ struct ControlPanel: View {
 }
 
 struct UserProfileView: View {
+    @StateObject private var accountManager = AccountManager.shared
     var onLogout: () -> Void
     @Environment(\.dismiss) var dismiss
     
@@ -445,17 +456,25 @@ struct UserProfileView: View {
                             .fill(DesignSystem.Colors.accent.opacity(0.1))
                             .frame(width: 80, height: 80)
                         
-                        Image(systemName: "person.fill")
-                            .font(.system(size: 36))
-                            .foregroundColor(DesignSystem.Colors.accent)
+                        if let avatar = accountManager.profile?.avatarUrl {
+                            Image(avatar) // Assumes locally bundled avatars for now, or use AsyncImage for URLs
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 80, height: 80)
+                                .clipShape(Circle())
+                        } else {
+                            Image(systemName: "person.fill")
+                                .font(.system(size: 36))
+                                .foregroundColor(DesignSystem.Colors.accent)
+                        }
                     }
                     
                     VStack(spacing: 12) {
-                        Text("Guest_User")
+                        Text(accountManager.profile?.email ?? "User")
                             .font(DesignSystem.Fonts.heading(size: 20))
                             .foregroundColor(.white)
                         
-                        Text("当前账号")
+                        Text(accountManager.currentUser?.id.uuidString.prefix(8).lowercased() ?? "id: unknown")
                             .font(DesignSystem.Fonts.body(size: 14))
                             .foregroundColor(.white.opacity(0.4))
                     }

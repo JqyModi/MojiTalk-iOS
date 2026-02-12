@@ -72,6 +72,7 @@ class AudioPlayerManager: NSObject, ObservableObject, AVAudioPlayerDelegate {
         stop()
         // Also stop Live2D audio if any
         Live2DController.shared.stopAudio()
+        Live2DController.shared.setFPS(30) // Safeguard: Return to low power mode
         playingMessageId = nil
         isLoading = false
     }

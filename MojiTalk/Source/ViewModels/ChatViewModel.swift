@@ -73,6 +73,9 @@ class ChatViewModel: ObservableObject {
     func sendVoiceMessage(url: URL, duration: TimeInterval) {
         AudioPlayerManager.shared.stopAll()
         
+        // 0. Wake up Live2D performance
+        Live2DController.shared.setFPS(60)
+        
         // 1. Create Audio Message
         let messageId = UUID()
         let message = Message(
@@ -101,6 +104,7 @@ class ChatViewModel: ObservableObject {
                     messages[index].content = "（识别失败，请点击重试）"
                     messages[index].status = .failed
                 }
+                Live2DController.shared.setFPS(30)
             }
         }
     }
@@ -142,14 +146,11 @@ class ChatViewModel: ObservableObject {
                 if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
                     messages[index].isStreaming = false
                     
-                    // Auto-play TTS logic:
-                    // 1. If global toggle is on
-                    // 2. OR if the user just sent a voice message (legacy behavior preserved)
                     let lastUserMessage = messages.prefix(index).last(where: { $0.sender == .user })
                     if isAutoPlayTTS || (lastUserMessage?.type == .audio) {
                         self.playTTS(for: messages[index])
                     } else {
-                        // If no TTS auto-play, return to low power mode
+                        // Return to low power mode
                         Live2DController.shared.setFPS(30)
                     }
                 }
@@ -161,6 +162,7 @@ class ChatViewModel: ObservableObject {
                     messages[index].status = .failed
                 }
                 isStreaming = false
+                Live2DController.shared.setFPS(30)
             }
         }
     }
@@ -194,13 +196,19 @@ class ChatViewModel: ObservableObject {
                     let audioData = try Data(contentsOf: url)
                     
                     // Race condition check: still the active message?
-                    guard AudioPlayerManager.shared.playingMessageId == currentSessionId else { return }
+                    guard AudioPlayerManager.shared.playingMessageId == currentSessionId else {
+                        Live2DController.shared.setFPS(30)
+                        return
+                    }
                     
                     let dummyPlayer = try AVAudioPlayer(data: audioData)
                     let exactDuration = dummyPlayer.duration
                     
                     await MainActor.run {
-                        guard audioManager.playingMessageId == currentSessionId else { return }
+                        guard audioManager.playingMessageId == currentSessionId else {
+                            Live2DController.shared.setFPS(30)
+                            return
+                        }
                         audioManager.isLoading = false
                         audioManager.isPlaying = true
                         
@@ -211,6 +219,7 @@ class ChatViewModel: ObservableObject {
                             if audioManager.playingMessageId == currentSessionId {
                                 audioManager.isPlaying = false
                                 audioManager.playingMessageId = nil
+                                Live2DController.shared.setFPS(30)
                             }
                         }
                     }
@@ -221,6 +230,7 @@ class ChatViewModel: ObservableObject {
                     // Race condition check after long async TTS call
                     guard AudioPlayerManager.shared.playingMessageId == currentSessionId else {
                         print("DEBUG: TTS result discarded due to session change")
+                        Live2DController.shared.setFPS(30)
                         return
                     }
                     
@@ -233,7 +243,10 @@ class ChatViewModel: ObservableObject {
                     try audioData.write(to: tempURL)
                     
                     await MainActor.run {
-                        guard audioManager.playingMessageId == currentSessionId else { return }
+                        guard audioManager.playingMessageId == currentSessionId else {
+                            Live2DController.shared.setFPS(30)
+                            return
+                        }
                         audioManager.isLoading = false
                         audioManager.isPlaying = true
                         
@@ -253,6 +266,7 @@ class ChatViewModel: ObservableObject {
             } catch {
                 print("ERROR: Playback failed: \(error)")
                 await MainActor.run {
+                    Live2DController.shared.setFPS(30)
                     if audioManager.playingMessageId == currentSessionId {
                         audioManager.isLoading = false
                         audioManager.isPlaying = false

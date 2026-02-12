@@ -12,6 +12,7 @@
 #import "Math/CubismViewMatrix.hpp"
 #import "L2DPal.h"
 #import "L2DSprite.h"
+#import <QuartzCore/QuartzCore.h>
 #import "MOJiL2DConfigurationModel.h"
 #import "L2DTextureHelper.h"
 #import "L2DCacheManager.h"
@@ -40,6 +41,8 @@ using namespace L2DDefine;
 // 渲染器
 @property (nonatomic, strong) L2DRenderer *renderer;
 
+@property (nonatomic, strong) MTLRenderPassDescriptor *renderPassDescriptor;
+
 @end
 
 @implementation MOJiMTKView
@@ -50,9 +53,9 @@ using namespace L2DDefine;
         self.delegate = self;
         self.framebufferOnly = YES;
         self.clearColor = MTLClearColorMake(0.0, 0.0, 0.0, 0.0);
-        _currentFrame = [[NSDate date] timeIntervalSince1970];
+        _currentFrame = CACurrentMediaTime();
         _deltaTime = 0.0f;
-        _lastFrame = [[NSDate date] timeIntervalSince1970];
+        _lastFrame = _currentFrame;
 
         // 初始化设备到屏幕的坐标转换矩阵
         _deviceToScreen = new CubismMatrix44();
@@ -60,6 +63,17 @@ using namespace L2DDefine;
         _viewMatrix = new CubismViewMatrix();
         // 初始化渲染器
         _renderer = [[L2DRenderer alloc]initWithConfigurationModel:model];
+        
+        // 创建重用的渲染通道描述符
+        _renderPassDescriptor = [[MTLRenderPassDescriptor alloc] init];
+        _renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
+        _renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
+        _renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 0);
+        
+        _renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionClear;
+        _renderPassDescriptor.depthAttachment.storeAction = MTLStoreActionDontCare;
+        _renderPassDescriptor.depthAttachment.clearDepth = 1.0;
+        
         // 设置图层的像素格式为 BGRA8Unorm，并让其支持透明
         CAMetalLayer *metalLayer = (CAMetalLayer *)self.layer;
         metalLayer.pixelFormat = MTLPixelFormatBGRA8Unorm;
@@ -266,13 +280,11 @@ using namespace L2DDefine;
         return;
     }
     
-    MTLRenderPassDescriptor *renderPassDescriptor = [[MTLRenderPassDescriptor alloc] init];
-    renderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture;
-    renderPassDescriptor.colorAttachments[0].loadAction = MTLLoadActionClear;
-    renderPassDescriptor.colorAttachments[0].storeAction = MTLStoreActionStore;
-    renderPassDescriptor.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 0);
+    _renderPassDescriptor.colorAttachments[0].texture = currentDrawable.texture;
+    _renderPassDescriptor.depthAttachment.texture = _depthTexture;
+    _renderPassDescriptor.depthAttachment.loadAction = MTLLoadActionClear;
 
-    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:renderPassDescriptor];
+    id<MTLRenderCommandEncoder> renderEncoder = [commandBuffer renderCommandEncoderWithDescriptor:_renderPassDescriptor];
     // 渲染模型之外的内容
     [self renderSprite:renderEncoder];
 
@@ -296,11 +308,9 @@ using namespace L2DDefine;
 
 /// 更新时间
 - (void)updateTime {
-    NSDate *now = [NSDate date];
-    double currentTime = [now timeIntervalSince1970]; // 获取当前 Unix 时间
-    _currentFrame = currentTime; // 当前帧的时间
+    _currentFrame = CACurrentMediaTime();
     _deltaTime = _currentFrame - _lastFrame;
-    _lastFrame = _currentFrame; // 更新上一帧时间
+    _lastFrame = _currentFrame;
 }
 
 - (void)loadAndPlayAudioFile:(NSString *)filePath targetKey:(NSString *)targetKey{

@@ -247,6 +247,7 @@ typedef struct
     pipelineDescriptor.colorAttachments[0].sourceAlphaBlendFactor = MTLBlendFactorSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationRGBBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
     pipelineDescriptor.colorAttachments[0].destinationAlphaBlendFactor = MTLBlendFactorOneMinusSourceAlpha;
+    pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormatDepth32Float;
 
     [self SetMTLRenderPipelineState:device pipelineDescriptor:pipelineDescriptor];
 }

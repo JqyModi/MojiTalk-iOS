@@ -144,7 +144,7 @@ csmBool L2DAudioManager::IsPlay()
 {
     if (!_isLoadFile)
     {
-        return true;
+        return false;
     }
 
     return _wavSamples.GetSize() > _wavWritePos;
@@ -214,9 +214,9 @@ void L2DAudioManager::CallBackForAudioFile(void* customData, AudioQueueRef queue
     data->_rmsPower = data->_rmsPower * 0.7f + rms * 0.3f;
 
     // 调试：仅在有音量时输出当前功率，避免刷屏
-    if (rms > 0.001f) {
-        L2DPal::PrintLogLn("[L2D-Audio] RMS: %f, Smoothed: %f", rms, data->_rmsPower);
-    }
+//    if (rms > 0.001f) {
+//        L2DPal::PrintLogLn("[L2D-Audio] RMS: %f, Smoothed: %f", rms, data->_rmsPower);
+//    }
 }
 
 void L2DAudioManager::OnAudioStopNotification(NSString *targetKey)

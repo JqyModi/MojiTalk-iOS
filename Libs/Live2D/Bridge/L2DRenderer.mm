@@ -126,4 +126,11 @@
     [self getCurrentL2DModel]->stopPlayAudio();
 }
 
+- (void)dealloc {
+    if (_viewMatrix) {
+        delete _viewMatrix;
+        _viewMatrix = nil;
+    }
+}
+
 @end

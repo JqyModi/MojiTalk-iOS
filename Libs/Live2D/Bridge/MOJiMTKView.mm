@@ -319,4 +319,15 @@ using namespace L2DDefine;
     self.preferredFramesPerSecond = fps;
 }
 
+- (void)dealloc {
+    if (_deviceToScreen) {
+        delete _deviceToScreen;
+        _deviceToScreen = nil;
+    }
+    if (_viewMatrix) {
+        delete _viewMatrix;
+        _viewMatrix = nil;
+    }
+}
+
 @end

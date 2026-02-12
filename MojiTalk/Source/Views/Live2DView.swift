@@ -62,5 +62,14 @@ struct Live2DView: UIViewRepresentable {
     func updateUIView(_ uiView: MOJiMTKView, context: Context) {
         // Reactive updates
     }
+    
+    static func dismantleUIView(_ uiView: MOJiMTKView, coordinator: ()) {
+        // Clean up reference and stop audio when view is removed
+        if Live2DController.shared.mtkView === uiView {
+            Live2DController.shared.stopAudio()
+            Live2DController.shared.mtkView = nil
+            Live2DController.shared.isLoaded = false
+        }
+    }
 }
 

@@ -406,4 +406,8 @@ class ChatViewModel: ObservableObject {
         // Retry the AI session
         startAISession(with: message.content)
     }
+    
+    deinit {
+        print("DEBUG: ChatViewModel deinit - cleaning up resources")
+    }
 }

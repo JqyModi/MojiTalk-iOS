@@ -21,7 +21,7 @@ class SSIService: ObservableObject {
     /// Establishes an SSE connection with DashScope and streams back the response text
     func connect(messages: [Message]) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
-            Task {
+            let task = Task {
                 do {
                     var request = URLRequest(url: chatEndpoint)
                     request.httpMethod = "POST"
@@ -51,6 +51,9 @@ class SSIService: ObservableObject {
                     }
                     
                     for try await line in bytes.lines {
+                        // Check for cancellation within the loop
+                        if Task.isCancelled { break }
+                        
                         if line.hasPrefix("data: ") {
                             let dataStr = String(line.dropFirst(6))
                             if dataStr == "[DONE]" {
@@ -71,6 +74,10 @@ class SSIService: ObservableObject {
                 } catch {
                     continuation.finish(throwing: error)
                 }
+            }
+            
+            continuation.onTermination = { @Sendable _ in
+                task.cancel()
             }
         }
     }

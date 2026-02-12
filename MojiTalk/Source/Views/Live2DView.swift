@@ -10,6 +10,7 @@ class Live2DController: ObservableObject {
     static let shared = Live2DController()
     
     @Published var currentExpression: String = "idle"
+    @Published var isLoaded: Bool = false
     
     /// Reference to the active MTKView to send commands
     weak var mtkView: MOJiMTKView?
@@ -29,19 +30,31 @@ class Live2DController: ObservableObject {
     func setPlaybackSpeed(_ speed: Float) {
         mtkView?.setAudioPlaybackSpeed(speed)
     }
+    
+    func setFPS(_ fps: Int) {
+        mtkView?.setPreferredFPS(fps)
+    }
 }
 
 // MARK: - Live2D View
 struct Live2DView: UIViewRepresentable {
     func makeUIView(context: Context) -> MOJiMTKView {
+        Live2DController.shared.isLoaded = false
         // Load target model (defaulting to suzu)
         let config = MOJiL2DFileManager.L2DModelType.suzu.toConfigurationModel()
         
         let view = MOJiMTKView(configurationModel: config)
         view.backgroundColor = .clear
+        view.setPreferredFPS(30) // Default to power saving (idle) mode
         
         // Register view with controller
         Live2DController.shared.mtkView = view
+        
+        view.onLoadingComplete = {
+            DispatchQueue.main.async {
+                Live2DController.shared.isLoaded = true
+            }
+        }
         
         return view
     }

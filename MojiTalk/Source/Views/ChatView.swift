@@ -1,11 +1,14 @@
 import SwiftUI
 import Supabase
 import Translation
+import Combine
 
 struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
     @ObservedObject private var accountManager = AccountManager.shared
+    @ObservedObject private var l2dController = Live2DController.shared
     @State private var showUserProfile = false
+    @State private var scrollTarget: String? = nil
     
     var body: some View {
         ZStack {
@@ -15,11 +18,29 @@ struct ChatView: View {
                            endPoint: .bottomTrailing)
                 .ignoresSafeArea()
             
-            // 2. Live2D Layer (Background Character)
-            Live2DView()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .opacity(0.6) // Blend with background
-                .ignoresSafeArea()
+            // 2. Live2D Layer (Background Character with Transition)
+            ZStack {
+                Live2DView()
+                    .opacity(l2dController.isLoaded ? 0.6 : 0)
+                    .blur(radius: l2dController.isLoaded ? 0 : 20)
+                
+                if !l2dController.isLoaded {
+                    Rectangle()
+                        .fill(.ultraThinMaterial)
+                        .overlay {
+                            VStack(spacing: 12) {
+                                ProgressView()
+                                    .tint(.white)
+                                Text("召唤中...")
+                                    .font(DesignSystem.Fonts.body(size: 14))
+                                    .foregroundColor(.white.opacity(0.6))
+                            }
+                        }
+                }
+            }
+            .animation(.easeInOut(duration: 1.2), value: l2dController.isLoaded)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .ignoresSafeArea()
             
             // 3. Chat Stream
             ScrollViewReader { proxy in
@@ -43,28 +64,43 @@ struct ChatView: View {
                                 removal: .opacity
                             ))
                         }
+                        
+                        // Invisible anchor for scrolling to bottom
+                        Color.clear
+                            .frame(height: 1)
+                            .id("bottom-anchor")
                     }
                     .padding(.horizontal)
-                    .padding(.top, 100) // Large top padding to avoid being under the floating header
-                    .padding(.bottom, 120) // Bottom padding for input panel
+                    .padding(.top, 100)
+                    .padding(.bottom, 160) // Increased to ensure messages stay above input panel
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .unifiedKeyboardDismiss()
                 .onChange(of: viewModel.messages) { _ in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
-                            proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
-                        }
-                    }
+                    scrollTarget = "bottom-anchor"
                 }
                 .onChange(of: viewModel.isStreaming) { isStreaming in
                     if isStreaming {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            withAnimation {
-                                proxy.scrollTo(viewModel.messages.last?.id, anchor: .bottom)
-                            }
-                        }
+                        scrollTarget = "bottom-anchor"
                     }
+                }
+                .onAppear {
+                    scrollTarget = "bottom-anchor"
+                }
+                .onChange(of: scrollTarget) { target in
+                    guard let target = target else { return }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                            proxy.scrollTo(target, anchor: .bottom)
+                        }
+                        scrollTarget = nil
+                    }
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                    scrollTarget = "bottom-anchor"
+                }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    scrollTarget = "bottom-anchor"
                 }
             }
             .ignoresSafeArea(.container, edges: .top) // Fill up to the very top
@@ -124,14 +160,17 @@ struct ChatView: View {
             .presentationDetents([.medium, .large])
         }
         .sheet(isPresented: $showUserProfile) {
-            UserProfileView(onLogout: {
-                viewModel.logout()
-                showUserProfile = false
-            }, onDeleteAccount: {
-                viewModel.deleteAccount()
-                showUserProfile = false
-            })
-            .presentationDetents([.fraction(0.5)])
+            UserProfileView(
+                isAutoPlayEnabled: $viewModel.isAutoPlayTTS,
+                onLogout: {
+                    viewModel.logout()
+                    showUserProfile = false
+                }, onDeleteAccount: {
+                    viewModel.deleteAccount()
+                    showUserProfile = false
+                }
+            )
+            .presentationDetents([.medium, .large])
         }
         .applyTranslation(isPresented: $viewModel.showSystemTranslation, text: viewModel.textToTranslate)
     }
@@ -436,6 +475,7 @@ struct ControlPanel: View {
 
 struct UserProfileView: View {
     @StateObject private var accountManager = AccountManager.shared
+    @Binding var isAutoPlayEnabled: Bool
     var onLogout: () -> Void
     var onDeleteAccount: () -> Void
     @Environment(\.dismiss) var dismiss
@@ -446,79 +486,103 @@ struct UserProfileView: View {
             DesignSystem.Colors.primary
                 .ignoresSafeArea()
             
-            VStack(spacing: 30) {
-                // Handle indicator
-                Capsule()
-                    .fill(Color.white.opacity(0.1))
-                    .frame(width: 40, height: 4)
-                    .padding(.top, 10)
-                
-                // Profile Info
-                VStack(spacing: 16) {
-                    ZStack {
-                        Circle()
-                            .fill(DesignSystem.Colors.accent.opacity(0.1))
-                            .frame(width: 80, height: 80)
-                        
-                        if let avatar = accountManager.profile?.avatarUrl {
-                            Image(avatar) // Assumes locally bundled avatars for now, or use AsyncImage for URLs
-                                .resizable()
-                                .scaledToFill()
+            ScrollView(showsIndicators: false) {
+                VStack(spacing: 30) {
+                    // Handle indicator
+//                    Capsule()
+//                        .fill(Color.white.opacity(0.1))
+//                        .frame(width: 40, height: 4)
+//                        .padding(.top, 10)
+                    Spacer()
+                    
+                    // Profile Info
+                    VStack(spacing: 16) {
+                        ZStack {
+                            Circle()
+                                .fill(DesignSystem.Colors.accent.opacity(0.1))
                                 .frame(width: 80, height: 80)
-                                .clipShape(Circle())
-                        } else {
-                            Image(systemName: "person.fill")
-                                .font(.system(size: 36))
-                                .foregroundColor(DesignSystem.Colors.accent)
+                            
+                            if let avatar = accountManager.profile?.avatarUrl {
+                                Image(avatar)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(Circle())
+                            } else {
+                                Image(systemName: "person.fill")
+                                    .font(.system(size: 36))
+                                    .foregroundColor(DesignSystem.Colors.accent)
+                            }
                         }
-                    }
-                    
-                    VStack(spacing: 12) {
-                        Text(accountManager.profile?.email ?? "User")
-                            .font(DesignSystem.Fonts.heading(size: 20))
-                            .foregroundColor(.white)
                         
-                        Text(accountManager.currentUser?.id.uuidString.prefix(8).lowercased() ?? "id: unknown")
-                            .font(DesignSystem.Fonts.body(size: 14))
-                            .foregroundColor(.white.opacity(0.4))
-                    }
-                }
-                .padding(.top, 10)
-                
-                Spacer()
-                
-                // Action Buttons
-                VStack(spacing: 12) {
-                    // Logout Button
-                    Button(action: onLogout) {
-                        HStack {
-                            Image(systemName: "rectangle.portrait.and.arrow.right")
-                            Text("退出登录")
+                        VStack(spacing: 12) {
+                            Text(accountManager.profile?.email ?? "User")
+                                .font(DesignSystem.Fonts.heading(size: 20))
+                                .foregroundColor(.white)
+                            
+                            Text(accountManager.currentUser?.id.uuidString.prefix(8).lowercased() ?? "id: unknown")
+                                .font(DesignSystem.Fonts.body(size: 14))
+                                .foregroundColor(.white.opacity(0.4))
                         }
-                        .font(DesignSystem.Fonts.heading(size: 16))
-                        .foregroundColor(DesignSystem.Colors.primary)
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(DesignSystem.Colors.accent)
-                        .cornerRadius(20)
                     }
+                    .padding(.top, 10)
                     
-                    // Delete Account Button (Compliance)
-                    Button(action: onDeleteAccount) {
-                        Text("永久注销账户")
-                            .font(DesignSystem.Fonts.body(size: 14))
-                            .foregroundColor(.white.opacity(0.4))
+                    // Settings Section
+                    VStack(spacing: 0) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text("自动播报")
+                                    .font(DesignSystem.Fonts.heading(size: 16))
+                                    .foregroundColor(.white)
+                                Text("收到 AI 回复后自动朗读内容")
+                                    .font(DesignSystem.Fonts.body(size: 12))
+                                    .foregroundColor(.white.opacity(0.4))
+                            }
+                            
+                            Spacer()
+                            
+                            Toggle("", isOn: $isAutoPlayEnabled)
+                                .toggleStyle(SwitchToggleStyle(tint: DesignSystem.Colors.accent))
+                                .labelsHidden()
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.05))
+                        .cornerRadius(16)
                     }
-                    .padding(.top, 8)
+                    .padding(.horizontal, 40)
+                    
+                    // Action Buttons
+                    VStack(spacing: 12) {
+                        // Logout Button
+                        Button(action: onLogout) {
+                            HStack {
+                                Image(systemName: "rectangle.portrait.and.arrow.right")
+                                Text("退出登录")
+                            }
+                            .font(DesignSystem.Fonts.heading(size: 16))
+                            .foregroundColor(DesignSystem.Colors.primary)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(DesignSystem.Colors.accent)
+                            .cornerRadius(20)
+                        }
+                        
+                        // Delete Account Button (Compliance)
+                        Button(action: onDeleteAccount) {
+                            Text("永久注销账户")
+                                .font(DesignSystem.Fonts.body(size: 14))
+                                .foregroundColor(.white.opacity(0.4))
+                        }
+                        .padding(.top, 8)
+                    }
+                    .padding(.horizontal, 40)
+                    
+                    // Copyright / Version
+                    Text("MOJiTalk MVP v0.2")
+                        .font(.caption2)
+                        .foregroundColor(.white.opacity(0.2))
+                        .padding(.bottom, 20)
                 }
-                .padding(.horizontal, 40)
-                .padding(.bottom, 20)
-                
-                // Copyright / Version
-                Text("MOJiTalk MVP v0.2")
-                    .font(.caption2)
-                    .foregroundColor(.white.opacity(0.2))
-                    .padding(.bottom, 10)
             }
         }
         .preferredColorScheme(.dark)

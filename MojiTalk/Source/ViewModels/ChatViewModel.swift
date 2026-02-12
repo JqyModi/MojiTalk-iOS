@@ -17,6 +17,12 @@ class ChatViewModel: ObservableObject {
     @Published var textToTranslate: String = ""
     @Published var showSystemTranslation: Bool = false
     @Published var isDetailedAnalysis: Bool = false // Tracks if user wants more detail
+    @Published var isAutoPlayTTS: Bool = UserDefaults.standard.object(forKey: "settings_auto_play_tts") as? Bool ?? true {
+        didSet {
+            UserDefaults.standard.set(isAutoPlayTTS, forKey: "settings_auto_play_tts")
+        }
+    }
+
     
     private let ssiService = SSIService()
     private let audioManager = AudioPlayerManager.shared
@@ -50,6 +56,9 @@ class ChatViewModel: ObservableObject {
         guard !trimmedText.isEmpty else { return }
         
         AudioPlayerManager.shared.stopAll()
+        
+        // 0. Wake up Live2D performance
+        Live2DController.shared.setFPS(60)
         
         // 1. Add User Message
         let userMessage = Message(content: trimmedText, sender: .user, timestamp: Date(), type: .text, status: .sent)
@@ -112,21 +121,36 @@ class ChatViewModel: ObservableObject {
                 let stream = ssiService.connect(messages: context)
                 
                 var accumulatedText = ""
+                var lastUpdate = Date()
                 for try await delta in stream {
                     accumulatedText += delta
-                    if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
-                        messages[index].content = accumulatedText
+                    // Throttle UI updates to max 10 times per second to save CPU/Battery
+                    if Date().timeIntervalSince(lastUpdate) > 0.1 {
+                        if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
+                            messages[index].content = accumulatedText
+                        }
+                        lastUpdate = Date()
                     }
+                }
+                
+                // Final update to ensure completion
+                if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
+                    messages[index].content = accumulatedText
                 }
                 
                 // Finalize message
                 if let index = messages.firstIndex(where: { $0.id == aiMessageId }) {
                     messages[index].isStreaming = false
                     
-                    // Auto-play TTS if the user just sent a voice message
+                    // Auto-play TTS logic:
+                    // 1. If global toggle is on
+                    // 2. OR if the user just sent a voice message (legacy behavior preserved)
                     let lastUserMessage = messages.prefix(index).last(where: { $0.sender == .user })
-                    if lastUserMessage?.type == .audio {
+                    if isAutoPlayTTS || (lastUserMessage?.type == .audio) {
                         self.playTTS(for: messages[index])
+                    } else {
+                        // If no TTS auto-play, return to low power mode
+                        Live2DController.shared.setFPS(30)
                     }
                 }
                 isStreaming = false
@@ -214,12 +238,14 @@ class ChatViewModel: ObservableObject {
                         audioManager.isPlaying = true
                         
                         // Trigger Live2D lip sync
+                        Live2DController.shared.setFPS(60)
                         Live2DController.shared.playAudio(filePath: tempURL.path, targetKey: message.id.uuidString)
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + exactDuration) {
                             if audioManager.playingMessageId == currentSessionId {
                                 audioManager.isPlaying = false
                                 audioManager.playingMessageId = nil
+                                Live2DController.shared.setFPS(30)
                             }
                         }
                     }

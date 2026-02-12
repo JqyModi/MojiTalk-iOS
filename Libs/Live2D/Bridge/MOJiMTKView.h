@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)setAudioPlaybackSpeed:(float)speed;
 
 - (void)stopPlayAudio;
+- (void)setPreferredFPS:(NSInteger)fps;
+
+@property (nonatomic, copy, nullable) void (^onLoadingComplete)(void);
 
 @end
 

@@ -102,3 +102,19 @@
     - [ ] 6.5 英寸 (iPhone 14/13/12 Pro Max) 截图 (5张)
     - [ ] 5.5 英寸 (iPhone 8 Plus) 截图 (5张)
 - [ ] **营销文案**：编写多语言 App 描述、关键词及技术支持 URL
+
+## 🌟 P0: 真机体验优化 (Real Device Feedback)
+### 10. 自动化与交互流程
+- [x] **[Atomic]** 实现 `isAutoPlayEnabled` 全局开关逻辑与 Persistence 持久化
+- [x] **[Atomic]** 在 `UserProfileView` 增加“自动播报”切换开关并支持滚动避免内容截断
+- [x] **[Atomic]** 初始加载历史记录自动滚动到底部最新消息
+- [x] **[Atomic]** 优化流式消息滚动算法，确保内容不被输入框遮挡 (针对 iPhone X 等机型)
+- [x] **[Atomic]** 监听键盘弹起/收起事件，确保最新消息自动跟随键盘位移
+
+### 11. 性能专项 (iPhone X 发热与卡顿)
+- [x] **[Atomic]** 诊断优化 `ChatView` 启动白屏/卡顿问题 (优化 Live2D 异步加载策略)
+- [x] **[Atomic]** 优化模型加载视觉过渡：增加毛玻璃占位图与平滑淡入动画
+- [x] **[Atomic]** `Live2DView` 渲染性能优化：实现静止状态降帧（FPS Throttling）
+- [x] **[Atomic]** 消息流更新频率节流：降低高频文本更新对 UI 渲染的冲击
+- [ ] **[Atomic]** 内存泄漏排查：确保长对话场景下不会因资源未释放导致发热严重
+

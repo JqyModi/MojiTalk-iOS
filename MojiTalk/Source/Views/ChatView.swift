@@ -72,7 +72,7 @@ struct ChatView: View {
                     }
                     .padding(.horizontal)
                     .padding(.top, 100)
-                    .padding(.bottom, 160) // Increased to ensure messages stay above input panel
+                    .padding(.bottom, 20) 
                 }
                 .scrollDismissesKeyboard(.interactively)
                 .unifiedKeyboardDismiss()
@@ -89,7 +89,8 @@ struct ChatView: View {
                 }
                 .onChange(of: scrollTarget) { target in
                     guard let target = target else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    // Use a shorter delay and ensure we are on the main thread
+                    DispatchQueue.main.async {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
                             proxy.scrollTo(target, anchor: .bottom)
                         }
@@ -99,9 +100,22 @@ struct ChatView: View {
                 .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
                     scrollTarget = "bottom-anchor"
                 }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    scrollTarget = "bottom-anchor"
-                }
+            }
+            .safeAreaInset(edge: .bottom) {
+                ControlPanel(
+                    inputText: $viewModel.inputText,
+                    onSend: { viewModel.sendMessage() },
+                    onVoiceSend: { url, duration in
+                        viewModel.sendVoiceMessage(url: url, duration: duration)
+                    }
+                )
+                .padding(.horizontal)
+                .padding(.bottom, 8) // Reduced padding as safeArea handles home indicator
+                .background(
+                    DesignSystem.Colors.primary.opacity(0.1)
+                        .background(.ultraThinMaterial)
+                        .ignoresSafeArea()
+                )
             }
             .ignoresSafeArea(.container, edges: .top) // Fill up to the very top
             
@@ -131,20 +145,6 @@ struct ChatView: View {
                 Spacer()
             }
             .padding(.top, 10) // Small adjustment above safe area
-            
-            // 3. Floating Smart Input
-            VStack {
-                Spacer()
-                ControlPanel(
-                    inputText: $viewModel.inputText,
-                    onSend: { viewModel.sendMessage() },
-                    onVoiceSend: { url, duration in
-                        viewModel.sendVoiceMessage(url: url, duration: duration)
-                    }
-                )
-                .padding(.horizontal)
-                .padding(.bottom, 20)
-            }
         }
         .sheet(isPresented: $viewModel.showToolResult) {
             ToolResultView(

@@ -100,6 +100,9 @@ struct ChatView: View {
                 .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
                     scrollTarget = "bottom-anchor"
                 }
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                    scrollTarget = "bottom-anchor"
+                }
             }
             .safeAreaInset(edge: .bottom) {
                 ControlPanel(
@@ -110,12 +113,7 @@ struct ChatView: View {
                     }
                 )
                 .padding(.horizontal)
-                .padding(.bottom, 8) // Reduced padding as safeArea handles home indicator
-                .background(
-                    DesignSystem.Colors.primary.opacity(0.1)
-                        .background(.ultraThinMaterial)
-                        .ignoresSafeArea()
-                )
+                .padding(.bottom, 12) 
             }
             .ignoresSafeArea(.container, edges: .top) // Fill up to the very top
             

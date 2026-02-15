@@ -225,7 +225,9 @@ class ChatViewModel: ObservableObject {
                     }
                 } else {
                     // --- Case B: AI Message - Synthesize TTS ---
-                    let audioData = try await ssiService.synthesize(text: message.content)
+                    // Safety check: DashScope TTS has a ~600 character limit per request.
+                    let synthesisText = message.content.count > 600 ? String(message.content.prefix(590)) + "..." : message.content
+                    let audioData = try await ssiService.synthesize(text: synthesisText)
                     
                     // Race condition check after long async TTS call
                     guard AudioPlayerManager.shared.playingMessageId == currentSessionId else {
@@ -293,7 +295,7 @@ class ChatViewModel: ObservableObject {
         return nil
     }
     
-    func translate(message: Message) {
+    @MainActor func translate(message: Message) {
         if #available(iOS 17.4, *) {
             // Use Apple's Translation Framework (0 cost)
             self.textToTranslate = message.content
@@ -347,8 +349,8 @@ class ChatViewModel: ObservableObject {
         Task {
             do {
                 let promptContent = detailed ?
-                    "请针对刚才的句子 \"\(message.content)\" 提供更深层的语境、文化背景及易错点分析。" :
-                    "请作为日语私教，对句子 \"\(message.content)\" 进行极简解析。格式要求：【核心语感】（15字内）+【关键语法】（1项）+【地道用法】（1点）。严禁啰嗦。"
+                    "请针对刚才的句子 \"\(message.content)\" 提供更深层的语境及用法分析。要求：内容详实但必须控制在500字符以内，严禁过度扩散。" :
+                    "请作为日语私教，对句子 \"\(message.content)\" 进行极简解析。格式要求：【核心语感】（15字内）+【关键语法】（1项）+【地道用法】（1点）。严禁啰嗦，总长度控制在150字符以内。"
                 
                 let grammarPrompt = Message(content: promptContent, sender: .user, timestamp: Date())
                 let stream = ssiService.connect(messages: [grammarPrompt])

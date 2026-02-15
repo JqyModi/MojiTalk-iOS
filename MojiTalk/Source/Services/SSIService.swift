@@ -30,14 +30,21 @@ class SSIService: ObservableObject {
                     request.setValue("text/event-stream", forHTTPHeaderField: "Accept")
                     request.cachePolicy = .reloadIgnoringLocalAndRemoteCacheData
                     
-                    let chatMessages = messages.map { msg -> [String: String] in
+                    let systemPrompt = [
+                        "role": "system",
+                        "content": "你是一个亲切的日语外教。为了保证良好的对话体验和语音合成性能，请遵循：1. 日常对话控制在100字符以内。2. 复杂的语法解析或详细说明控制在500字符以内。3. 绝对禁止超过600字符。语言要自然、口语化。"
+                    ]
+                    
+                    var chatMessages = messages.map { msg -> [String: String] in
                         ["role": msg.sender == .user ? "user" : "assistant", "content": msg.content]
                     }
+                    chatMessages.insert(systemPrompt, at: 0)
                     
                     let body: [String: Any] = [
                         "model": "qwen-plus",
                         "messages": chatMessages,
-                        "stream": true
+                        "stream": true,
+                        "max_tokens": 800 // Safety buffer, though system prompt is primary
                     ]
                     
                     request.httpBody = try JSONSerialization.data(withJSONObject: body)

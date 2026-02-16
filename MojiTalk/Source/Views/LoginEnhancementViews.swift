@@ -110,7 +110,7 @@ struct LoginHelpView: View {
         ),
         (
             question: "如何切换账号？",
-            answer: "在个人中心点击"退出登录"，然后使用新的邮箱或 Apple ID 登录即可。"
+            answer: "在个人中心点击\"退出登录\"，然后使用新的邮箱或 Apple ID 登录即可。"
         ),
         (
             question: "忘记注册邮箱？",

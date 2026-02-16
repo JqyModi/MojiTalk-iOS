@@ -54,7 +54,6 @@ struct ChatView: View {
                 
                 // 3. Chat Stream with Dynamic Collapse
                 VStack(spacing: 0) {
-                    Spacer()
                     
                     ScrollViewReader { proxy in
                         ScrollView {
@@ -256,8 +255,8 @@ struct ChatView: View {
             // Collapsed: 20% of screen height
             return screenHeight * 0.2
         } else {
-            // Expanded: Full height minus safe areas
-            return screenHeight
+            // Expanded: Leave space for input panel (~100pt) and safe areas
+            return screenHeight * 0.65
         }
     }
 }

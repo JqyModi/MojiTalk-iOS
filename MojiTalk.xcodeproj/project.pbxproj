@@ -21,8 +21,6 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C51D39952F325718005A5064 /* MojiTalk */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = MojiTalk;
 			sourceTree = "<group>";
 		};
@@ -182,9 +180,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MojiTalk/Pods-MojiTalk-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MojiTalk/Pods-MojiTalk-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

@@ -7,142 +7,219 @@ struct ChatView: View {
     @StateObject private var viewModel = ChatViewModel()
     @ObservedObject private var accountManager = AccountManager.shared
     @ObservedObject private var l2dController = Live2DController.shared
+    @ObservedObject private var audioPlayer = AudioPlayerManager.shared
     @State private var showUserProfile = false
     @State private var scrollTarget: String? = nil
     
+    // Live2D visibility enhancement
+    @State private var messageListCollapsed = false
+    @State private var dragOffset: CGFloat = 0
+    @GestureState private var isDragging = false
+    
+    // Onboarding
+    @State private var showOnboarding = !UserDefaults.standard.bool(forKey: "hasSeenOnboarding")
+    
     var body: some View {
-        ZStack {
-            // 1. Immersive Background
-            LinearGradient(colors: [DesignSystem.Colors.primary, DesignSystem.Colors.secondary.opacity(0.8)], 
-                           startPoint: .topLeading, 
-                           endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-            
-            // 2. Live2D Layer (Background Character with Transition)
+        GeometryReader { geometry in
             ZStack {
-                Live2DView()
-                    .opacity(l2dController.isLoaded ? 0.6 : 0)
-                    .blur(radius: l2dController.isLoaded ? 0 : 20)
+                // 1. Immersive Background
+                LinearGradient(colors: [DesignSystem.Colors.primary, DesignSystem.Colors.secondary.opacity(0.8)], 
+                               startPoint: .topLeading, 
+                               endPoint: .bottomTrailing)
+                    .ignoresSafeArea()
                 
-                if !l2dController.isLoaded {
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .overlay {
-                            VStack(spacing: 12) {
-                                ProgressView()
-                                    .tint(.white)
-                                Text("召唤中...")
-                                    .font(DesignSystem.Fonts.body(size: 14))
-                                    .foregroundColor(.white.opacity(0.6))
+                // 2. Live2D Layer (Background Character with Transition)
+                ZStack {
+                    Live2DView()
+                        .opacity(l2dController.isLoaded ? 0.6 : 0)
+                        .blur(radius: l2dController.isLoaded ? 0 : 20)
+                    
+                    if !l2dController.isLoaded {
+                        Rectangle()
+                            .fill(.ultraThinMaterial)
+                            .overlay {
+                                VStack(spacing: 12) {
+                                    ProgressView()
+                                        .tint(.white)
+                                    Text("召唤中...")
+                                        .font(DesignSystem.Fonts.body(size: 14))
+                                        .foregroundColor(.white.opacity(0.6))
+                                }
                             }
-                        }
-                }
-            }
-            .animation(.easeInOut(duration: 1.2), value: l2dController.isLoaded)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .ignoresSafeArea()
-            
-            // 3. Chat Stream
-            ScrollViewReader { proxy in
-                ScrollView {
-                    LazyVStack(spacing: 20) {
-                        ForEach(viewModel.messages) { message in
-                            MessageBubbleView(
-                                message: message,
-                                onTranslate: { viewModel.translate(message: message) },
-                                onAnalyze: { 
-                                    viewModel.selectedMessageForTools = message
-                                    viewModel.analyzeGrammar(message: message) 
-                                },
-                                onPlay: { viewModel.playTTS(for: message) },
-                                onReport: { viewModel.reportMessage(message) },
-                                onRetry: { viewModel.resendMessage(message) }
-                            )
-                            .id(message.id) // Ensure explicit ID for scrolling
-                            .transition(.asymmetric(
-                                insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
-                                removal: .opacity
-                            ))
-                        }
-                        
-                        // Invisible anchor for scrolling to bottom
-                        Color.clear
-                            .frame(height: 1)
-                            .id("bottom-anchor")
-                    }
-                    .padding(.horizontal)
-                    .padding(.top, 100)
-                    .padding(.bottom, 20) 
-                }
-                .scrollDismissesKeyboard(.interactively)
-                .unifiedKeyboardDismiss()
-                .onChange(of: viewModel.messages) { _ in
-                    scrollTarget = "bottom-anchor"
-                }
-                .onChange(of: viewModel.isStreaming) { isStreaming in
-                    if isStreaming {
-                        scrollTarget = "bottom-anchor"
                     }
                 }
-                .onAppear {
-                    scrollTarget = "bottom-anchor"
-                }
-                .onChange(of: scrollTarget) { target in
-                    guard let target = target else { return }
-                    // Use a shorter delay and ensure we are on the main thread
-                    DispatchQueue.main.async {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
-                            proxy.scrollTo(target, anchor: .bottom)
-                        }
-                        scrollTarget = nil
-                    }
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-                    scrollTarget = "bottom-anchor"
-                }
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                    scrollTarget = "bottom-anchor"
-                }
-            }
-            .safeAreaInset(edge: .bottom) {
-                ControlPanel(
-                    inputText: $viewModel.inputText,
-                    onSend: { viewModel.sendMessage() },
-                    onVoiceSend: { url, duration in
-                        viewModel.sendVoiceMessage(url: url, duration: duration)
-                    }
-                )
-                .padding(.horizontal)
-                .padding(.bottom, 12) 
-            }
-            .ignoresSafeArea(.container, edges: .top) // Fill up to the very top
-            
-            // 4. Floating Header (User Profile)
-            VStack {
-                HStack {
+                .animation(.easeInOut(duration: 1.2), value: l2dController.isLoaded)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+                
+                // 3. Chat Stream with Dynamic Collapse
+                VStack(spacing: 0) {
                     Spacer()
-                    Button(action: { showUserProfile = true }) {
-                        Group {
-                            if let avatar = accountManager.profile?.avatarUrl {
-                                Image(avatar)
-                                    .resizable()
-                                    .scaledToFill()
-                            } else {
-                                Image(systemName: "person.fill")
-                                    .font(.system(size: 18, weight: .bold))
+                    
+                    ScrollViewReader { proxy in
+                        ScrollView {
+                            LazyVStack(spacing: 20) {
+                                ForEach(viewModel.messages) { message in
+                                    MessageBubbleView(
+                                        message: message,
+                                        onTranslate: { viewModel.translate(message: message) },
+                                        onAnalyze: { 
+                                            viewModel.selectedMessageForTools = message
+                                            viewModel.analyzeGrammar(message: message) 
+                                        },
+                                        onPlay: { viewModel.playTTS(for: message) },
+                                        onReport: { viewModel.reportMessage(message) },
+                                        onRetry: { viewModel.resendMessage(message) }
+                                    )
+                                    .id(message.id)
+                                    .transition(.asymmetric(
+                                        insertion: .scale(scale: 0.8, anchor: message.sender == .user ? .trailing : .leading).combined(with: .opacity),
+                                        removal: .opacity
+                                    ))
+                                }
+                                
+                                // Invisible anchor for scrolling to bottom
+                                Color.clear
+                                    .frame(height: 1)
+                                    .id("bottom-anchor")
+                            }
+                            .padding(.horizontal)
+                            .padding(.top, 20)
+                            .padding(.bottom, 20)
+                        }
+                        .scrollDismissesKeyboard(.interactively)
+                        .unifiedKeyboardDismiss()
+                        .onChange(of: viewModel.messages) { _ in
+                            scrollTarget = "bottom-anchor"
+                        }
+                        .onChange(of: viewModel.isStreaming) { isStreaming in
+                            if isStreaming {
+                                scrollTarget = "bottom-anchor"
                             }
                         }
-                        .frame(width: 44, height: 44)
-                        .foregroundColor(.white.opacity(0.9))
-                        .background(.ultraThinMaterial)
-                        .clipShape(Circle())
-                        .shadow(color: .black.opacity(0.2), radius: 10)
+                        .onAppear {
+                            scrollTarget = "bottom-anchor"
+                        }
+                        .onChange(of: scrollTarget) { target in
+                            guard let target = target else { return }
+                            DispatchQueue.main.async {
+                                withAnimation(.spring(response: 0.35, dampingFraction: 0.8)) {
+                                    proxy.scrollTo(target, anchor: .bottom)
+                                }
+                                scrollTarget = nil
+                            }
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+                            scrollTarget = "bottom-anchor"
+                        }
+                        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+                            scrollTarget = "bottom-anchor"
+                        }
                     }
-                    .padding(.trailing, 20)
+                    .frame(height: messageListHeight(screenHeight: geometry.size.height))
+                    .background(
+                        // Subtle gradient overlay to indicate collapsible area
+                        LinearGradient(
+                            colors: [Color.clear, DesignSystem.Colors.primary.opacity(0.3)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: messageListCollapsed ? 24 : 0))
+                    .offset(y: dragOffset)
+                    .gesture(
+                        DragGesture()
+                            .updating($isDragging) { _, state, _ in
+                                state = true
+                            }
+                            .onChanged { value in
+                                // Only allow downward drag when expanded, upward when collapsed
+                                if messageListCollapsed {
+                                    dragOffset = min(0, value.translation.height)
+                                } else {
+                                    dragOffset = max(0, value.translation.height)
+                                }
+                            }
+                            .onEnded { value in
+                                let threshold: CGFloat = 100
+                                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                                    if messageListCollapsed {
+                                        // Expand if dragged up enough
+                                        if value.translation.height < -threshold {
+                                            messageListCollapsed = false
+                                        }
+                                    } else {
+                                        // Collapse if dragged down enough
+                                        if value.translation.height > threshold {
+                                            messageListCollapsed = true
+                                        }
+                                    }
+                                    dragOffset = 0
+                                }
+                            }
+                    )
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: messageListCollapsed)
+                    
+                    // Drag indicator
+                    if messageListCollapsed {
+                        Capsule()
+                            .fill(Color.white.opacity(0.3))
+                            .frame(width: 40, height: 4)
+                            .padding(.top, 8)
+                    }
                 }
-                Spacer()
+                .safeAreaInset(edge: .bottom) {
+                    ControlPanel(
+                        inputText: $viewModel.inputText,
+                        onSend: { viewModel.sendMessage() },
+                        onVoiceSend: { url, duration in
+                            viewModel.sendVoiceMessage(url: url, duration: duration)
+                        }
+                    )
+                    .padding(.horizontal)
+                    .padding(.bottom, 12)
+                }
+                .ignoresSafeArea(.container, edges: .top)
+                
+                // 4. Floating Header (User Profile)
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button(action: { showUserProfile = true }) {
+                            Group {
+                                if let avatar = accountManager.profile?.avatarUrl {
+                                    Image(avatar)
+                                        .resizable()
+                                        .scaledToFill()
+                                } else {
+                                    Image(systemName: "person.fill")
+                                        .font(.system(size: 18, weight: .bold))
+                                }
+                            }
+                            .frame(width: 44, height: 44)
+                            .foregroundColor(.white.opacity(0.9))
+                            .background(.ultraThinMaterial)
+                            .clipShape(Circle())
+                            .shadow(color: .black.opacity(0.2), radius: 10)
+                        }
+                        .padding(.trailing, 20)
+                    }
+                    Spacer()
+                }
+                .padding(.top, 10)
+                
+                // 5. Onboarding Overlay (First-time users)
+                if showOnboarding {
+                    OnboardingOverlayView(isPresented: $showOnboarding)
+                        .zIndex(100) // Ensure it's on top
+                }
             }
-            .padding(.top, 10) // Small adjustment above safe area
+            .onChange(of: audioPlayer.isPlaying) { isPlaying in
+                // Auto-collapse when AI starts speaking, auto-expand when finished
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                    messageListCollapsed = isPlaying
+                }
+            }
         }
         .sheet(isPresented: $viewModel.showToolResult) {
             ToolResultView(
@@ -171,6 +248,17 @@ struct ChatView: View {
             .presentationDetents([.medium, .large])
         }
         .applyTranslation(isPresented: $viewModel.showSystemTranslation, text: viewModel.textToTranslate)
+    }
+    
+    // MARK: - Helper Functions
+    private func messageListHeight(screenHeight: CGFloat) -> CGFloat {
+        if messageListCollapsed {
+            // Collapsed: 20% of screen height
+            return screenHeight * 0.2
+        } else {
+            // Expanded: Full height minus safe areas
+            return screenHeight
+        }
     }
 }
 
@@ -478,6 +566,8 @@ struct UserProfileView: View {
     var onDeleteAccount: () -> Void
     @Environment(\.dismiss) var dismiss
     
+    @State private var showDeleteConfirmation = false
+    
     var body: some View {
         ZStack {
             // Background
@@ -566,7 +656,7 @@ struct UserProfileView: View {
                         }
                         
                         // Delete Account Button (Compliance)
-                        Button(action: onDeleteAccount) {
+                        Button(action: { showDeleteConfirmation = true }) {
                             Text("永久注销账户")
                                 .font(DesignSystem.Fonts.body(size: 14))
                                 .foregroundColor(.white.opacity(0.4))
@@ -584,6 +674,14 @@ struct UserProfileView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .alert("确认注销账户", isPresented: $showDeleteConfirmation) {
+            Button("取消", role: .cancel) { }
+            Button("确认注销", role: .destructive) {
+                onDeleteAccount()
+            }
+        } message: {
+            Text("此操作将永久删除您的账号及所有对话记录，且无法恢复。确定要继续吗？")
+        }
     }
 }
 

@@ -10,6 +10,7 @@ struct LoginView: View {
     @State private var showingOTPInput = false
     @State private var errorMessage: String?
     @State private var showError = false
+    @State private var showHelp = false // Help FAQ sheet
     
     var body: some View {
         ZStack {
@@ -25,7 +26,27 @@ struct LoginView: View {
                 .offset(x: 150, y: -250)
             
             VStack(spacing: 0) {
+                // Help Button (Top Right)
+                HStack {
+                    Spacer()
+                    Button(action: { showHelp = true }) {
+                        Image(systemName: "headphones.circle.fill")
+                            .font(.system(size: 32))
+                            .foregroundColor(.white.opacity(0.6))
+                    }
+                    .padding(.trailing, 20)
+                    .padding(.top, 10)
+                }
+                .offset(y: isAnimating ? 0 : -30)
+                .opacity(isAnimating ? 1 : 0)
+                
                 Spacer()
+                
+                // Stats Section (Rolling Number)
+                RollingNumberView()
+                    .padding(.bottom, 16)
+                    .offset(y: isAnimating ? 0 : 30)
+                    .opacity(isAnimating ? 1 : 0)
                 
                 // Logo Section
                 VStack(spacing: 20) {
@@ -39,13 +60,8 @@ struct LoginView: View {
                             .foregroundColor(DesignSystem.Colors.accent)
                     }
                     
-                    Text("MOJiTalk")
-                        .font(DesignSystem.Fonts.heading(size: 36))
-                        .foregroundColor(.white)
-                    
-                    Text("沉浸式日语口语对话")
-                        .font(DesignSystem.Fonts.body(size: 16))
-                        .foregroundColor(.gray)
+                    // Welcome Message Carousel
+                    WelcomeMessageView()
                 }
                 .offset(y: isAnimating ? 0 : 30)
                 .opacity(isAnimating ? 1 : 0)
@@ -161,6 +177,9 @@ struct LoginView: View {
             Button("确定", role: .cancel) { }
         } message: {
             Text(errorMessage ?? "发生未知错误")
+        }
+        .sheet(isPresented: $showHelp) {
+            LoginHelpView()
         }
         .preferredColorScheme(.dark)
     }

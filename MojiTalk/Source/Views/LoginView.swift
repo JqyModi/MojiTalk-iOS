@@ -74,7 +74,7 @@ struct LoginView: View {
                         HStack {
                             Image(systemName: "envelope.fill")
                                 .foregroundColor(.gray)
-                            TextField("", text: $email, prompt: Text("请输入注册邮箱").foregroundColor(.gray.opacity(0.5)))
+                            TextField("", text: $email, prompt: Text(LocalizedString.Login.emailPlaceholder).foregroundColor(.gray.opacity(0.5)))
                                 .keyboardType(.emailAddress)
                                 .autocapitalization(.none)
                                 .submitLabel(.done)
@@ -86,7 +86,7 @@ struct LoginView: View {
                         HStack {
                             Image(systemName: "number")
                                 .foregroundColor(.gray)
-                            TextField("", text: $otpCode, prompt: Text("请输入 6 位验证码").foregroundColor(.gray.opacity(0.5)))
+                            TextField("", text: $otpCode, prompt: Text(LocalizedString.Login.otpPlaceholder).foregroundColor(.gray.opacity(0.5)))
                                 .keyboardType(.numberPad)
                                 .submitLabel(.done)
                         }
@@ -116,7 +116,7 @@ struct LoginView: View {
                             if isLoggingIn {
                                 LiquidLoadingView(color: DesignSystem.Colors.primary)
                             }
-                            Text(showingOTPInput ? "验证并登录" : "获取验证码")
+                            Text(showingOTPInput ? LocalizedString.Login.verify : LocalizedString.Login.getCode)
                                 .font(DesignSystem.Fonts.heading(size: 18))
                         }
                         .foregroundColor(DesignSystem.Colors.primary)
@@ -130,7 +130,7 @@ struct LoginView: View {
                     
                     if showingOTPInput {
                         Button(action: { showingOTPInput = false }) {
-                            Text("返回输入邮箱")
+                            Text(LocalizedString.Login.back)
                                 .font(DesignSystem.Fonts.body(size: 14))
                                 .foregroundColor(DesignSystem.Colors.accent)
                         }
@@ -140,7 +140,7 @@ struct LoginView: View {
                     if !showingOTPInput {
                         HStack {
                             VStack { Divider().background(Color.white.opacity(0.2)) }
-                            Text("或")
+                            Text(LocalizedString.Login.dividerOr)
                                 .font(.caption)
                                 .foregroundColor(.gray)
                                 .padding(.horizontal, 8)
@@ -173,10 +173,10 @@ struct LoginView: View {
                 isAnimating = true
             }
         }
-        .alert("登录失败", isPresented: $showError) {
-            Button("确定", role: .cancel) { }
+        .alert(LocalizedString.Login.errorTitle, isPresented: $showError) {
+            Button(LocalizedString.Common.ok, role: .cancel) { }
         } message: {
-            Text(errorMessage ?? "发生未知错误")
+            Text(errorMessage ?? LocalizedString.Login.errorUnknown)
         }
         .sheet(isPresented: $showHelp) {
             LoginHelpView()
@@ -187,16 +187,16 @@ struct LoginView: View {
     private var legalTermsView: some View {
         VStack(spacing: 12) {
             VStack(spacing: 4) {
-                Text("登录即代表您已同意")
+                Text(LocalizedString.Login.termsAgree)
                     .font(.caption2)
                     .foregroundColor(.gray)
                 
                 HStack(spacing: 4) {
-                    Link("《用户协议》", destination: URL(string: "https://www.mojikaiwa.com/terms")!)
-                    Text("与")
+                    Link(LocalizedString.Login.termsService, destination: URL(string: "https://www.mojikaiwa.com/terms")!)
+                    Text(LocalizedString.Login.termsAnd)
                         .font(.caption2)
                         .foregroundColor(.gray)
-                    Link("《隐私政策》", destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
+                    Link(LocalizedString.Login.termsPrivacy, destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
                 }
             }
             

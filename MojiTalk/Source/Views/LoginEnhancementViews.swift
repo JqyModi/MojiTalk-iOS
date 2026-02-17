@@ -13,7 +13,7 @@ struct RollingNumberView: View {
     
     var body: some View {
         HStack(spacing: 4) {
-            Text("已累计产生")
+            Text(LocalizedString.Login.statsPrefix)
                 .font(DesignSystem.Fonts.body(size: 14))
                 .foregroundColor(.white.opacity(0.6))
             
@@ -23,7 +23,7 @@ struct RollingNumberView: View {
                 .monospacedDigit() // Ensures consistent width for smooth animation
                 .contentTransition(.numericText())
             
-            Text("次练习")
+            Text(LocalizedString.Login.statsSuffix)
                 .font(DesignSystem.Fonts.body(size: 14))
                 .foregroundColor(.white.opacity(0.6))
         }
@@ -58,11 +58,11 @@ struct WelcomeMessageView: View {
     @State private var timer: Timer?
     
     private let messages = [
-        "Ready to learn!",
-        "欢迎使用可呆口语！",
-        "日本語を話しましょう！",
-        "Let's practice together!",
-        "一緒に頑張りましょう！"
+        LocalizedString.Login.welcome1,
+        LocalizedString.Login.welcome2,
+        LocalizedString.Login.welcome3,
+        LocalizedString.Login.welcome4,
+        LocalizedString.Login.welcome5
     ]
     
     var body: some View {
@@ -97,24 +97,24 @@ struct LoginHelpView: View {
     
     private let faqs: [(question: String, answer: String)] = [
         (
-            question: "收不到验证码怎么办？",
-            answer: "1. 请检查邮箱地址是否正确\n2. 查看垃圾邮件文件夹\n3. 等待 1-2 分钟后重试\n4. 如仍未收到，请联系客服"
+            question: LocalizedString.LoginHelp.faq1Question,
+            answer: LocalizedString.LoginHelp.faq1Answer
         ),
         (
-            question: "Apple 登录失败？",
-            answer: "1. 确保您的设备已登录 Apple ID\n2. 检查网络连接是否正常\n3. 在设置中允许 MOJiTalk 使用 Apple 登录\n4. 重启应用后重试"
+            question: LocalizedString.LoginHelp.faq2Question,
+            answer: LocalizedString.LoginHelp.faq2Answer
         ),
         (
-            question: "验证码过期了？",
-            answer: "验证码有效期为 10 分钟。如果过期，请返回登录页重新获取新的验证码。"
+            question: LocalizedString.LoginHelp.faq3Question,
+            answer: LocalizedString.LoginHelp.faq3Answer
         ),
         (
-            question: "如何切换账号？",
-            answer: "在个人中心点击\"退出登录\"，然后使用新的邮箱或 Apple ID 登录即可。"
+            question: LocalizedString.LoginHelp.faq4Question,
+            answer: LocalizedString.LoginHelp.faq4Answer
         ),
         (
-            question: "忘记注册邮箱？",
-            answer: "如果您使用 Apple 登录，可以在 Apple ID 设置中查看关联的邮箱。如果使用邮箱注册，请尝试常用邮箱地址。"
+            question: LocalizedString.LoginHelp.faq5Question,
+            answer: LocalizedString.LoginHelp.faq5Answer
         )
     ]
     
@@ -128,11 +128,11 @@ struct LoginHelpView: View {
                     VStack(alignment: .leading, spacing: 24) {
                         // Header
                         VStack(alignment: .leading, spacing: 8) {
-                            Text("登录帮助")
+                            Text(LocalizedString.LoginHelp.title)
                                 .font(DesignSystem.Fonts.heading(size: 28))
                                 .foregroundColor(.white)
                             
-                            Text("遇到登录问题？查看以下常见解决方案")
+                            Text(LocalizedString.LoginHelp.subtitle)
                                 .font(DesignSystem.Fonts.body(size: 14))
                                 .foregroundColor(.white.opacity(0.6))
                         }
@@ -149,7 +149,7 @@ struct LoginHelpView: View {
                                 .background(Color.white.opacity(0.2))
                             
                             VStack(spacing: 12) {
-                                Text("仍需帮助？")
+                                Text(LocalizedString.LoginHelp.stillNeedHelp)
                                     .font(DesignSystem.Fonts.heading(size: 18))
                                     .foregroundColor(.white)
                                 
@@ -161,7 +161,8 @@ struct LoginHelpView: View {
                                 }) {
                                     HStack {
                                         Image(systemName: "envelope.fill")
-                                        Text("联系客服")
+                                        Text(LocalizedString.LoginHelp.contactSupport)
+                                    }
                                     }
                                     .font(DesignSystem.Fonts.heading(size: 16))
                                     .foregroundColor(DesignSystem.Colors.primary)

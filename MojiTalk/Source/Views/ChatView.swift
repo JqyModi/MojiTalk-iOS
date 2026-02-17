@@ -41,7 +41,7 @@ struct ChatView: View {
                                 VStack(spacing: 12) {
                                     ProgressView()
                                         .tint(.white)
-                                    Text("召唤中...")
+                                    Text(LocalizedString.Chat.loading)
                                         .font(DesignSystem.Fonts.body(size: 14))
                                         .foregroundColor(.white.opacity(0.6))
                                 }
@@ -333,10 +333,10 @@ struct MessageBubbleView: View {
                     }
                     .contextMenu {
                         Button(action: { onTranslate?() }) {
-                            Label("翻译", systemImage: "character.book.closed")
+                            Label(LocalizedString.Chat.menuTranslate, systemImage: "character.book.closed")
                         }
                         Button(action: { onAnalyze?() }) {
-                            Label("语法分析", systemImage: "text.magnifyingglass")
+                            Label(LocalizedString.Chat.menuAnalyze, systemImage: "text.magnifyingglass")
                         }
                         Button(action: { UIPasteboard.general.string = message.content }) {
                             Label("复制", systemImage: "doc.on.doc")
@@ -345,7 +345,7 @@ struct MessageBubbleView: View {
                         Divider()
                         
                         Button(role: .destructive, action: { onReport?() }) {
-                            Label("反馈内容问题", systemImage: "exclamationmark.bubble")
+                            Label(LocalizedString.Chat.menuReport, systemImage: "exclamationmark.bubble")
                         }
                     }
                 }
@@ -498,7 +498,7 @@ struct ControlPanel: View {
             }
             
             // Input Field
-            TextField(isRecording ? "正在录音..." : "输入日语或中国语...", text: $inputText, axis: .vertical)
+            TextField(isRecording ? "正在录音..." : LocalizedString.Chat.inputPlaceholder, text: $inputText, axis: .vertical)
                 .lineLimit(1...5)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -617,7 +617,7 @@ struct UserProfileView: View {
                     VStack(spacing: 0) {
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
-                                Text("自动播报")
+                                Text(LocalizedString.Profile.autoPlayTTS)
                                     .font(DesignSystem.Fonts.heading(size: 16))
                                     .foregroundColor(.white)
                                 Text("收到 AI 回复后自动朗读内容")
@@ -643,7 +643,7 @@ struct UserProfileView: View {
                         Button(action: onLogout) {
                             HStack {
                                 Image(systemName: "rectangle.portrait.and.arrow.right")
-                                Text("退出登录")
+                                Text(LocalizedString.Profile.logout)
                             }
                             .font(DesignSystem.Fonts.heading(size: 16))
                             .foregroundColor(DesignSystem.Colors.primary)
@@ -655,7 +655,7 @@ struct UserProfileView: View {
                         
                         // Delete Account Button (Compliance)
                         Button(action: { showDeleteConfirmation = true }) {
-                            Text("永久注销账户")
+                            Text(LocalizedString.Profile.deleteAccount)
                                 .font(DesignSystem.Fonts.body(size: 14))
                                 .foregroundColor(.white.opacity(0.4))
                         }
@@ -672,13 +672,13 @@ struct UserProfileView: View {
             }
         }
         .preferredColorScheme(.dark)
-        .alert("确认注销账户", isPresented: $showDeleteConfirmation) {
-            Button("取消", role: .cancel) { }
-            Button("确认注销", role: .destructive) {
+        .alert(LocalizedString.Profile.deleteConfirmTitle, isPresented: $showDeleteConfirmation) {
+            Button(LocalizedString.Profile.cancel, role: .cancel) { }
+            Button(LocalizedString.Profile.deleteConfirmButton, role: .destructive) {
                 onDeleteAccount()
             }
         } message: {
-            Text("此操作将永久删除您的账号及所有对话记录，且无法恢复。确定要继续吗？")
+            Text(LocalizedString.Profile.deleteConfirmMessage)
         }
     }
 }

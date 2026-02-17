@@ -7,26 +7,26 @@ struct OnboardingOverlayView: View {
     
     private let steps: [OnboardingStep] = [
         OnboardingStep(
-            title: "点击消息播放语音",
-            description: "轻触任意消息气泡，即可听到 AI 老师的真人发音",
+            title: LocalizedString.Onboarding.step1Title,
+            description: LocalizedString.Onboarding.step1Desc,
             icon: "play.circle.fill",
             highlightArea: .messageBubble
         ),
         OnboardingStep(
-            title: "长按查看翻译和语法",
-            description: "长按消息气泡，可以查看中文翻译和详细的语法解析",
+            title: LocalizedString.Onboarding.step2Title,
+            description: LocalizedString.Onboarding.step2Desc,
             icon: "text.magnifyingglass",
             highlightArea: .messageBubble
         ),
         OnboardingStep(
-            title: "语音输入练习口语",
-            description: "点击麦克风按钮，说出日语句子进行口语练习",
+            title: LocalizedString.Onboarding.step3Title,
+            description: LocalizedString.Onboarding.step3Desc,
             icon: "mic.circle.fill",
             highlightArea: .voiceButton
         ),
         OnboardingStep(
-            title: "与 Live2D 老师互动",
-            description: "AI 说话时，消息列表会自动收起，让您看到老师的表情和口型",
+            title: LocalizedString.Onboarding.step4Title,
+            description: LocalizedString.Onboarding.step4Desc,
             icon: "person.wave.2.fill",
             highlightArea: .live2dCharacter
         )
@@ -94,7 +94,7 @@ struct OnboardingOverlayView: View {
                                     currentStep -= 1
                                 }
                             }) {
-                                Text("上一步")
+                                Text(LocalizedString.Onboarding.previous)
                                     .font(DesignSystem.Fonts.body(size: 16))
                                     .foregroundColor(.white.opacity(0.6))
                                     .padding(.horizontal, 24)
@@ -113,7 +113,7 @@ struct OnboardingOverlayView: View {
                                 dismissOnboarding()
                             }
                         }) {
-                            Text(currentStep < steps.count - 1 ? "下一步" : "开始使用")
+                            Text(currentStep < steps.count - 1 ? LocalizedString.Onboarding.next : LocalizedString.Onboarding.start)
                                 .font(DesignSystem.Fonts.heading(size: 16))
                                 .foregroundColor(DesignSystem.Colors.primary)
                                 .padding(.horizontal, 32)
@@ -126,7 +126,7 @@ struct OnboardingOverlayView: View {
                     
                     // Skip button
                     Button(action: dismissOnboarding) {
-                        Text("跳过引导")
+                        Text(LocalizedString.Onboarding.skip)
                             .font(DesignSystem.Fonts.body(size: 14))
                             .foregroundColor(.white.opacity(0.4))
                     }

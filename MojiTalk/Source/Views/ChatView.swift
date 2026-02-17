@@ -54,7 +54,6 @@ struct ChatView: View {
                 
                 // 3. Chat Stream with Dynamic Collapse
                 VStack(spacing: 0) {
-                    
                     ScrollViewReader { proxy in
                         ScrollView {
                             LazyVStack(spacing: 20) {
@@ -83,7 +82,7 @@ struct ChatView: View {
                                     .id("bottom-anchor")
                             }
                             .padding(.horizontal)
-                            .padding(.top, 20)
+                            .padding(.top, 100) // Space for header
                             .padding(.bottom, 20)
                         }
                         .scrollDismissesKeyboard(.interactively)
@@ -109,22 +108,41 @@ struct ChatView: View {
                             }
                         }
                         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-                            scrollTarget = "bottom-anchor"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                scrollTarget = "bottom-anchor"
+                            }
                         }
                         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
-                            scrollTarget = "bottom-anchor"
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                scrollTarget = "bottom-anchor"
+                            }
                         }
                     }
-                    .frame(height: messageListHeight(screenHeight: geometry.size.height))
+                    .frame(maxWidth: .infinity, maxHeight: messageListCollapsed ? geometry.size.height * 0.25 : .infinity)
                     .background(
-                        // Subtle gradient overlay to indicate collapsible area
-                        LinearGradient(
-                            colors: [Color.clear, DesignSystem.Colors.primary.opacity(0.3)],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
+                        // Subtle gradient overlay only when collapsed
+                        Group {
+                            if messageListCollapsed {
+                                LinearGradient(
+                                    colors: [Color.clear, DesignSystem.Colors.primary.opacity(0.4)],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                            }
+                        }
                     )
                     .clipShape(RoundedRectangle(cornerRadius: messageListCollapsed ? 24 : 0))
+                    .overlay(alignment: .bottom) {
+                        // Drag indicator when collapsed
+                        if messageListCollapsed {
+                            VStack(spacing: 0) {
+                                Capsule()
+                                    .fill(Color.white.opacity(0.4))
+                                    .frame(width: 40, height: 4)
+                                    .padding(.bottom, 8)
+                            }
+                        }
+                    }
                     .offset(y: dragOffset)
                     .gesture(
                         DragGesture()
@@ -158,14 +176,6 @@ struct ChatView: View {
                             }
                     )
                     .animation(.spring(response: 0.4, dampingFraction: 0.8), value: messageListCollapsed)
-                    
-                    // Drag indicator
-                    if messageListCollapsed {
-                        Capsule()
-                            .fill(Color.white.opacity(0.3))
-                            .frame(width: 40, height: 4)
-                            .padding(.top, 8)
-                    }
                 }
                 .safeAreaInset(edge: .bottom) {
                     ControlPanel(
@@ -176,7 +186,7 @@ struct ChatView: View {
                         }
                     )
                     .padding(.horizontal)
-                    .padding(.bottom, 12)
+                    .padding(.bottom, 8)
                 }
                 .ignoresSafeArea(.container, edges: .top)
                 
@@ -247,17 +257,6 @@ struct ChatView: View {
             .presentationDetents([.medium, .large])
         }
         .applyTranslation(isPresented: $viewModel.showSystemTranslation, text: viewModel.textToTranslate)
-    }
-    
-    // MARK: - Helper Functions
-    private func messageListHeight(screenHeight: CGFloat) -> CGFloat {
-        if messageListCollapsed {
-            // Collapsed: 20% of screen height
-            return screenHeight * 0.2
-        } else {
-            // Expanded: Leave space for input panel (~100pt) and safe areas
-            return screenHeight * 0.65
-        }
     }
 }
 

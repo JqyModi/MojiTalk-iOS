@@ -614,7 +614,8 @@ struct UserProfileView: View {
                     .padding(.top, 10)
                     
                     // Settings Section
-                    VStack(spacing: 0) {
+                    VStack(spacing: 8) {
+                        // Auto-play TTS toggle
                         HStack {
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(LocalizedString.Profile.autoPlayTTS)
@@ -634,6 +635,11 @@ struct UserProfileView: View {
                         .padding()
                         .background(Color.white.opacity(0.05))
                         .cornerRadius(16)
+                        
+                        // Language picker
+                        LanguageSettingRow()
+                            .background(Color.white.opacity(0.05))
+                            .cornerRadius(16)
                     }
                     .padding(.horizontal, 40)
                     

@@ -12,6 +12,8 @@ struct LoginView: View {
     @State private var errorMessage: String?
     @State private var showError = false
     @State private var showHelp = false // Help FAQ sheet
+    @State private var showTerms = false
+    @State private var showPrivacy = false
     
     var body: some View {
         ZStack {
@@ -193,11 +195,15 @@ struct LoginView: View {
                     .foregroundColor(.gray)
                 
                 HStack(spacing: 4) {
-                    Link(LocalizedString.Login.termsService, destination: URL(string: "https://www.mojikaiwa.com/terms")!)
+                    Button(action: { showTerms = true }) {
+                        Text(LocalizedString.Login.termsService)
+                    }
                     Text(LocalizedString.Login.termsAnd)
                         .font(.caption2)
                         .foregroundColor(.gray)
-                    Link(LocalizedString.Login.termsPrivacy, destination: URL(string: "https://www.mojikaiwa.com/privacy")!)
+                    Button(action: { showPrivacy = true }) {
+                        Text(LocalizedString.Login.termsPrivacy)
+                    }
                 }
             }
             
@@ -210,6 +216,18 @@ struct LoginView: View {
         .padding(.bottom, 60)
         .offset(y: isAnimating ? 0 : 30)
         .opacity(isAnimating ? 1 : 0)
+        .sheet(isPresented: $showTerms) {
+            LegalDocumentView(
+                title: LocalizedString.Login.termsService,
+                markdownContent: LegalContent.currentUserAgreement
+            )
+        }
+        .sheet(isPresented: $showPrivacy) {
+            LegalDocumentView(
+                title: LocalizedString.Login.termsPrivacy,
+                markdownContent: LegalContent.currentPrivacyPolicy
+            )
+        }
     }
     
     // MARK: - Handlers

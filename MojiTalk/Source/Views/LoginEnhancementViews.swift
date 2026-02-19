@@ -94,6 +94,7 @@ struct WelcomeMessageView: View {
 /// Help FAQ sheet
 struct LoginHelpView: View {
     @Environment(\.dismiss) var dismiss
+    @State private var showContactSupport = false
     
     private let faqs: [(question: String, answer: String)] = [
         (
@@ -153,16 +154,10 @@ struct LoginHelpView: View {
                                     .font(DesignSystem.Fonts.heading(size: 18))
                                     .foregroundColor(.white)
                                 
-                                Button(action: {
-                                    // Open email client
-                                    if let url = URL(string: "mailto:support@mojikaiwa.com?subject=登录问题咨询") {
-                                        UIApplication.shared.open(url)
-                                    }
-                                }) {
+                                Button(action: { showContactSupport = true }) {
                                     HStack {
                                         Image(systemName: "envelope.fill")
                                         Text(LocalizedString.LoginHelp.contactSupport)
-                                    }
                                     }
                                     .font(DesignSystem.Fonts.heading(size: 16))
                                     .foregroundColor(DesignSystem.Colors.primary)
@@ -189,7 +184,10 @@ struct LoginHelpView: View {
                     }
                 }
             }
-//        }
+            .sheet(isPresented: $showContactSupport) {
+                ContactSupportView()
+            }
+        }
         .preferredColorScheme(.dark)
     }
 }

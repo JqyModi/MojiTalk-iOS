@@ -229,6 +229,17 @@ enum TranslationDictionary {
         "language.subtitle": "选择语言后立即生效，无需重启应用",
         "language.systemDesc": "跟随 iOS 系统语言设置",
         
+        // Support
+        "support.title": "联系我们",
+        "support.subtitle": "我们通常在 24 小时内回复",
+        "support.loginIssue": "登录问题",
+        "support.loginIssueDesc": "无法登录、收不到验证码等",
+        "support.bugReport": "问题反馈",
+        "support.bugReportDesc": "应用崩溃、功能异常等",
+        "support.suggestion": "功能建议",
+        "support.suggestionDesc": "希望增加的功能或改进建议",
+        "support.directEmail": "或直接发送邮件至",
+        
         // Common
         "common.ok": "确定",
         "common.cancel": "取消",
@@ -322,6 +333,17 @@ enum TranslationDictionary {
         "language.title": "Language",
         "language.subtitle": "Changes take effect immediately, no restart needed",
         "language.systemDesc": "Follow iOS system language",
+        
+        // Support
+        "support.title": "Contact Us",
+        "support.subtitle": "We usually respond within 24 hours",
+        "support.loginIssue": "Login Issue",
+        "support.loginIssueDesc": "Can't login, not receiving codes, etc.",
+        "support.bugReport": "Bug Report",
+        "support.bugReportDesc": "App crashes, feature not working, etc.",
+        "support.suggestion": "Feature Suggestion",
+        "support.suggestionDesc": "Features you'd like to see or improvements",
+        "support.directEmail": "Or email us directly at",
         
         // Common
         "common.ok": "OK",
@@ -417,6 +439,17 @@ enum TranslationDictionary {
         "language.subtitle": "変更はすぐに反映されます。再起動は不要です",
         "language.systemDesc": "iOSシステム言語に従う",
         
+        // Support
+        "support.title": "お問い合わせ",
+        "support.subtitle": "通常24時間以内にご返信いたします",
+        "support.loginIssue": "ログインの問題",
+        "support.loginIssueDesc": "ログインできない、コードが届かないなど",
+        "support.bugReport": "不具合の報告",
+        "support.bugReportDesc": "アプリのクラッシュ、機能の問題など",
+        "support.suggestion": "機能の提案",
+        "support.suggestionDesc": "追加してほしい機能や改善案",
+        "support.directEmail": "または直接メールを送信",
+        
         // Common
         "common.ok": "OK",
         "common.cancel": "キャンセル",
@@ -510,6 +543,17 @@ enum TranslationDictionary {
         "language.title": "언어 / Language",
         "language.subtitle": "변경사항이 즉시 적용됩니다. 재시작 필요 없음",
         "language.systemDesc": "iOS 시스템 언어 따르기",
+        
+        // Support
+        "support.title": "문의하기",
+        "support.subtitle": "보통 24시간 이내에 답변드립니다",
+        "support.loginIssue": "로그인 문제",
+        "support.loginIssueDesc": "로그인 불가, 코드 미수신 등",
+        "support.bugReport": "버그 신고",
+        "support.bugReportDesc": "앱 충돌, 기능 오류 등",
+        "support.suggestion": "기능 제안",
+        "support.suggestionDesc": "추가했으면 하는 기능이나 개선 사항",
+        "support.directEmail": "또는 직접 이메일 보내기",
         
         // Common
         "common.ok": "확인",

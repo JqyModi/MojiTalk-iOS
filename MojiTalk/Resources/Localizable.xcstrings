@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "•" : {
+
+    },
     "chat.input.placeholder" : {
       "extractionState" : "manual",
       "localizations" : {

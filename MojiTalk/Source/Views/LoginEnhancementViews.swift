@@ -14,17 +14,17 @@ struct RollingNumberView: View {
     var body: some View {
         HStack(spacing: 4) {
             Text(LocalizedString.Login.statsPrefix)
-                .font(DesignSystem.Fonts.body(size: 14))
+                .font(DesignSystem.Fonts.body(size: 18))
                 .foregroundColor(.white.opacity(0.6))
             
             Text(formattedNumber)
-                .font(DesignSystem.Fonts.heading(size: 16))
+                .font(DesignSystem.Fonts.heading(size: 20))
                 .foregroundColor(DesignSystem.Colors.accent)
                 .monospacedDigit() // Ensures consistent width for smooth animation
                 .contentTransition(.numericText())
             
             Text(LocalizedString.Login.statsSuffix)
-                .font(DesignSystem.Fonts.body(size: 14))
+                .font(DesignSystem.Fonts.body(size: 18))
                 .foregroundColor(.white.opacity(0.6))
         }
         .onAppear {
@@ -189,7 +189,7 @@ struct LoginHelpView: View {
                     }
                 }
             }
-        }
+//        }
         .preferredColorScheme(.dark)
     }
 }

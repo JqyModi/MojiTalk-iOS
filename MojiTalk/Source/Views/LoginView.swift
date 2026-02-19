@@ -3,6 +3,7 @@ import AuthenticationServices
 
 struct LoginView: View {
     @StateObject private var accountManager = AccountManager.shared
+    @ObservedObject private var langManager = LanguageManager.shared
     @State private var email = ""
     @State private var otpCode = ""
     @State private var isLoggingIn = false
@@ -200,7 +201,7 @@ struct LoginView: View {
                 }
             }
             
-            Text("PRO VERSION | Powered by Supabase")
+            Text(LocalizedString.Profile.poweredBy)
                 .font(.system(size: 10))
                 .foregroundColor(.white.opacity(0.2))
         }
@@ -240,7 +241,7 @@ struct LoginView: View {
                 // Success is handled by listener in AccountManager
             } catch {
                 await MainActor.run {
-                    errorMessage = "验证码错误或已过期"
+                    errorMessage = LocalizedString.Login.errorOtpExpired
                     showError = true
                     isLoggingIn = false
                 }

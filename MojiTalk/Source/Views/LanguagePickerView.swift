@@ -15,7 +15,7 @@ struct LanguagePickerView: View {
                 
                 VStack(spacing: 0) {
                     // Header description
-                    Text("选择语言后立即生效，无需重启应用")
+                    Text(LocalizedString.Language.subtitle)
                         .font(DesignSystem.Fonts.body(size: 13))
                         .foregroundColor(.white.opacity(0.5))
                         .padding(.horizontal, 24)
@@ -46,7 +46,7 @@ struct LanguagePickerView: View {
                     Spacer()
                 }
             }
-            .navigationTitle("语言 / Language")
+            .navigationTitle(LocalizedString.Language.title)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -81,7 +81,7 @@ private struct LanguageRow: View {
                         .foregroundColor(.white)
                     
                     if language == .system {
-                        Text("跟随 iOS 系统语言设置")
+                        Text(LocalizedString.Language.systemDesc)
                             .font(DesignSystem.Fonts.body(size: 12))
                             .foregroundColor(.white.opacity(0.4))
                     }
@@ -115,7 +115,7 @@ struct LanguageSettingRow: View {
         Button(action: { showPicker = true }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("语言 / Language")
+                    Text(LocalizedString.Profile.language)
                         .font(DesignSystem.Fonts.heading(size: 16))
                         .foregroundColor(.white)
                     Text(langManager.currentLanguage.flag + " " + langManager.currentLanguage.displayName)

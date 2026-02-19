@@ -8,6 +8,7 @@ struct ChatView: View {
     @ObservedObject private var accountManager = AccountManager.shared
     @ObservedObject private var l2dController = Live2DController.shared
     @ObservedObject private var audioPlayer = AudioPlayerManager.shared
+    @ObservedObject private var langManager = LanguageManager.shared
     @State private var showUserProfile = false
     @State private var scrollTarget: String? = nil
     
@@ -234,7 +235,7 @@ struct ChatView: View {
             ToolResultView(
                 title: viewModel.toolTitle,
                 content: viewModel.toolResultContent,
-                showMoreButton: !viewModel.isDetailedAnalysis && viewModel.toolTitle == "语法精讲",
+                showMoreButton: !viewModel.isDetailedAnalysis && viewModel.toolTitle == LocalizedString.Chat.grammarTitle,
                 onMore: {
                     if let msg = viewModel.selectedMessageForTools {
                         viewModel.analyzeGrammar(message: msg, detailed: true)
@@ -339,7 +340,7 @@ struct MessageBubbleView: View {
                             Label(LocalizedString.Chat.menuAnalyze, systemImage: "text.magnifyingglass")
                         }
                         Button(action: { UIPasteboard.general.string = message.content }) {
-                            Label("复制", systemImage: "doc.on.doc")
+                            Label(LocalizedString.Chat.menuCopy, systemImage: "doc.on.doc")
                         }
                         
                         Divider()
@@ -436,7 +437,7 @@ struct ToolResultView: View {
                     if showMoreButton {
                         Button(action: { onMore?() }) {
                             HStack {
-                                Text("查看详细解析")
+                                Text(LocalizedString.Chat.detailedAnalysis)
                                 Image(systemName: "chevron.down.circle")
                             }
                             .font(.system(size: 14, weight: .bold))
@@ -498,7 +499,7 @@ struct ControlPanel: View {
             }
             
             // Input Field
-            TextField(isRecording ? "正在录音..." : LocalizedString.Chat.inputPlaceholder, text: $inputText, axis: .vertical)
+            TextField(isRecording ? LocalizedString.Chat.inputRecording : LocalizedString.Chat.inputPlaceholder, text: $inputText, axis: .vertical)
                 .lineLimit(1...5)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -559,6 +560,7 @@ struct ControlPanel: View {
 
 struct UserProfileView: View {
     @StateObject private var accountManager = AccountManager.shared
+    @ObservedObject private var langManager = LanguageManager.shared
     @Binding var isAutoPlayEnabled: Bool
     var onLogout: () -> Void
     var onDeleteAccount: () -> Void
@@ -621,7 +623,7 @@ struct UserProfileView: View {
                                 Text(LocalizedString.Profile.autoPlayTTS)
                                     .font(DesignSystem.Fonts.heading(size: 16))
                                     .foregroundColor(.white)
-                                Text("收到 AI 回复后自动朗读内容")
+                                Text(LocalizedString.Profile.autoPlayTTSDesc)
                                     .font(DesignSystem.Fonts.body(size: 12))
                                     .foregroundColor(.white.opacity(0.4))
                             }
@@ -670,7 +672,7 @@ struct UserProfileView: View {
                     .padding(.horizontal, 40)
                     
                     // Copyright / Version
-                    Text("MOJiTalk MVP v0.2")
+                    Text(LocalizedString.Profile.version)
                         .font(.caption2)
                         .foregroundColor(.white.opacity(0.2))
                         .padding(.bottom, 20)

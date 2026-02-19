@@ -6,6 +6,7 @@ import MojiLive2D
 struct MojiTalkApp: App {
     @StateObject private var appState = AppState()
     @StateObject private var accountManager = AccountManager.shared
+    @ObservedObject private var langManager = LanguageManager.shared
 
     init() {
         // Initialize Live2D Framework
@@ -41,6 +42,7 @@ struct MojiTalkApp: App {
             .environmentObject(appState)
             .animation(.spring(response: 0.5, dampingFraction: 0.8), value: accountManager.isLoggedIn)
             .animation(.easeInOut, value: accountManager.isInitializing)
+            .id(langManager.currentLanguage) // Force entire view hierarchy rebuild on language change
         }
     }
 }

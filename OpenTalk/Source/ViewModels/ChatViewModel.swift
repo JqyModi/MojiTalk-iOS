@@ -289,7 +289,7 @@ class ChatViewModel: ObservableObject {
         if let p = testWav, FileManager.default.fileExists(atPath: p) { return p }
         
         // 3. 兜底：如果是在模拟器，且本地有转换好的文件路径（硬编码仅供调试）
-        let hardcodedPath = "/Users/modi/Documents/数据迁移/xcode/Project/MainApp/opentalk-ios/OpenTalk/OpenTalk/Resources/Audio/test.wav"
+        let hardcodedPath = "/Users/modi/Documents/数据迁移/xcode/Project/MainApp/OpenTalk-iOS/OpenTalk/Resources/Audio/test.wav"
         if FileManager.default.fileExists(atPath: hardcodedPath) { return hardcodedPath }
         
         return nil

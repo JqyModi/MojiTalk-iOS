@@ -1,0 +1,28 @@
+//
+//  OpenMTKView.h
+//  MOJiLive2D
+//
+//  Created by HaoXiang Lin on 2024/10/28.
+//
+
+#import <MetalKit/MetalKit.h>
+
+NS_ASSUME_NONNULL_BEGIN
+@class OpenL2DConfigurationModel;
+
+@interface OpenMTKView : MTKView
+
+- (instancetype)initWithConfigurationModel:(nullable OpenL2DConfigurationModel *)model;
+
+- (void)loadAndPlayAudioFile:(NSString *)filePath targetKey:(NSString *)targetKey;
+
+- (void)setAudioPlaybackSpeed:(float)speed;
+
+- (void)stopPlayAudio;
+- (void)setPreferredFPS:(NSInteger)fps;
+
+@property (nonatomic, copy, nullable) void (^onLoadingComplete)(void);
+
+@end
+
+NS_ASSUME_NONNULL_END

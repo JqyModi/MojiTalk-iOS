@@ -50,7 +50,7 @@
 ### 6. Live2D 桥接集成 (P2 - 进展显著)
 - [x] 创建 `Live2DView` 基础容器 (UIViewRepresentable UI层)
 - [x] 调研并迁移 Live2D 核心实现 (集成 Core & Framework)
-- [x] 建立模块化集成方案 (`MojiLive2D` Pod 模块)
+- [x] 建立模块化集成方案 (`OpenLive2D` Pod 模块)
     - [x] 完成多级头文件路径修正
     - [x] 解决 C++ 接口泄漏导致的 Swift 模块编译失败问题
     - [x] 修正真机/模拟器构建下的架构链接问题 (支持 M 芯片 Mac Rosetta 调试)
@@ -120,7 +120,7 @@
     - [x] 点击后弹出 Sheet 展示常见登录问题 FAQ
     - [x] 包含"联系客服"入口 (邮箱或在线客服链接)
   - [x] 优化欢迎文案动态切换
-    - [x] 实现多条欢迎语随机轮播 (如"Ready to learn!" / "欢迎使用可呆口语！")
+    - [x] 实现多条欢迎语随机轮播 (如"Ready to learn!" / "欢迎使用OpenTalk！")
 
 ### 13. 国际化支持 (i18n) ✅
 - [x] **[High]** 配置多语言框架 ✅

@@ -1,7 +1,7 @@
-# MojiTalk (MOJi说) UI/UX 设计方案 - Pro Max 版
+# OpenTalk (MOJi说) UI/UX 设计方案 - Pro Max 版
 
 ## 1. 设计理念 (Design Philosophy)
-MojiTalk 的设计旨在打破传统学习软件的沉稳感，通过 **“情感化设计 (Emotional Design)”** 和 **“极简主义 (Minimalism)”** 的结合，创造一个温和、专业且具有呼吸感的口语练习环境。
+OpenTalk 的设计旨在打破传统学习软件的沉稳感，通过 **“情感化设计 (Emotional Design)”** 和 **“极简主义 (Minimalism)”** 的结合，创造一个温和、专业且具有呼吸感的口语练习环境。
 
 ### 核心关键词
 - **Fluid (流畅)**: 动效衔接自然，无断层。

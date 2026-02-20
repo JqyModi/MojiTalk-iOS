@@ -42,6 +42,6 @@ curl -X POST 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-gen
 
 
 ## Supabase 项目配置信息（建议保存）：
-项目名称：MojiTalk-Auth
+项目名称：OpenTalk-Auth
 Project URL: https://rrzbufeslmqphlboulwi.supabase.co
 API Key (Anon): sb_publishable_2evChfbaOKKrx0Z_juvmgg_CEhxnaql

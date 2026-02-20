@@ -9,10 +9,10 @@ import json
 translations = {
     # Login
     "login.title": {
-        "zh-Hans": "MOJiTalk",
-        "en": "MOJiTalk",
-        "ja": "MOJiTalk",
-        "ko": "MOJiTalk"
+        "zh-Hans": "OpenTalk",
+        "en": "OpenTalk",
+        "ja": "OpenTalk",
+        "ko": "OpenTalk"
     },
     "login.subtitle": {
         "zh-Hans": "沉浸式日语口语对话",
@@ -112,9 +112,9 @@ translations = {
     },
     "login.welcome.2": {
         "zh-Hans": "欢迎使用可呆口语！",
-        "en": "Welcome to MOJiTalk!",
-        "ja": "MOJiTalkへようこそ！",
-        "ko": "MOJiTalk에 오신 것을 환영합니다!"
+        "en": "Welcome to OpenTalk!",
+        "ja": "OpenTalkへようこそ！",
+        "ko": "OpenTalk에 오신 것을 환영합니다!"
     },
     "login.welcome.3": {
         "zh-Hans": "日本語を話しましょう！",
@@ -179,10 +179,10 @@ translations = {
         "ko": "Apple 로그인 실패?"
     },
     "loginHelp.faq2.answer": {
-        "zh-Hans": "1. 确保您的设备已登录 Apple ID\n2. 检查网络连接是否正常\n3. 在设置中允许 MOJiTalk 使用 Apple 登录\n4. 重启应用后重试",
-        "en": "1. Ensure your device is signed in with Apple ID\n2. Check network connection\n3. Allow MOJiTalk to use Apple Sign In in Settings\n4. Restart app and retry",
-        "ja": "1. デバイスがApple IDでサインインしていることを確認してください\n2. ネットワーク接続を確認してください\n3. 設定でMOJiTalkがAppleサインインを使用することを許可してください\n4. アプリを再起動して再試行してください",
-        "ko": "1. 기기가 Apple ID로 로그인되어 있는지 확인하세요\n2. 네트워크 연결을 확인하세요\n3. 설정에서 MOJiTalk의 Apple 로그인 사용을 허용하세요\n4. 앱을 재시작한 후 다시 시도하세요"
+        "zh-Hans": "1. 确保您的设备已登录 Apple ID\n2. 检查网络连接是否正常\n3. 在设置中允许 OpenTalk 使用 Apple 登录\n4. 重启应用后重试",
+        "en": "1. Ensure your device is signed in with Apple ID\n2. Check network connection\n3. Allow OpenTalk to use Apple Sign In in Settings\n4. Restart app and retry",
+        "ja": "1. デバイスがApple IDでサインインしていることを確認してください\n2. ネットワーク接続を確認してください\n3. 設定でOpenTalkがAppleサインインを使用することを許可してください\n4. アプリを再起動して再試行してください",
+        "ko": "1. 기기가 Apple ID로 로그인되어 있는지 확인하세요\n2. 네트워크 연결을 확인하세요\n3. 설정에서 OpenTalk의 Apple 로그인 사용을 허용하세요\n4. 앱을 재시작한 후 다시 시도하세요"
     },
     "loginHelp.faq3.question": {
         "zh-Hans": "验证码过期了？",
@@ -432,7 +432,7 @@ for key, langs in translations.items():
         }
 
 # Write to file
-output_path = "/Users/modi/ai_completion/MojiTalk-iOS/MojiTalk/Resources/Localizable.xcstrings"
+output_path = "/Users/modi/ai_completion/OpenTalk-iOS/OpenTalk/Resources/Localizable.xcstrings"
 with open(output_path, 'w', encoding='utf-8') as f:
     json.dump(xcstrings, f, ensure_ascii=False, indent=2)
 

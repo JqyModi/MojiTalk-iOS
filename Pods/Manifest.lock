@@ -1,9 +1,9 @@
 PODS:
-  - MojiLive2D (0.1.0)
+  - OpenLive2D (0.1.0)
   - SSZipArchive (2.6.0)
 
 DEPENDENCIES:
-  - MojiLive2D (from `./Libs/Live2D`)
+  - OpenLive2D (from `./Libs/Live2D`)
   - SSZipArchive
 
 SPEC REPOS:
@@ -11,13 +11,13 @@ SPEC REPOS:
     - SSZipArchive
 
 EXTERNAL SOURCES:
-  MojiLive2D:
+  OpenLive2D:
     :path: "./Libs/Live2D"
 
 SPEC CHECKSUMS:
-  MojiLive2D: 4537f2baff5286346617032a3c90a0452a8889ab
+  OpenLive2D: 2514dc6fe56c9e96134510e49520be903c713409
   SSZipArchive: 8a6ee5677c8e304bebc109e39cf0da91ccef22ea
 
-PODFILE CHECKSUM: 577209b12f83efc26cd980dd57d0bc0bc80a970e
+PODFILE CHECKSUM: e3bb7020b85dc3576497138bf9b20d8cab0a7368
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

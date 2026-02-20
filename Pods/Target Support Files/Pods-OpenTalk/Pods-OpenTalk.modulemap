@@ -1,0 +1,6 @@
+framework module Pods_OpenTalk {
+  umbrella header "Pods-OpenTalk-umbrella.h"
+
+  export *
+  module * { export * }
+}

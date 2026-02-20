@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks.sh
+${BUILT_PRODUCTS_DIR}/OpenLive2D/OpenLive2D.framework
+${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework

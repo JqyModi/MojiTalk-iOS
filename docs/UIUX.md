@@ -1,6 +1,6 @@
-# MojiTalk (MOJi说) UI/UX 设计方案 - Pro Max 版
+# OpenTalk (MOJi说) UI/UX 设计方案 - Pro Max 版
 
-> 本方案由 `ui-ux-pro-max` 工具分析生成，旨在为 MojiTalk 提供顶级的日语沉浸式对话体验。
+> 本方案由 `ui-ux-pro-max` 工具分析生成，旨在为 OpenTalk 提供顶级的日语沉浸式对话体验。
 
 ## 1. 设计风格：液态玻璃 (Liquid Glass)
 基于日语学习的特殊性，我们选择 **“液态玻璃”** 风格，强调流动性、平滑过渡和半透明层次感。

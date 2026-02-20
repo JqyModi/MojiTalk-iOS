@@ -9,7 +9,7 @@
 #import "L2DRenderer.h"
 #import "Rendering/Metal/CubismRenderer_Metal.hpp"
 #import "Rendering/Metal/CubismRenderingInstanceSingleton_Metal.h"
-#import "MOJiL2DConfigurationModel.h"
+#import "OpenL2DConfigurationModel.h"
 #import "L2DCacheManager.h"
 #import "L2DPal.h"
 
@@ -21,13 +21,13 @@
 
 @property (nonatomic, strong) MTLRenderPassDescriptor* renderPassDescriptor;
 
-@property (nonatomic, weak, nullable) MOJiL2DConfigurationModel *configurationModel;
+@property (nonatomic, weak, nullable) OpenL2DConfigurationModel *configurationModel;
 
 @end
 
 @implementation L2DRenderer
 
-- (instancetype)initWithConfigurationModel:(nullable MOJiL2DConfigurationModel *)model {
+- (instancetype)initWithConfigurationModel:(nullable OpenL2DConfigurationModel *)model {
     self = [super init];
     if (self) {
         _renderBuffer = nil;

@@ -1,8 +1,8 @@
-# MOJiTalk Privacy Policy
+# OpenTalk Privacy Policy
 
 **Effective Date: February 6, 2026**
 
-Welcome to MOJiTalk. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application.
+Welcome to OpenTalk. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you use our application.
 
 ## 1. Information We Collect
 - **Account Information**: When you log in, we store your username and authentication tokens to provide session continuity.
@@ -26,4 +26,4 @@ We do not sell your personal data. Your message content is sent to our AI servic
 We implement industry-standard security measures to protect your data during transmission and storage.
 
 ## 6. Contact Us
-If you have any questions about this Privacy Policy, please contact us at: support@mojitalk.example.com
+If you have any questions about this Privacy Policy, please contact us at: support@opentalk.example.com

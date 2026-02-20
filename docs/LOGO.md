@@ -1,8 +1,8 @@
-# MojiTalk (MOJi说) Logo 设计方案
+# OpenTalk (MOJi说) Logo 设计方案
 
 ## 1. 设计思路与品牌定调
 
-根据 MojiTalk 的 [UI/UX 设计方案](./UIUX.md)，我们的 Logo 需要体现“液态玻璃 (Liquid Glass)”的质感，同时传达出一种高级、沉浸且具有文学气息的氛围。
+根据 OpenTalk 的 [UI/UX 设计方案](./UIUX.md)，我们的 Logo 需要体现“液态玻璃 (Liquid Glass)”的质感，同时传达出一种高级、沉浸且具有文学气息的氛围。
 
 ### 品牌定调
 - **核心关键词**: 沉浸 (Immersive)、智慧 (Intelligent)、流动 (Fluid)、高级 (Premium)。
@@ -34,14 +34,14 @@
 该方案侧重于“沉浸式交互”的正负形表达。
 - **视觉构成**: 一个多层叠加的圆角立方体，最外层是完全透明的液态玻璃，内层是一个发光的金色“M”字符，周围环绕着极细的数码光点。
 - **材质预期**: 极致的透明感、折射效果、内部发光。
-- **品牌寓意**: 象征 MojiTalk 是通往日语世界的智慧窗口。
+- **品牌寓意**: 象征 OpenTalk 是通往日语世界的智慧窗口。
 
 ---
 
 ## 3. 图像生成 Prompt (Nano Banana Pro)
 
 ### 方案一 Prompt
-> **Objective**: A high-end minimalist app icon for "MojiTalk".
+> **Objective**: A high-end minimalist app icon for "OpenTalk".
 > **Subject**: Two intertwining fluid golden ribbons forming an abstract speech bubble shape.
 > **Style**: 3D rendered, masterpiece, professional design.
 > **Material**: Liquid gold texture with elegant light reflections, floating inside an ultra-thin translucent dark glass sphere.

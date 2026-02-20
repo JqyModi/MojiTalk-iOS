@@ -12,7 +12,7 @@
 #import "Math/CubismMatrix44.hpp"
 #import "Type/csmVector.hpp"
 
-@class MOJiL2DConfigurationModel;
+@class OpenL2DConfigurationModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
  * @brief   构造方法
  *
  */
-- (instancetype)initWithConfigurationModel:(nullable MOJiL2DConfigurationModel *)model;
+- (instancetype)initWithConfigurationModel:(nullable OpenL2DConfigurationModel *)model;
 
 /**
  * @brief   更新屏幕时的处理

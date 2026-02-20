@@ -4,7 +4,7 @@
 2026-02-17
 
 ## 🎯 目标
-为 MojiTalk iOS 应用添加完整的国际化支持，使应用能够支持多种语言，提升全球用户体验。
+为 OpenTalk iOS 应用添加完整的国际化支持，使应用能够支持多种语言，提升全球用户体验。
 
 ---
 
@@ -66,7 +66,7 @@
 
 **欢迎消息示例**：
 1. "Ready to learn!" / "学習を始めましょう！" / "학습을 시작하세요!"
-2. "欢迎使用可呆口语！" / "Welcome to MOJiTalk!" / "MOJiTalkへようこそ！"
+2. "欢迎使用OpenTalk！" / "Welcome to OpenTalk!" / "OpenTalkへようこそ！"
 3. "日本語を話しましょう！" / "Let's speak Japanese!" / "일본어를 말해봅시다!"
 
 #### 2.3 引导页 (OnboardingOverlayView)
@@ -130,7 +130,7 @@
 
 ### 文件结构
 ```
-MojiTalk/
+OpenTalk/
 ├── Resources/
 │   └── Localizable.xcstrings          # 本地化资源文件
 ├── Source/
@@ -226,7 +226,7 @@ Text(LocalizedString.Login.getCode)
 Text(LocalizedString.Login.title)
 
 // ❌ 错误
-Text("MOJiTalk")
+Text("OpenTalk")
 ```
 
 ### 2. 避免字符串拼接
@@ -250,7 +250,7 @@ Text(String(format: LocalizedString.Login.statsFormat, count))
 
 ## 📝 总结
 
-本次国际化实施成功为 MojiTalk iOS 应用添加了完整的多语言支持，覆盖了所有主要 UI 组件和用户交互场景。通过类型安全的访问层和自动化工具，我们建立了一个可维护、可扩展的国际化基础设施，为未来的全球化发展奠定了坚实基础。
+本次国际化实施成功为 OpenTalk iOS 应用添加了完整的多语言支持，覆盖了所有主要 UI 组件和用户交互场景。通过类型安全的访问层和自动化工具，我们建立了一个可维护、可扩展的国际化基础设施，为未来的全球化发展奠定了坚实基础。
 
 **关键成果**：
 - ✅ 4 种语言全面支持

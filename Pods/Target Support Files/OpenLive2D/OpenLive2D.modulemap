@@ -1,0 +1,6 @@
+framework module OpenLive2D {
+  umbrella header "OpenLive2D-umbrella.h"
+
+  export *
+  module * { export * }
+}

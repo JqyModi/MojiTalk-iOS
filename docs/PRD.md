@@ -71,7 +71,7 @@ MOJi会话是一款专为日语学习者打造的沉浸式口语练习应用。�
 ---
 
 ## 5. 项目亮点与挑战
-- **Live2D 同步**：利用 `MOJiL2DTalkView` 实现了 AI 语音播放与 Live2D 模型表情、口型、动作的精确同步。
+- **Live2D 同步**：利用 `OpenL2DTalkView` 实现了 AI 语音播放与 Live2D 模型表情、口型、动作的精确同步。
 - **配置驱动**：场景对话与口语册内容多由 `MDConfigHelper` 动态配置驱动，具备高度灵活性。
 - **全球化支持**：多语言包 (`.xcstrings`) 完整适配简繁中、英、韩，UI 布局支持多语言自适应。
 - **CI/CD 自动化**：通过 Fastlane 和 GitLab CI 实现自动化发包，并针对 App Store 审核有严格的关键词防护（wxpay/alipay 等敏感词自动检测）。

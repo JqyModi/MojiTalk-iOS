@@ -1,553 +1,1428 @@
-// !$*UTF8*$!
-{
-	archiveVersion = 1;
-	classes = {
-	};
-	objectVersion = 56;
-	objects = {
-
-/* Begin PBXBuildFile section */
-		1231A3892D19444490D76C49 /* Live2DView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD596DC001F14EBDB4EE15EB /* Live2DView.swift */; };
-		1B6A28F610F64DC88797D1FE /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53456525C3240B3B1F8689D /* AudioPlayerManager.swift */; };
-		29B8A27734E44DFCB90DD501 /* LegalDocumentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D0DB35B77C452DABADB276 /* LegalDocumentView.swift */; };
-		2BA716DDC71148BEB014991C /* LocalizedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01E520753C496EBBCC6AE6 /* LocalizedString.swift */; };
-		2C43739947A61460B82A6B1E /* Pods_OpenTalk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED0845A419C798724EA5291E /* Pods_OpenTalk.framework */; };
-		2E9E6A66422D404D8E4F8ABF /* SSIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BC131CD40244AAA710BCA7 /* SSIService.swift */; };
-		32E9BEB3FAFF4B5BB4BF6F7C /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933B04CF855040E188103301 /* NetworkService.swift */; };
-		3437E0F6EC82497D962F222C /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 971A498574CB47CBA5A1D565 /* LoginView.swift */; };
-		3C8722EE6A1240F88D95BBC2 /* MessageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DF04DC2A514D5C90C95DFC /* MessageStorage.swift */; };
-		516930ADCCC84BAC9FB5BE5F /* LanguageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89FB17E7AC5F4AC280C77AC3 /* LanguageManager.swift */; };
-		62259CDF96FB400CB3EAC7AE /* SupabaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85C24552A682436B8F2EA548 /* SupabaseConfig.swift */; };
-		6CCD9241FE534EFF81A36698 /* LoginEnhancementViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71367497BFCB45B2868E31DD /* LoginEnhancementViews.swift */; };
-		6FB3985AF37A4BFE86AEFB5D /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BA77CA5B8E441688AA99C2E /* ChatView.swift */; };
-		749503C3693641439F0E215D /* AudioRecorderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27C588723694BA9ABCCC789 /* AudioRecorderManager.swift */; };
-		BF54FCA1A78A454BB9AA9BED /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBFD8E3D64BB457CBCF5DC7F /* DesignSystem.swift */; };
-		C00C843057AD45B1A12735D4 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = D8DC608BB3354B4DA9170C72 /* Localizable.xcstrings */; };
-		C5499C7C2F3B875C00C7DE7A /* Supabase in Frameworks */ = {isa = PBXBuildFile; productRef = DF46602A257E3CBF20936EA0 /* Supabase */; };
-		C701739D430A448AB86DB4A8 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3AC13F87E543279EA3F100 /* AccountManager.swift */; };
-		D253F52FEA8A40F0963FC068 /* OpenL2DFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F260CC86D44809940FB893 /* OpenL2DFileManager.swift */; };
-		E9C30E96A22042FEB4D05433 /* OpenTalkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318A01CAF6C421E875DF498 /* OpenTalkApp.swift */; };
-		EAA3DE60ECE64CD8BFA5990D /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2C3391CD55A4BAA81FA0B52 /* MessageModel.swift */; };
-		F09B1271B8EC45F2900183D0 /* ChatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0151CF8EB3724D718B835B27 /* ChatViewModel.swift */; };
-		F67CF4871637496EBBFA823F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64A95A8E5E2746248FB7D472 /* Assets.xcassets */; };
-		FAF066FFAD944DE4906A8D55 /* LanguagePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543094E18BDB43839077B67C /* LanguagePickerView.swift */; };
-		FC51132FD83A4A26ABB9D025 /* OnboardingOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7253125A73DD4D1982D788BD /* OnboardingOverlayView.swift */; };
-/* End PBXBuildFile section */
-
-/* Begin PBXFileReference section */
-		0151CF8EB3724D718B835B27 /* ChatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatViewModel.swift; path = Source/ViewModels/ChatViewModel.swift; sourceTree = "<group>"; };
-		04F260CC86D44809940FB893 /* OpenL2DFileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenL2DFileManager.swift; path = Source/Utils/OpenL2DFileManager.swift; sourceTree = "<group>"; };
-		10DF04DC2A514D5C90C95DFC /* MessageStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageStorage.swift; path = Source/Services/MessageStorage.swift; sourceTree = "<group>"; };
-		14D0DB35B77C452DABADB276 /* LegalDocumentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LegalDocumentView.swift; path = Source/Views/LegalDocumentView.swift; sourceTree = "<group>"; };
-		2AFB483D63820DBBEA9FD101 /* Pods-OpenTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenTalk.debug.xcconfig"; path = "Target Support Files/Pods-OpenTalk/Pods-OpenTalk.debug.xcconfig"; sourceTree = "<group>"; };
-		3BA77CA5B8E441688AA99C2E /* ChatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ChatView.swift; path = Source/Views/ChatView.swift; sourceTree = "<group>"; };
-		4318A01CAF6C421E875DF498 /* OpenTalkApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OpenTalkApp.swift; path = Source/OpenTalkApp.swift; sourceTree = "<group>"; };
-		4C4146268DD14BE692C7AE25 /* OpenTalk-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "OpenTalk-Bridging-Header.h"; path = "Source/OpenTalk-Bridging-Header.h"; sourceTree = "<group>"; };
-		4F3AC13F87E543279EA3F100 /* AccountManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountManager.swift; path = Source/Services/AccountManager.swift; sourceTree = "<group>"; };
-		543094E18BDB43839077B67C /* LanguagePickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguagePickerView.swift; path = Source/Views/LanguagePickerView.swift; sourceTree = "<group>"; };
-		60BC131CD40244AAA710BCA7 /* SSIService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SSIService.swift; path = Source/Services/SSIService.swift; sourceTree = "<group>"; };
-		64A95A8E5E2746248FB7D472 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets.xcassets; sourceTree = "<group>"; };
-		71367497BFCB45B2868E31DD /* LoginEnhancementViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginEnhancementViews.swift; path = Source/Views/LoginEnhancementViews.swift; sourceTree = "<group>"; };
-		7253125A73DD4D1982D788BD /* OnboardingOverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnboardingOverlayView.swift; path = Source/Views/OnboardingOverlayView.swift; sourceTree = "<group>"; };
-		85C24552A682436B8F2EA548 /* SupabaseConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SupabaseConfig.swift; path = Source/Utils/SupabaseConfig.swift; sourceTree = "<group>"; };
-		89FB17E7AC5F4AC280C77AC3 /* LanguageManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LanguageManager.swift; path = Source/Utilities/LanguageManager.swift; sourceTree = "<group>"; };
-		90B98D7A6A761E0107D4D535 /* Pods-OpenTalk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenTalk.release.xcconfig"; path = "Target Support Files/Pods-OpenTalk/Pods-OpenTalk.release.xcconfig"; sourceTree = "<group>"; };
-		933B04CF855040E188103301 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = Source/Services/NetworkService.swift; sourceTree = "<group>"; };
-		971A498574CB47CBA5A1D565 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginView.swift; path = Source/Views/LoginView.swift; sourceTree = "<group>"; };
-		A9BE11CBCC9D4294A0300703 /* OpenTalk.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = OpenTalk.entitlements; path = OpenTalk.entitlements; sourceTree = "<group>"; };
-		C51D39932F325718005A5064 /* OpenTalk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenTalk.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CD596DC001F14EBDB4EE15EB /* Live2DView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Live2DView.swift; path = Source/Views/Live2DView.swift; sourceTree = "<group>"; };
-		D53456525C3240B3B1F8689D /* AudioPlayerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioPlayerManager.swift; path = Source/Services/AudioPlayerManager.swift; sourceTree = "<group>"; };
-		D8DC608BB3354B4DA9170C72 /* Localizable.xcstrings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = Resources/Localizable.xcstrings; sourceTree = "<group>"; };
-		E27C588723694BA9ABCCC789 /* AudioRecorderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AudioRecorderManager.swift; path = Source/Services/AudioRecorderManager.swift; sourceTree = "<group>"; };
-		EA01E520753C496EBBCC6AE6 /* LocalizedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocalizedString.swift; path = Source/Utilities/LocalizedString.swift; sourceTree = "<group>"; };
-		ED0845A419C798724EA5291E /* Pods_OpenTalk.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenTalk.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F2C3391CD55A4BAA81FA0B52 /* MessageModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MessageModel.swift; path = Source/Models/MessageModel.swift; sourceTree = "<group>"; };
-		FBFD8E3D64BB457CBCF5DC7F /* DesignSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DesignSystem.swift; path = Source/Utils/DesignSystem.swift; sourceTree = "<group>"; };
-/* End PBXFileReference section */
-
-/* Begin PBXFrameworksBuildPhase section */
-		C51D39902F325718005A5064 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5499C7C2F3B875C00C7DE7A /* Supabase in Frameworks */,
-				2C43739947A61460B82A6B1E /* Pods_OpenTalk.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
-/* Begin PBXGroup section */
-		70C94602C4C50D8B222CCAF5 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2AFB483D63820DBBEA9FD101 /* Pods-OpenTalk.debug.xcconfig */,
-				90B98D7A6A761E0107D4D535 /* Pods-OpenTalk.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		C51D398A2F325718005A5064 = {
-			isa = PBXGroup;
-			children = (
-				C51D39952F325718005A5064 /* OpenTalk */,
-				C51D39942F325718005A5064 /* Products */,
-				70C94602C4C50D8B222CCAF5 /* Pods */,
-				D26C5181E014F2A34C466A68 /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		C51D39942F325718005A5064 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				C51D39932F325718005A5064 /* OpenTalk.app */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		C51D39952F325718005A5064 /* OpenTalk */ = {
-			isa = PBXGroup;
-			children = (
-				64A95A8E5E2746248FB7D472 /* Assets.xcassets */,
-				A9BE11CBCC9D4294A0300703 /* OpenTalk.entitlements */,
-				D8DC608BB3354B4DA9170C72 /* Localizable.xcstrings */,
-				F2C3391CD55A4BAA81FA0B52 /* MessageModel.swift */,
-				4C4146268DD14BE692C7AE25 /* OpenTalk-Bridging-Header.h */,
-				4318A01CAF6C421E875DF498 /* OpenTalkApp.swift */,
-				4F3AC13F87E543279EA3F100 /* AccountManager.swift */,
-				D53456525C3240B3B1F8689D /* AudioPlayerManager.swift */,
-				E27C588723694BA9ABCCC789 /* AudioRecorderManager.swift */,
-				10DF04DC2A514D5C90C95DFC /* MessageStorage.swift */,
-				933B04CF855040E188103301 /* NetworkService.swift */,
-				60BC131CD40244AAA710BCA7 /* SSIService.swift */,
-				89FB17E7AC5F4AC280C77AC3 /* LanguageManager.swift */,
-				EA01E520753C496EBBCC6AE6 /* LocalizedString.swift */,
-				FBFD8E3D64BB457CBCF5DC7F /* DesignSystem.swift */,
-				04F260CC86D44809940FB893 /* OpenL2DFileManager.swift */,
-				85C24552A682436B8F2EA548 /* SupabaseConfig.swift */,
-				0151CF8EB3724D718B835B27 /* ChatViewModel.swift */,
-				3BA77CA5B8E441688AA99C2E /* ChatView.swift */,
-				543094E18BDB43839077B67C /* LanguagePickerView.swift */,
-				14D0DB35B77C452DABADB276 /* LegalDocumentView.swift */,
-				CD596DC001F14EBDB4EE15EB /* Live2DView.swift */,
-				71367497BFCB45B2868E31DD /* LoginEnhancementViews.swift */,
-				971A498574CB47CBA5A1D565 /* LoginView.swift */,
-				7253125A73DD4D1982D788BD /* OnboardingOverlayView.swift */,
-			);
-			path = OpenTalk;
-			sourceTree = "<group>";
-		};
-		D26C5181E014F2A34C466A68 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				ED0845A419C798724EA5291E /* Pods_OpenTalk.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-/* End PBXGroup section */
-
-/* Begin PBXNativeTarget section */
-		C51D39922F325718005A5064 /* OpenTalk */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C51D399E2F325719005A5064 /* Build configuration list for PBXNativeTarget "OpenTalk" */;
-			buildPhases = (
-				70909FCCC267E6AA72F42AB4 /* [CP] Check Pods Manifest.lock */,
-				C51D398F2F325718005A5064 /* Sources */,
-				C51D39902F325718005A5064 /* Frameworks */,
-				C51D39912F325718005A5064 /* Resources */,
-				A3708B202643C9E301DD5EEB /* [CP] Embed Pods Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = OpenTalk;
-			packageProductDependencies = (
-				DF46602A257E3CBF20936EA0 /* Supabase */,
-			);
-			productName = OpenTalk;
-			productReference = C51D39932F325718005A5064 /* OpenTalk.app */;
-			productType = "com.apple.product-type.application";
-		};
-/* End PBXNativeTarget section */
-
-/* Begin PBXProject section */
-		C51D398B2F325718005A5064 /* Project object */ = {
-			isa = PBXProject;
-			attributes = {
-				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 2620;
-				TargetAttributes = {
-					C51D39922F325718005A5064 = {
-						CreatedOnToolsVersion = 26.2;
-					};
-				};
-			};
-			buildConfigurationList = C51D398E2F325718005A5064 /* Build configuration list for PBXProject "OpenTalk" */;
-			developmentRegion = en;
-			hasScannedForEncodings = 0;
-			knownRegions = (
-				en,
-				Base,
-			);
-			mainGroup = C51D398A2F325718005A5064;
-			packageReferences = (
-				92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */,
-			);
-			productRefGroup = C51D39942F325718005A5064 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
-			targets = (
-				C51D39922F325718005A5064 /* OpenTalk */,
-			);
-		};
-/* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		C51D39912F325718005A5064 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F67CF4871637496EBBFA823F /* Assets.xcassets in Resources */,
-				C00C843057AD45B1A12735D4 /* Localizable.xcstrings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		70909FCCC267E6AA72F42AB4 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OpenTalk-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A3708B202643C9E301DD5EEB /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
-
-/* Begin PBXSourcesBuildPhase section */
-		C51D398F2F325718005A5064 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				EAA3DE60ECE64CD8BFA5990D /* MessageModel.swift in Sources */,
-				E9C30E96A22042FEB4D05433 /* OpenTalkApp.swift in Sources */,
-				C701739D430A448AB86DB4A8 /* AccountManager.swift in Sources */,
-				1B6A28F610F64DC88797D1FE /* AudioPlayerManager.swift in Sources */,
-				749503C3693641439F0E215D /* AudioRecorderManager.swift in Sources */,
-				3C8722EE6A1240F88D95BBC2 /* MessageStorage.swift in Sources */,
-				32E9BEB3FAFF4B5BB4BF6F7C /* NetworkService.swift in Sources */,
-				2E9E6A66422D404D8E4F8ABF /* SSIService.swift in Sources */,
-				516930ADCCC84BAC9FB5BE5F /* LanguageManager.swift in Sources */,
-				2BA716DDC71148BEB014991C /* LocalizedString.swift in Sources */,
-				BF54FCA1A78A454BB9AA9BED /* DesignSystem.swift in Sources */,
-				D253F52FEA8A40F0963FC068 /* OpenL2DFileManager.swift in Sources */,
-				62259CDF96FB400CB3EAC7AE /* SupabaseConfig.swift in Sources */,
-				F09B1271B8EC45F2900183D0 /* ChatViewModel.swift in Sources */,
-				6FB3985AF37A4BFE86AEFB5D /* ChatView.swift in Sources */,
-				FAF066FFAD944DE4906A8D55 /* LanguagePickerView.swift in Sources */,
-				29B8A27734E44DFCB90DD501 /* LegalDocumentView.swift in Sources */,
-				1231A3892D19444490D76C49 /* Live2DView.swift in Sources */,
-				6CCD9241FE534EFF81A36698 /* LoginEnhancementViews.swift in Sources */,
-				3437E0F6EC82497D962F222C /* LoginView.swift in Sources */,
-				FC51132FD83A4A26ABB9D025 /* OnboardingOverlayView.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXSourcesBuildPhase section */
-
-/* Begin XCBuildConfiguration section */
-		C51D399C2F325719005A5064 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
-				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		C51D399D2F325719005A5064 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_ENABLE_OBJC_WEAK = YES;
-				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_COMMA = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INFINITE_RECURSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
-				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
-				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
-				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
-				CLANG_WARN_STRICT_PROTOTYPES = YES;
-				CLANG_WARN_SUSPICIOUS_MOVE = YES;
-				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
-				GCC_C_LANGUAGE_STANDARD = gnu17;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
-		C51D399F2F325719005A5064 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2AFB483D63820DBBEA9FD101 /* Pods-OpenTalk.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OpenTalk/OpenTalk.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZZG8SS9R2S;
-				ENABLE_PREVIEWS = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = "";
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphoneos",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphonesimulator",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphoneos",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphonesimulator",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.open.OpenTalk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		C51D39A02F325719005A5064 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 90B98D7A6A761E0107D4D535 /* Pods-OpenTalk.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = OpenTalk/OpenTalk.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = ZZG8SS9R2S;
-				ENABLE_PREVIEWS = YES;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSAppTransportSecurity = "{\n\t\t\tNSAllowsArbitraryLoads = YES;\n\t\t}";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Access Your Microphone.";
-				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Recognize Your Speech.";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphoneos",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphonesimulator",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphoneos",
-					"$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphonesimulator",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.open.OpenTalk;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				STRING_CATALOG_GENERATE_SYMBOLS = YES;
-				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-/* End XCBuildConfiguration section */
-
-/* Begin XCConfigurationList section */
-		C51D398E2F325718005A5064 /* Build configuration list for PBXProject "OpenTalk" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C51D399C2F325719005A5064 /* Debug */,
-				C51D399D2F325719005A5064 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C51D399E2F325719005A5064 /* Build configuration list for PBXNativeTarget "OpenTalk" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C51D399F2F325719005A5064 /* Debug */,
-				C51D39A02F325719005A5064 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-/* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/supabase/supabase-swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		DF46602A257E3CBF20936EA0 /* Supabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 92976CAD6306F01DB1CE9BD3 /* XCRemoteSwiftPackageReference "supabase-swift" */;
-			productName = Supabase;
-		};
-/* End XCSwiftPackageProductDependency section */
-	};
-	rootObject = C51D398B2F325718005A5064 /* Project object */;
-}
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>archiveVersion</key>
+	<string>1</string>
+	<key>classes</key>
+	<dict/>
+	<key>objectVersion</key>
+	<string>56</string>
+	<key>objects</key>
+	<dict>
+		<key>0151CF8EB3724D718B835B27</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>ChatViewModel.swift</string>
+			<key>path</key>
+			<string>Source/ViewModels/ChatViewModel.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>04F260CC86D44809940FB893</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>OpenL2DFileManager.swift</string>
+			<key>path</key>
+			<string>Source/Utils/OpenL2DFileManager.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>10DF04DC2A514D5C90C95DFC</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>MessageStorage.swift</string>
+			<key>path</key>
+			<string>Source/Services/MessageStorage.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1231A3892D19444490D76C49</key>
+		<dict>
+			<key>fileRef</key>
+			<string>CD596DC001F14EBDB4EE15EB</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>14D0DB35B77C452DABADB276</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LegalDocumentView.swift</string>
+			<key>path</key>
+			<string>Source/Views/LegalDocumentView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>1B6A28F610F64DC88797D1FE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>D53456525C3240B3B1F8689D</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>29B8A27734E44DFCB90DD501</key>
+		<dict>
+			<key>fileRef</key>
+			<string>14D0DB35B77C452DABADB276</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2AFB483D63820DBBEA9FD101</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-OpenTalk.debug.xcconfig</string>
+			<key>path</key>
+			<string>Target Support Files/Pods-OpenTalk/Pods-OpenTalk.debug.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>2BA716DDC71148BEB014991C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>EA01E520753C496EBBCC6AE6</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2C43739947A61460B82A6B1E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>ED0845A419C798724EA5291E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>2E9E6A66422D404D8E4F8ABF</key>
+		<dict>
+			<key>fileRef</key>
+			<string>60BC131CD40244AAA710BCA7</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>32E9BEB3FAFF4B5BB4BF6F7C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>933B04CF855040E188103301</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3437E0F6EC82497D962F222C</key>
+		<dict>
+			<key>fileRef</key>
+			<string>971A498574CB47CBA5A1D565</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>3BA77CA5B8E441688AA99C2E</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>ChatView.swift</string>
+			<key>path</key>
+			<string>Source/Views/ChatView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>3C8722EE6A1240F88D95BBC2</key>
+		<dict>
+			<key>fileRef</key>
+			<string>10DF04DC2A514D5C90C95DFC</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>4318A01CAF6C421E875DF498</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>OpenTalkApp.swift</string>
+			<key>path</key>
+			<string>Source/OpenTalkApp.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4C4146268DD14BE692C7AE25</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.c.h</string>
+			<key>name</key>
+			<string>OpenTalk-Bridging-Header.h</string>
+			<key>path</key>
+			<string>Source/OpenTalk-Bridging-Header.h</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>4F3AC13F87E543279EA3F100</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>AccountManager.swift</string>
+			<key>path</key>
+			<string>Source/Services/AccountManager.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>516930ADCCC84BAC9FB5BE5F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>89FB17E7AC5F4AC280C77AC3</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>543094E18BDB43839077B67C</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LanguagePickerView.swift</string>
+			<key>path</key>
+			<string>Source/Views/LanguagePickerView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>60BC131CD40244AAA710BCA7</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>SSIService.swift</string>
+			<key>path</key>
+			<string>Source/Services/SSIService.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>62259CDF96FB400CB3EAC7AE</key>
+		<dict>
+			<key>fileRef</key>
+			<string>85C24552A682436B8F2EA548</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>64A95A8E5E2746248FB7D472</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>folder.assetcatalog</string>
+			<key>name</key>
+			<string>Assets.xcassets</string>
+			<key>path</key>
+			<string>Assets.xcassets</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6CCD9241FE534EFF81A36698</key>
+		<dict>
+			<key>fileRef</key>
+			<string>71367497BFCB45B2868E31DD</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>6FA961FFC339464B94782047</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>folder</string>
+			<key>path</key>
+			<string>Live2D</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>6FB3985AF37A4BFE86AEFB5D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>3BA77CA5B8E441688AA99C2E</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>70909FCCC267E6AA72F42AB4</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputFileListPaths</key>
+			<array/>
+			<key>inputPaths</key>
+			<array>
+				<string>${PODS_PODFILE_DIR_PATH}/Podfile.lock</string>
+				<string>${PODS_ROOT}/Manifest.lock</string>
+			</array>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>[CP] Check Pods Manifest.lock</string>
+			<key>outputFileListPaths</key>
+			<array/>
+			<key>outputPaths</key>
+			<array>
+				<string>$(DERIVED_FILE_DIR)/Pods-OpenTalk-checkManifestLockResult.txt</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>diff "${PODS_PODFILE_DIR_PATH}/Podfile.lock" "${PODS_ROOT}/Manifest.lock" &gt; /dev/null
+if [ $? != 0 ] ; then
+    # print error to STDERR
+    echo "error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation." &gt;&amp;2
+    exit 1
+fi
+# This output is used by Xcode 'outputs' to avoid re-running this script phase.
+echo "SUCCESS" &gt; "${SCRIPT_OUTPUT_FILE_0}"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>70C94602C4C50D8B222CCAF5</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>2AFB483D63820DBBEA9FD101</string>
+				<string>90B98D7A6A761E0107D4D535</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>Pods</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>71367497BFCB45B2868E31DD</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LoginEnhancementViews.swift</string>
+			<key>path</key>
+			<string>Source/Views/LoginEnhancementViews.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>7253125A73DD4D1982D788BD</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>OnboardingOverlayView.swift</string>
+			<key>path</key>
+			<string>Source/Views/OnboardingOverlayView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>749503C3693641439F0E215D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>E27C588723694BA9ABCCC789</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>80A89F8472B94948A9E89921</key>
+		<dict>
+			<key>fileRef</key>
+			<string>ACD96FEF0753427C8071E136</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>836E1C24029C46E88C02A6BA</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>folder</string>
+			<key>path</key>
+			<string>Audio</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>85C24552A682436B8F2EA548</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>SupabaseConfig.swift</string>
+			<key>path</key>
+			<string>Source/Utils/SupabaseConfig.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>89FB17E7AC5F4AC280C77AC3</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LanguageManager.swift</string>
+			<key>path</key>
+			<string>Source/Utilities/LanguageManager.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>8A108CEA10C549A389C74FB1</key>
+		<dict>
+			<key>fileRef</key>
+			<string>836E1C24029C46E88C02A6BA</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>90B98D7A6A761E0107D4D535</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.xcconfig</string>
+			<key>name</key>
+			<string>Pods-OpenTalk.release.xcconfig</string>
+			<key>path</key>
+			<string>Target Support Files/Pods-OpenTalk/Pods-OpenTalk.release.xcconfig</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>92976CAD6306F01DB1CE9BD3</key>
+		<dict>
+			<key>isa</key>
+			<string>XCRemoteSwiftPackageReference</string>
+			<key>repositoryURL</key>
+			<string>https://github.com/supabase/supabase-swift.git</string>
+			<key>requirement</key>
+			<dict>
+				<key>kind</key>
+				<string>upToNextMajorVersion</string>
+				<key>minimumVersion</key>
+				<string>2.0.0</string>
+			</dict>
+		</dict>
+		<key>933B04CF855040E188103301</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>NetworkService.swift</string>
+			<key>path</key>
+			<string>Source/Services/NetworkService.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>971A498574CB47CBA5A1D565</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LoginView.swift</string>
+			<key>path</key>
+			<string>Source/Views/LoginView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>9D4BE8819CA44B1DA7F9827E</key>
+		<dict>
+			<key>fileRef</key>
+			<string>6FA961FFC339464B94782047</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>A1C07358C1EF492B84CF0C7B</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>ACD96FEF0753427C8071E136</string>
+				<string>836E1C24029C46E88C02A6BA</string>
+				<string>6FA961FFC339464B94782047</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Resources</string>
+			<key>path</key>
+			<string>Resources</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>A3708B202643C9E301DD5EEB</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array/>
+			<key>inputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks-${CONFIGURATION}-input-files.xcfilelist</string>
+			</array>
+			<key>isa</key>
+			<string>PBXShellScriptBuildPhase</string>
+			<key>name</key>
+			<string>[CP] Embed Pods Frameworks</string>
+			<key>outputFileListPaths</key>
+			<array>
+				<string>${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks-${CONFIGURATION}-output-files.xcfilelist</string>
+			</array>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+			<key>shellPath</key>
+			<string>/bin/sh</string>
+			<key>shellScript</key>
+			<string>"${PODS_ROOT}/Target Support Files/Pods-OpenTalk/Pods-OpenTalk-frameworks.sh"
+</string>
+			<key>showEnvVarsInLog</key>
+			<string>0</string>
+		</dict>
+		<key>A9BE11CBCC9D4294A0300703</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.plist.entitlements</string>
+			<key>name</key>
+			<string>OpenTalk.entitlements</string>
+			<key>path</key>
+			<string>OpenTalk.entitlements</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>ACD96FEF0753427C8071E136</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>text.json.xcstrings</string>
+			<key>path</key>
+			<string>Localizable.xcstrings</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>BF54FCA1A78A454BB9AA9BED</key>
+		<dict>
+			<key>fileRef</key>
+			<string>FBFD8E3D64BB457CBCF5DC7F</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>C51D398A2F325718005A5064</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C51D39952F325718005A5064</string>
+				<string>C51D39942F325718005A5064</string>
+				<string>70C94602C4C50D8B222CCAF5</string>
+				<string>D26C5181E014F2A34C466A68</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C51D398B2F325718005A5064</key>
+		<dict>
+			<key>attributes</key>
+			<dict>
+				<key>BuildIndependentTargetsInParallel</key>
+				<string>1</string>
+				<key>LastSwiftUpdateCheck</key>
+				<string>2620</string>
+				<key>LastUpgradeCheck</key>
+				<string>2620</string>
+				<key>TargetAttributes</key>
+				<dict>
+					<key>C51D39922F325718005A5064</key>
+					<dict>
+						<key>CreatedOnToolsVersion</key>
+						<string>26.2</string>
+					</dict>
+				</dict>
+			</dict>
+			<key>buildConfigurationList</key>
+			<string>C51D398E2F325718005A5064</string>
+			<key>developmentRegion</key>
+			<string>en</string>
+			<key>hasScannedForEncodings</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXProject</string>
+			<key>knownRegions</key>
+			<array>
+				<string>en</string>
+				<string>Base</string>
+			</array>
+			<key>mainGroup</key>
+			<string>C51D398A2F325718005A5064</string>
+			<key>packageReferences</key>
+			<array>
+				<string>92976CAD6306F01DB1CE9BD3</string>
+			</array>
+			<key>productRefGroup</key>
+			<string>C51D39942F325718005A5064</string>
+			<key>projectDirPath</key>
+			<string></string>
+			<key>projectRoot</key>
+			<string></string>
+			<key>targets</key>
+			<array>
+				<string>C51D39922F325718005A5064</string>
+			</array>
+		</dict>
+		<key>C51D398E2F325718005A5064</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C51D399C2F325719005A5064</string>
+				<string>C51D399D2F325719005A5064</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>C51D398F2F325718005A5064</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>EAA3DE60ECE64CD8BFA5990D</string>
+				<string>E9C30E96A22042FEB4D05433</string>
+				<string>C701739D430A448AB86DB4A8</string>
+				<string>1B6A28F610F64DC88797D1FE</string>
+				<string>749503C3693641439F0E215D</string>
+				<string>3C8722EE6A1240F88D95BBC2</string>
+				<string>32E9BEB3FAFF4B5BB4BF6F7C</string>
+				<string>2E9E6A66422D404D8E4F8ABF</string>
+				<string>516930ADCCC84BAC9FB5BE5F</string>
+				<string>2BA716DDC71148BEB014991C</string>
+				<string>BF54FCA1A78A454BB9AA9BED</string>
+				<string>D253F52FEA8A40F0963FC068</string>
+				<string>62259CDF96FB400CB3EAC7AE</string>
+				<string>F09B1271B8EC45F2900183D0</string>
+				<string>6FB3985AF37A4BFE86AEFB5D</string>
+				<string>FAF066FFAD944DE4906A8D55</string>
+				<string>29B8A27734E44DFCB90DD501</string>
+				<string>1231A3892D19444490D76C49</string>
+				<string>6CCD9241FE534EFF81A36698</string>
+				<string>3437E0F6EC82497D962F222C</string>
+				<string>FC51132FD83A4A26ABB9D025</string>
+			</array>
+			<key>isa</key>
+			<string>PBXSourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C51D39902F325718005A5064</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>C5499C7C2F3B875C00C7DE7A</string>
+				<string>2C43739947A61460B82A6B1E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXFrameworksBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C51D39912F325718005A5064</key>
+		<dict>
+			<key>buildActionMask</key>
+			<string>2147483647</string>
+			<key>files</key>
+			<array>
+				<string>F67CF4871637496EBBFA823F</string>
+				<string>80A89F8472B94948A9E89921</string>
+				<string>8A108CEA10C549A389C74FB1</string>
+				<string>9D4BE8819CA44B1DA7F9827E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXResourcesBuildPhase</string>
+			<key>runOnlyForDeploymentPostprocessing</key>
+			<string>0</string>
+		</dict>
+		<key>C51D39922F325718005A5064</key>
+		<dict>
+			<key>buildConfigurationList</key>
+			<string>C51D399E2F325719005A5064</string>
+			<key>buildPhases</key>
+			<array>
+				<string>70909FCCC267E6AA72F42AB4</string>
+				<string>C51D398F2F325718005A5064</string>
+				<string>C51D39902F325718005A5064</string>
+				<string>C51D39912F325718005A5064</string>
+				<string>A3708B202643C9E301DD5EEB</string>
+			</array>
+			<key>buildRules</key>
+			<array/>
+			<key>dependencies</key>
+			<array/>
+			<key>isa</key>
+			<string>PBXNativeTarget</string>
+			<key>name</key>
+			<string>OpenTalk</string>
+			<key>packageProductDependencies</key>
+			<array>
+				<string>DF46602A257E3CBF20936EA0</string>
+			</array>
+			<key>productName</key>
+			<string>OpenTalk</string>
+			<key>productReference</key>
+			<string>C51D39932F325718005A5064</string>
+			<key>productType</key>
+			<string>com.apple.product-type.application</string>
+		</dict>
+		<key>C51D39932F325718005A5064</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.application</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>OpenTalk.app</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>C51D39942F325718005A5064</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>C51D39932F325718005A5064</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Products</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C51D39952F325718005A5064</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>64A95A8E5E2746248FB7D472</string>
+				<string>A9BE11CBCC9D4294A0300703</string>
+				<string>F2C3391CD55A4BAA81FA0B52</string>
+				<string>4C4146268DD14BE692C7AE25</string>
+				<string>4318A01CAF6C421E875DF498</string>
+				<string>4F3AC13F87E543279EA3F100</string>
+				<string>D53456525C3240B3B1F8689D</string>
+				<string>E27C588723694BA9ABCCC789</string>
+				<string>10DF04DC2A514D5C90C95DFC</string>
+				<string>933B04CF855040E188103301</string>
+				<string>60BC131CD40244AAA710BCA7</string>
+				<string>89FB17E7AC5F4AC280C77AC3</string>
+				<string>EA01E520753C496EBBCC6AE6</string>
+				<string>FBFD8E3D64BB457CBCF5DC7F</string>
+				<string>04F260CC86D44809940FB893</string>
+				<string>85C24552A682436B8F2EA548</string>
+				<string>0151CF8EB3724D718B835B27</string>
+				<string>3BA77CA5B8E441688AA99C2E</string>
+				<string>543094E18BDB43839077B67C</string>
+				<string>14D0DB35B77C452DABADB276</string>
+				<string>CD596DC001F14EBDB4EE15EB</string>
+				<string>71367497BFCB45B2868E31DD</string>
+				<string>971A498574CB47CBA5A1D565</string>
+				<string>7253125A73DD4D1982D788BD</string>
+				<string>A1C07358C1EF492B84CF0C7B</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>path</key>
+			<string>OpenTalk</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>C51D399C2F325719005A5064</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS</key>
+				<string>YES</string>
+				<key>CLANG_ANALYZER_NONNULL</key>
+				<string>YES</string>
+				<key>CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++20</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_WEAK</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_COMMA</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_DOCUMENTATION_COMMENTS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INFINITE_RECURSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_NON_LITERAL_NULL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_LITERAL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER</key>
+				<string>YES</string>
+				<key>CLANG_WARN_RANGE_LOOP_ANALYSIS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_STRICT_PROTOTYPES</key>
+				<string>YES</string>
+				<key>CLANG_WARN_SUSPICIOUS_MOVE</key>
+				<string>YES</string>
+				<key>CLANG_WARN_UNGUARDED_AVAILABILITY</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>ENABLE_TESTABILITY</key>
+				<string>YES</string>
+				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
+				<string>NO</string>
+				<key>EXCLUDED_ARCHS[sdk=iphonesimulator*]</key>
+				<string>arm64</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu17</string>
+				<key>GCC_DYNAMIC_NO_PIC</key>
+				<string>NO</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_OPTIMIZATION_LEVEL</key>
+				<string>0</string>
+				<key>GCC_PREPROCESSOR_DEFINITIONS</key>
+				<array>
+					<string>DEBUG=1</string>
+					<string>$(inherited)</string>
+				</array>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>16.0</string>
+				<key>LOCALIZATION_PREFERS_STRING_CATALOGS</key>
+				<string>YES</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>INCLUDE_SOURCE</string>
+				<key>MTL_FAST_MATH</key>
+				<string>YES</string>
+				<key>ONLY_ACTIVE_ARCH</key>
+				<string>YES</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
+				<string>DEBUG $(inherited)</string>
+				<key>SWIFT_OPTIMIZATION_LEVEL</key>
+				<string>-Onone</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C51D399D2F325719005A5064</key>
+		<dict>
+			<key>buildSettings</key>
+			<dict>
+				<key>ALWAYS_SEARCH_USER_PATHS</key>
+				<string>NO</string>
+				<key>ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS</key>
+				<string>YES</string>
+				<key>CLANG_ANALYZER_NONNULL</key>
+				<string>YES</string>
+				<key>CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>CLANG_CXX_LANGUAGE_STANDARD</key>
+				<string>gnu++20</string>
+				<key>CLANG_ENABLE_MODULES</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_ARC</key>
+				<string>YES</string>
+				<key>CLANG_ENABLE_OBJC_WEAK</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING</key>
+				<string>YES</string>
+				<key>CLANG_WARN_BOOL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_COMMA</key>
+				<string>YES</string>
+				<key>CLANG_WARN_CONSTANT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_DIRECT_OBJC_ISA_USAGE</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_DOCUMENTATION_COMMENTS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_EMPTY_BODY</key>
+				<string>YES</string>
+				<key>CLANG_WARN_ENUM_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INFINITE_RECURSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_INT_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_NON_LITERAL_NULL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_LITERAL_CONVERSION</key>
+				<string>YES</string>
+				<key>CLANG_WARN_OBJC_ROOT_CLASS</key>
+				<string>YES_ERROR</string>
+				<key>CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER</key>
+				<string>YES</string>
+				<key>CLANG_WARN_RANGE_LOOP_ANALYSIS</key>
+				<string>YES</string>
+				<key>CLANG_WARN_STRICT_PROTOTYPES</key>
+				<string>YES</string>
+				<key>CLANG_WARN_SUSPICIOUS_MOVE</key>
+				<string>YES</string>
+				<key>CLANG_WARN_UNGUARDED_AVAILABILITY</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>CLANG_WARN_UNREACHABLE_CODE</key>
+				<string>YES</string>
+				<key>CLANG_WARN__DUPLICATE_METHOD_MATCH</key>
+				<string>YES</string>
+				<key>COPY_PHASE_STRIP</key>
+				<string>NO</string>
+				<key>DEBUG_INFORMATION_FORMAT</key>
+				<string>dwarf-with-dsym</string>
+				<key>ENABLE_NS_ASSERTIONS</key>
+				<string>NO</string>
+				<key>ENABLE_STRICT_OBJC_MSGSEND</key>
+				<string>YES</string>
+				<key>ENABLE_USER_SCRIPT_SANDBOXING</key>
+				<string>NO</string>
+				<key>EXCLUDED_ARCHS[sdk=iphonesimulator*]</key>
+				<string>arm64</string>
+				<key>GCC_C_LANGUAGE_STANDARD</key>
+				<string>gnu17</string>
+				<key>GCC_NO_COMMON_BLOCKS</key>
+				<string>YES</string>
+				<key>GCC_WARN_64_TO_32_BIT_CONVERSION</key>
+				<string>YES</string>
+				<key>GCC_WARN_ABOUT_RETURN_TYPE</key>
+				<string>YES_ERROR</string>
+				<key>GCC_WARN_UNDECLARED_SELECTOR</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNINITIALIZED_AUTOS</key>
+				<string>YES_AGGRESSIVE</string>
+				<key>GCC_WARN_UNUSED_FUNCTION</key>
+				<string>YES</string>
+				<key>GCC_WARN_UNUSED_VARIABLE</key>
+				<string>YES</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>16.0</string>
+				<key>LOCALIZATION_PREFERS_STRING_CATALOGS</key>
+				<string>YES</string>
+				<key>MTL_ENABLE_DEBUG_INFO</key>
+				<string>NO</string>
+				<key>MTL_FAST_MATH</key>
+				<string>YES</string>
+				<key>SDKROOT</key>
+				<string>iphoneos</string>
+				<key>SWIFT_COMPILATION_MODE</key>
+				<string>wholemodule</string>
+				<key>VALIDATE_PRODUCT</key>
+				<string>YES</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>C51D399E2F325719005A5064</key>
+		<dict>
+			<key>buildConfigurations</key>
+			<array>
+				<string>C51D399F2F325719005A5064</string>
+				<string>C51D39A02F325719005A5064</string>
+			</array>
+			<key>defaultConfigurationIsVisible</key>
+			<string>0</string>
+			<key>defaultConfigurationName</key>
+			<string>Release</string>
+			<key>isa</key>
+			<string>XCConfigurationList</string>
+		</dict>
+		<key>C51D399F2F325719005A5064</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>2AFB483D63820DBBEA9FD101</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD)</string>
+				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
+				<string>AppIcon</string>
+				<key>ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME</key>
+				<string>AccentColor</string>
+				<key>CODE_SIGN_ENTITLEMENTS</key>
+				<string>OpenTalk/OpenTalk.entitlements</string>
+				<key>CODE_SIGN_STYLE</key>
+				<string>Automatic</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>ZZG8SS9R2S</string>
+				<key>ENABLE_PREVIEWS</key>
+				<string>YES</string>
+				<key>EXCLUDED_ARCHS[sdk=iphonesimulator*]</key>
+				<string></string>
+				<key>GENERATE_INFOPLIST_FILE</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_NSAppTransportSecurity</key>
+				<string>{
+			NSAllowsArbitraryLoads = YES;
+		}</string>
+				<key>INFOPLIST_KEY_NSMicrophoneUsageDescription</key>
+				<string>Access Your Microphone.</string>
+				<key>INFOPLIST_KEY_NSSpeechRecognitionUsageDescription</key>
+				<string>Recognize Your Speech.</string>
+				<key>INFOPLIST_KEY_UIApplicationSceneManifest_Generation</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UILaunchScreen_Generation</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad</key>
+				<string>UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight</string>
+				<key>INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone</key>
+				<string>UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>16.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+				</array>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphoneos</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphonesimulator</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphoneos</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphonesimulator</string>
+				</array>
+				<key>MARKETING_VERSION</key>
+				<string>1.0</string>
+				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
+				<string>com.open.OpenTalk</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>STRING_CATALOG_GENERATE_SYMBOLS</key>
+				<string>YES</string>
+				<key>SWIFT_APPROACHABLE_CONCURRENCY</key>
+				<string>YES</string>
+				<key>SWIFT_DEFAULT_ACTOR_ISOLATION</key>
+				<string>MainActor</string>
+				<key>SWIFT_EMIT_LOC_STRINGS</key>
+				<string>YES</string>
+				<key>SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY</key>
+				<string>YES</string>
+				<key>SWIFT_VERSION</key>
+				<string>5.0</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Debug</string>
+		</dict>
+		<key>C51D39A02F325719005A5064</key>
+		<dict>
+			<key>baseConfigurationReference</key>
+			<string>90B98D7A6A761E0107D4D535</string>
+			<key>buildSettings</key>
+			<dict>
+				<key>ARCHS</key>
+				<string>$(ARCHS_STANDARD)</string>
+				<key>ASSETCATALOG_COMPILER_APPICON_NAME</key>
+				<string>AppIcon</string>
+				<key>ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME</key>
+				<string>AccentColor</string>
+				<key>CODE_SIGN_ENTITLEMENTS</key>
+				<string>OpenTalk/OpenTalk.entitlements</string>
+				<key>CODE_SIGN_STYLE</key>
+				<string>Automatic</string>
+				<key>CURRENT_PROJECT_VERSION</key>
+				<string>1</string>
+				<key>DEVELOPMENT_TEAM</key>
+				<string>ZZG8SS9R2S</string>
+				<key>ENABLE_PREVIEWS</key>
+				<string>YES</string>
+				<key>EXCLUDED_ARCHS[sdk=iphonesimulator*]</key>
+				<string>arm64</string>
+				<key>GENERATE_INFOPLIST_FILE</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_NSAppTransportSecurity</key>
+				<string>{
+			NSAllowsArbitraryLoads = YES;
+		}</string>
+				<key>INFOPLIST_KEY_NSMicrophoneUsageDescription</key>
+				<string>Access Your Microphone.</string>
+				<key>INFOPLIST_KEY_NSSpeechRecognitionUsageDescription</key>
+				<string>Recognize Your Speech.</string>
+				<key>INFOPLIST_KEY_UIApplicationSceneManifest_Generation</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UILaunchScreen_Generation</key>
+				<string>YES</string>
+				<key>INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad</key>
+				<string>UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight</string>
+				<key>INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone</key>
+				<string>UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight</string>
+				<key>IPHONEOS_DEPLOYMENT_TARGET</key>
+				<string>16.0</string>
+				<key>LD_RUNPATH_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>@executable_path/Frameworks</string>
+				</array>
+				<key>LIBRARY_SEARCH_PATHS</key>
+				<array>
+					<string>$(inherited)</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphoneos</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Debug-iphonesimulator</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphoneos</string>
+					<string>$(PROJECT_DIR)/OpenTalk/Libs/Live2D/Core/lib/ios/Release-iphonesimulator</string>
+				</array>
+				<key>MARKETING_VERSION</key>
+				<string>1.0</string>
+				<key>PRODUCT_BUNDLE_IDENTIFIER</key>
+				<string>com.open.OpenTalk</string>
+				<key>PRODUCT_NAME</key>
+				<string>$(TARGET_NAME)</string>
+				<key>STRING_CATALOG_GENERATE_SYMBOLS</key>
+				<string>YES</string>
+				<key>SWIFT_APPROACHABLE_CONCURRENCY</key>
+				<string>YES</string>
+				<key>SWIFT_DEFAULT_ACTOR_ISOLATION</key>
+				<string>MainActor</string>
+				<key>SWIFT_EMIT_LOC_STRINGS</key>
+				<string>YES</string>
+				<key>SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY</key>
+				<string>YES</string>
+				<key>SWIFT_VERSION</key>
+				<string>5.0</string>
+				<key>TARGETED_DEVICE_FAMILY</key>
+				<string>1,2</string>
+			</dict>
+			<key>isa</key>
+			<string>XCBuildConfiguration</string>
+			<key>name</key>
+			<string>Release</string>
+		</dict>
+		<key>C5499C7C2F3B875C00C7DE7A</key>
+		<dict>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+			<key>productRef</key>
+			<string>DF46602A257E3CBF20936EA0</string>
+		</dict>
+		<key>C701739D430A448AB86DB4A8</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4F3AC13F87E543279EA3F100</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>CD596DC001F14EBDB4EE15EB</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>Live2DView.swift</string>
+			<key>path</key>
+			<string>Source/Views/Live2DView.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D253F52FEA8A40F0963FC068</key>
+		<dict>
+			<key>fileRef</key>
+			<string>04F260CC86D44809940FB893</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>D26C5181E014F2A34C466A68</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>ED0845A419C798724EA5291E</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>D53456525C3240B3B1F8689D</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>AudioPlayerManager.swift</string>
+			<key>path</key>
+			<string>Source/Services/AudioPlayerManager.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>DF46602A257E3CBF20936EA0</key>
+		<dict>
+			<key>isa</key>
+			<string>XCSwiftPackageProductDependency</string>
+			<key>package</key>
+			<string>92976CAD6306F01DB1CE9BD3</string>
+			<key>productName</key>
+			<string>Supabase</string>
+		</dict>
+		<key>E27C588723694BA9ABCCC789</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>AudioRecorderManager.swift</string>
+			<key>path</key>
+			<string>Source/Services/AudioRecorderManager.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>E9C30E96A22042FEB4D05433</key>
+		<dict>
+			<key>fileRef</key>
+			<string>4318A01CAF6C421E875DF498</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>EA01E520753C496EBBCC6AE6</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>LocalizedString.swift</string>
+			<key>path</key>
+			<string>Source/Utilities/LocalizedString.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>EAA3DE60ECE64CD8BFA5990D</key>
+		<dict>
+			<key>fileRef</key>
+			<string>F2C3391CD55A4BAA81FA0B52</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>ED0845A419C798724EA5291E</key>
+		<dict>
+			<key>explicitFileType</key>
+			<string>wrapper.framework</string>
+			<key>includeInIndex</key>
+			<string>0</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>path</key>
+			<string>Pods_OpenTalk.framework</string>
+			<key>sourceTree</key>
+			<string>BUILT_PRODUCTS_DIR</string>
+		</dict>
+		<key>F09B1271B8EC45F2900183D0</key>
+		<dict>
+			<key>fileRef</key>
+			<string>0151CF8EB3724D718B835B27</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>F2C3391CD55A4BAA81FA0B52</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>MessageModel.swift</string>
+			<key>path</key>
+			<string>Source/Models/MessageModel.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>F67CF4871637496EBBFA823F</key>
+		<dict>
+			<key>fileRef</key>
+			<string>64A95A8E5E2746248FB7D472</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FAF066FFAD944DE4906A8D55</key>
+		<dict>
+			<key>fileRef</key>
+			<string>543094E18BDB43839077B67C</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+		<key>FBFD8E3D64BB457CBCF5DC7F</key>
+		<dict>
+			<key>fileEncoding</key>
+			<string>4</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>sourcecode.swift</string>
+			<key>name</key>
+			<string>DesignSystem.swift</string>
+			<key>path</key>
+			<string>Source/Utils/DesignSystem.swift</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
+		<key>FC51132FD83A4A26ABB9D025</key>
+		<dict>
+			<key>fileRef</key>
+			<string>7253125A73DD4D1982D788BD</string>
+			<key>isa</key>
+			<string>PBXBuildFile</string>
+		</dict>
+	</dict>
+	<key>rootObject</key>
+	<string>C51D398B2F325718005A5064</string>
+</dict>
+</plist>

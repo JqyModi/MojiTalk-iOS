@@ -464,30 +464,28 @@ struct ToolResultView: View {
 struct ControlPanel: View {
     @Binding var inputText: String
     var onSend: () -> Void
-    var onVoiceSend: (URL, TimeInterval) -> Void
+    var onVoiceSend: (URL, TimeInterval) -> Void // Kept for compatibility, though we may just call onSend
     
-    @StateObject private var audioRecorder = AudioRecorderManager.shared
-    @State private var isRecording = false
+    @StateObject private var speechManager = SpeechManager()
     @State private var recordStartTime: Date?
-    @State private var currentRecordingURL: URL?
     
     var body: some View {
         HStack(alignment: .bottom, spacing: 12) {
             // Voice Button
             if inputText.isEmpty {
                 Button(action: {}) {
-                    Image(systemName: isRecording ? "waveform.circle.fill" : "mic.fill")
+                    Image(systemName: speechManager.isRecording ? "waveform.circle.fill" : "mic.fill")
                         .font(.system(size: 20, weight: .semibold))
-                        .foregroundColor(isRecording ? .red : .white.opacity(0.8))
+                        .foregroundColor(speechManager.isRecording ? .red : .white.opacity(0.8))
                         .frame(width: 44, height: 44)
-                        .background(Color.white.opacity(isRecording ? 0.2 : 0.1))
+                        .background(Color.white.opacity(speechManager.isRecording ? 0.2 : 0.1))
                         .clipShape(Circle())
-                        .scaleEffect(isRecording ? 1.2 : 1.0)
+                        .scaleEffect(speechManager.isRecording ? 1.2 : 1.0)
                 }
                 .simultaneousGesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged { _ in
-                            if !isRecording {
+                            if !speechManager.isRecording {
                                 startRecording()
                             }
                         }
@@ -495,11 +493,11 @@ struct ControlPanel: View {
                             stopRecording()
                         }
                 )
-                .animation(.spring(), value: isRecording)
+                .animation(.spring(), value: speechManager.isRecording)
             }
             
             // Input Field
-            TextField(isRecording ? LocalizedString.Chat.inputRecording : LocalizedString.Chat.inputPlaceholder, text: $inputText, axis: .vertical)
+            TextField(speechManager.isRecording ? LocalizedString.Chat.inputRecording : LocalizedString.Chat.inputPlaceholder, text: $inputText, axis: .vertical)
                 .lineLimit(1...5)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 10)
@@ -510,7 +508,12 @@ struct ControlPanel: View {
                         .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
                 )
                 .font(.system(size: 16))
-                .disabled(isRecording)
+                .disabled(speechManager.isRecording)
+                .onChange(of: speechManager.recognizedText) { newValue in
+                    if speechManager.isRecording {
+                        inputText = newValue
+                    }
+                }
             
             // Send Button
             if !inputText.isEmpty {
@@ -533,28 +536,31 @@ struct ControlPanel: View {
         .cornerRadius(35)
         .shadow(color: .black.opacity(0.2), radius: 20, x: 0, y: 10)
         .onAppear {
-            audioRecorder.requestPermission()
+            Task {
+                await speechManager.requestAuthorization()
+            }
         }
     }
     
     private func startRecording() {
-        isRecording = true
         recordStartTime = Date()
-        currentRecordingURL = audioRecorder.startRecording()
+        do {
+            try speechManager.startRecording()
+            // Clear input text to start fresh
+            inputText = ""
+        } catch {
+            print("ERROR: Failed to start ASR: \(error)")
+        }
     }
     
     private func stopRecording() {
-        isRecording = false
-        audioRecorder.stopRecording()
+        speechManager.stopRecording()
         
-        if let startTime = recordStartTime, let audioURL = currentRecordingURL {
-            let duration = Date().timeIntervalSince(startTime)
-            if duration > 1.0 { // Minimum duration
-                onVoiceSend(audioURL, duration)
-            }
+        let duration = Date().timeIntervalSince(recordStartTime ?? Date())
+        if duration > 0.5 && !inputText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            onSend()
         }
         recordStartTime = nil
-        currentRecordingURL = nil
     }
 }
 

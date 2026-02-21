@@ -38,11 +38,11 @@
     - [x] 测试语音流音频二进制回传和本地缓存播放功能
 
 ### 3.3 本地流式语音识别体验重构 (iOS Native ASR)
-- [ ] **[Atomic]** 废弃上传音频到百炼 ASR 的旧方案
-- [ ] **[Atomic]** 封装 `SpeechManager` (基于 ios `SFSpeechRecognizer`)
-    - [ ] 请求本地语音识别权限 (`NSSpeechRecognitionUsageDescription`)
-    - [ ] 实现实时的语音流录入并动态反馈文本
-    - [ ] 接入并替换现有 UI 中“录音后发后端”逻辑为“实时识别确认后出文本”
+- [x] **[Atomic]** 废弃上传音频到百炼 ASR 的旧方案
+- [x] **[Atomic]** 封装 `SpeechManager` (基于 ios `SFSpeechRecognizer`)
+    - [x] 请求本地语音识别权限 (`NSSpeechRecognitionUsageDescription`)
+    - [x] 实现实时的语音流录入并动态反馈文本
+    - [x] 接入并替换现有 UI 中“录音后发后端”逻辑为“实时识别确认后出文本”
 
 ### 3.4 进阶低延迟队列播放 (Queue TTS Concurrency)
 - [ ] **[Advanced]** 修改 LLM 文本接收逻辑，支持实时文本分句 (按 `。`、`！`等切片)

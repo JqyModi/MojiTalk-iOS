@@ -102,8 +102,8 @@ class SSIService: ObservableObject {
         let body: [String: Any] = [
             "model": "fishaudio/fish-speech-1.5",
             "input": text,
-            "voice": "alex",
-            "response_format": "mp3"
+            "voice": "fishaudio/fish-speech-1.5:alex",
+            "response_format": "wav"
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)

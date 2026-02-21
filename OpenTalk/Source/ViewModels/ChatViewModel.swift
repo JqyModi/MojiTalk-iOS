@@ -241,7 +241,7 @@ class ChatViewModel: ObservableObject {
                     
                     // Save to temp file for Live2D
                     let tempDir = FileManager.default.temporaryDirectory
-                    let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).mp3")
+                    let tempURL = tempDir.appendingPathComponent("\(message.id.uuidString).wav")
                     try audioData.write(to: tempURL)
                     
                     await MainActor.run {

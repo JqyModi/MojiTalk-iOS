@@ -100,9 +100,9 @@ class SSIService: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: Any] = [
-            "model": "fishaudio/fish-speech-1.5",
+            "model": "FunAudioLLM/CosyVoice2-0.5B",
             "input": text,
-            "voice": "fishaudio/fish-speech-1.5:alex",
+            "voice": "FunAudioLLM/CosyVoice2-0.5B:bella", // bella is a passionate female voice
             "response_format": "wav"
         ]
         

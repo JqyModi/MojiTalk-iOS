@@ -1,15 +1,47 @@
 Command line invocation:
-    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace OpenTalk.xcworkspace -scheme OpenTalk build -sdk iphonesimulator
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace OpenTalk.xcworkspace -scheme OpenTalk -derivedDataPath ./build build -sdk iphonesimulator
 
 Build settings from command line:
     SDKROOT = iphonesimulator18.5
 
-2026-02-21 14:17:31.412 xcodebuild[94571:541657]  DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
-2026-02-21 14:17:31.689 xcodebuild[94571:541562] [MT] DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+2026-02-21 17:42:43.198 xcodebuild[30785:900813]  DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+2026-02-21 17:42:43.765 xcodebuild[30785:900690] [MT] DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+2026-02-21 17:42:43.882 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open log store at /Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Build
+2026-02-21 17:42:43.889 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open Build log store: Error Domain=NSCocoaErrorDomain Code=513 "You don’t have permission to save the file “LogStoreManifest.plist” in the folder “Build”." UserInfo={NSUnderlyingError=0x7f8cc970a320 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}, NSURL=file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Build/LogStoreManifest.plist, NSUserStringVariant=Folder}. User info: {
+    NSURL = "file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Build/LogStoreManifest.plist";
+    NSUnderlyingError = "Error Domain=NSPOSIXErrorDomain Code=1 \"Operation not permitted\"";
+    NSUserStringVariant = Folder;
+}.
+2026-02-21 17:42:44.199 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open log store at /Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Localization
+2026-02-21 17:42:44.202 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open Localization log store: Error Domain=NSCocoaErrorDomain Code=513 "You don’t have permission to save the file “LogStoreManifest.plist” in the folder “Localization”." UserInfo={NSUserStringVariant=Folder, NSUnderlyingError=0x7f8cccc317b0 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}, NSURL=file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Localization/LogStoreManifest.plist}. User info: {
+    NSURL = "file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Localization/LogStoreManifest.plist";
+    NSUnderlyingError = "Error Domain=NSPOSIXErrorDomain Code=1 \"Operation not permitted\"";
+    NSUserStringVariant = Folder;
+}.
+2026-02-21 17:42:44.204 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open log store at /Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Launch
+2026-02-21 17:42:44.205 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open Launch log store: Error Domain=NSCocoaErrorDomain Code=513 "You don’t have permission to save the file “LogStoreManifest.plist” in the folder “Launch”." UserInfo={NSUnderlyingError=0x7f8cccae1ec0 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}, NSURL=file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Launch/LogStoreManifest.plist, NSUserStringVariant=Folder}. User info: {
+    NSURL = "file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Launch/LogStoreManifest.plist";
+    NSUnderlyingError = "Error Domain=NSPOSIXErrorDomain Code=1 \"Operation not permitted\"";
+    NSUserStringVariant = Folder;
+}.
+2026-02-21 17:42:44.212 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open log store at /Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Package
+2026-02-21 17:42:44.214 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open Package log store: Error Domain=NSCocoaErrorDomain Code=513 "You don’t have permission to save the file “LogStoreManifest.plist” in the folder “Package”." UserInfo={NSUserStringVariant=Folder, NSURL=file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Package/LogStoreManifest.plist, NSUnderlyingError=0x7f8cccd06ec0 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}}. User info: {
+    NSURL = "file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Package/LogStoreManifest.plist";
+    NSUnderlyingError = "Error Domain=NSPOSIXErrorDomain Code=1 \"Operation not permitted\"";
+    NSUserStringVariant = Folder;
+}.
+2026-02-21 17:42:44.393 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open log store at /Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Test
+2026-02-21 17:42:44.396 xcodebuild[30785:900690] [MT] IDELogStore: Failed to open Test log store: Error Domain=NSCocoaErrorDomain Code=513 "You don’t have permission to save the file “LogStoreManifest.plist” in the folder “Test”." UserInfo={NSUserStringVariant=Folder, NSURL=file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Test/LogStoreManifest.plist, NSUnderlyingError=0x7f8cccc44370 {Error Domain=NSPOSIXErrorDomain Code=1 "Operation not permitted"}}. User info: {
+    NSURL = "file:///Users/modi/ai_completion/MojiTalk-iOS/build/Logs/Test/LogStoreManifest.plist";
+    NSUnderlyingError = "Error Domain=NSPOSIXErrorDomain Code=1 \"Operation not permitted\"";
+    NSUserStringVariant = Folder;
+}.
 Resolve Package Graph
-/Users/modi/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features./Users/modi/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features./Users/modi/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.unable to restore workspace state: encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lockencountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lock
-2026-02-21 14:17:32.463 xcodebuild[94571:541562] Writing error result bundle to /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/ResultBundle_2026-21-02_14-17-0032.xcresult
-Failed saving result bundle for error: You don’t have permission to save the file “ResultBundle_2026-21-02_14-17-0032.xcresult” in the folder “T”.
+/Users/modi/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features./Users/modi/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features./Users/modi/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.
+Fetching from https://github.com/supabase/supabase-swift.git
+
+failed loading cached manifest for 'supabase-swift': encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Caches_org.swift.swiftpm_manifests_manifest.db.lockfailed closing manifest db cache: encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Caches_org.swift.swiftpm_manifests_manifest.db.lockpermissionDenied in https://github.com/supabase/supabase-swift.git2026-02-21 17:42:49.452 xcodebuild[30785:900690] Writing error result bundle to /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/ResultBundle_2026-21-02_17-42-0049.xcresult
+Failed saving result bundle for error: You don’t have permission to save the file “ResultBundle_2026-21-02_17-42-0049.xcresult” in the folder “T”.
 xcodebuild: error: Could not resolve package dependencies:
-  encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lock
+  permissionDenied in https://github.com/supabase/supabase-swift.git
 

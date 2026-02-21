@@ -13,10 +13,12 @@ class SSIService: ObservableObject {
         let text: String
     }
     
-    private let apiKey = "sk-6c772637b2a84fb8a8206e86806a9d66"
-    private let chatEndpoint = URL(string: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions")!
+    private let apiKey = "sk-xlaqakltfjnjjiipeffzxkpfgqbcvyvawrtsyjxscpwvbxqq"
+    // migrated to SiliconFlow OpenAI Compatible Endpoint
+    private let chatEndpoint = URL(string: "https://api.siliconflow.cn/v1/chat/completions")!
+    // asrEndpoint is deprecated (will use iOS Native ASR instead)
     private let asrEndpoint = URL(string: "https://dashscope.aliyuncs.com/compatible-mode/v1/audio/transcriptions")!
-    private let ttsEndpoint = URL(string: "https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation")!
+    private let ttsEndpoint = URL(string: "https://api.siliconflow.cn/v1/audio/speech")!
     
     /// Establishes an SSE connection with DashScope and streams back the response text
     func connect(messages: [Message]) -> AsyncThrowingStream<String, Error> {
@@ -41,7 +43,7 @@ class SSIService: ObservableObject {
                     chatMessages.insert(systemPrompt, at: 0)
                     
                     let body: [String: Any] = [
-                        "model": "qwen-plus",
+                        "model": "deepseek-ai/DeepSeek-V3",
                         "messages": chatMessages,
                         "stream": true,
                         "max_tokens": 800 // Safety buffer, though system prompt is primary
@@ -98,12 +100,10 @@ class SSIService: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body: [String: Any] = [
-            "model": "qwen3-tts-flash",
-            "input": [
-                "text": text,
-                // "voice": "Cherry" // Using default voice
-                // "language_type": "Chinese" // Optional
-            ]
+            "model": "fishaudio/fish-speech-1.5",
+            "input": text,
+            "voice": "alex",
+            "response_format": "mp3"
         ]
         
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
@@ -120,36 +120,8 @@ class SSIService: ObservableObject {
             }
         }
         
-        // Parse JSON to get audio URL
-        struct TTSResponse: Codable {
-            struct Output: Codable {
-                struct Audio: Codable {
-                    let url: String?
-                }
-                let audio: Audio
-            }
-            let output: Output
-        }
-        
-        let decoder = JSONDecoder()
-        let ttsResponse = try decoder.decode(TTSResponse.self, from: data)
-        
-        guard let audioStringURL = ttsResponse.output.audio.url else {
-            print("DEBUG: TTS Response missing audio URL")
-            throw SSEError.decodingError
-        }
-        
-        // Fix ATS issue: DashScope returns http URL, but iOS blocks it by default.
-        // Most Alibaba Cloud OSS supports https, so we force it.
-        let secureAudioURLString = audioStringURL.replacingOccurrences(of: "http://", with: "https://")
-        guard let audioURL = URL(string: secureAudioURLString) else {
-            print("DEBUG: Invalid TTS audio URL: \(secureAudioURLString)")
-            throw SSEError.decodingError
-        }
-        
-        print("DEBUG: Downloading audio from: \(audioURL)")
-        let (audioData, _) = try await URLSession.shared.data(for: requestWith(audioURL))
-        return audioData
+        // OpenAI compatible /v1/audio/speech directly returns audio data bytes
+        return data
     }
     
     /// Helper to create a simple GET request for downloading binary data

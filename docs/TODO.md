@@ -24,7 +24,33 @@
 
 ---
 
-## 🟡 P1: 交互增强与 AI 工具
+## � P0: 核心通信架构重构与体验优化 (SiliconFlow + Native)
+### 3.1 核心 LLM 推理层迁移 (SiliconFlow)
+- [x] **[Atomic]** 将 Chat API (SSE) 替换为 硅基流动 (SiliconFlow) 的 OpenAI 兼容接口
+    - [x] Endpoint: `https://api.siliconflow.cn/v1/chat/completions`
+    - [x] Model: `deepseek-ai/DeepSeek-V3` 或 `Qwen/Qwen2.5-7B-Instruct`
+    - [x] 确保 `SSIService.swift` 中的 token 和参数匹配新接口
+
+### 3.2 语音播报合成迁移 (SiliconFlow TTS)
+- [x] **[Atomic]** 将 TTS API 替换为硅基流动的语音合成接口 (如 FishAudio 或对应模型)
+    - [x] 更新 `SSIService.synthesize` 参数，对接 SiliconFlow `audio/speech`
+    - [x] 将模型调整为提供高质量拟真声音的目标模型
+    - [x] 测试语音流音频二进制回传和本地缓存播放功能
+
+### 3.3 本地流式语音识别体验重构 (iOS Native ASR)
+- [ ] **[Atomic]** 废弃上传音频到百炼 ASR 的旧方案
+- [ ] **[Atomic]** 封装 `SpeechManager` (基于 ios `SFSpeechRecognizer`)
+    - [ ] 请求本地语音识别权限 (`NSSpeechRecognitionUsageDescription`)
+    - [ ] 实现实时的语音流录入并动态反馈文本
+    - [ ] 接入并替换现有 UI 中“录音后发后端”逻辑为“实时识别确认后出文本”
+
+### 3.4 进阶低延迟队列播放 (Queue TTS Concurrency)
+- [ ] **[Advanced]** 修改 LLM 文本接收逻辑，支持实时文本分句 (按 `。`、`！`等切片)
+- [ ] **[Advanced]** 实现队列并行处理：第一句话出字立刻触发其 TTS 请求和播放，不必等待整体思考结束
+
+---
+
+## �🟡 P1: 交互增强与 AI 工具
 ### 4. 语音播放 (TTS)
 - [x] 封装 `AudioPlayerManager` (基于 `AVFoundation`)
 - [x] 点击消息气泡触发 TTS 获取逻辑 (当前为真实 API 触发)

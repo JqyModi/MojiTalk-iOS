@@ -15,9 +15,10 @@
   - 支持文本流式显示（SSE 实现），确保响应感。
 - **多模态输入**：
   - 文本输入框：支持自动换行与发送。
-  - 基础语音输入：简化的录音发送（MVP 阶段可先实现 UI 占位或简单的文件上传）。
+  - 基础语音输入：采用 iOS 原生 `SFSpeechRecognizer` 实现低延迟流式语音转文字（0延迟实况出字），代替云端方案。
 - **AI 响应工具**：
-  - 点击消息气泡：触发 TTS 语音播放。
+  - 点击消息气泡：通过云端（硅基流动接口）高拟真开源 TTS（如 FishAudio）触发语音合成并播放。
+  - **低延迟并发优化**：实现 LLM 文本流并发 TTS 生成，边出字、边分句合成语音播放，做到秒级响应。
   - 长按/二级菜单：仅保留 **“翻译”** 与 **“语法解析”** 两大刚需功能。
 
 ### 2.2 虚拟角色系统 (Interactive Character)
@@ -57,7 +58,7 @@
 ### 3.2 模块重构计划
 - **Network Layer**：使用 `URLSession` 的 `bytes(from:delegate:)` 重新实现 SSE 客户端。
 - **Live2D Renderer**：封装一个高度可复用的 SwiftUI `Live2DView` 组件。
-- **Audio Service**：基于 `AVFoundation` 的轻量级音频管理。
+- **Audio Service**：基于 `AVFoundation` 实现本地播放，基于 `SFSpeechRecognizer` 实现本地流式语音识别。
 
 ---
 

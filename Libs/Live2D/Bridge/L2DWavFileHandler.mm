@@ -276,7 +276,13 @@ Csm::csmBool L2DWavFileHandler::LoadWavFile(const Csm::csmString& filePath)
         }
         // サンプル数
         {
-            const Csm::csmUint32 dataChunkSize = _byteReader.Get32LittleEndian();
+            Csm::csmUint32 dataChunkSize = _byteReader.Get32LittleEndian();
+            // SiliconFlow TTS streams set dataChunkSize to 0xFFFFFFFF or very large values. Cap it to actual remaining file bytes.
+            Csm::csmUint32 remainingBytes = static_cast<Csm::csmUint32>(_byteReader._fileSize - _byteReader._readOffset);
+            if (dataChunkSize > remainingBytes)
+            {
+                dataChunkSize = remainingBytes;
+            }
             _wavFileInfo._samplesPerChannel = (dataChunkSize * 8) / (_wavFileInfo._bitsPerSample * _wavFileInfo._numberOfChannels);
         }
         // 領域確保

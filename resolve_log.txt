@@ -1,0 +1,12 @@
+2026-02-21 14:15:48.934 xcodebuild[92596:537949]  DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -workspace OpenTalk.xcworkspace -scheme OpenTalk -resolvePackageDependencies
+
+2026-02-21 14:15:49.794 xcodebuild[92596:537818] [MT] DVTDeviceOperation: Encountered a build number "" that is incompatible with DVTBuildVersion.
+Resolve Package Graph
+/Users/modi/Library/org.swift.swiftpm/configuration is not accessible or not writable, disabling user-level cache features./Users/modi/Library/org.swift.swiftpm/security is not accessible or not writable, disabling user-level cache features./Users/modi/Library/Caches/org.swift.swiftpm is not accessible or not writable, disabling user-level cache features.unable to restore workspace state: encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lockencountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lock
+2026-02-21 14:15:51.274 xcodebuild[92596:537818] Writing error result bundle to /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/ResultBundle_2026-21-02_14-15-0051.xcresult
+Failed saving result bundle for error: You don’t have permission to save the file “ResultBundle_2026-21-02_14-15-0051.xcresult” in the folder “T”.
+xcodebuild: error: Could not resolve package dependencies:
+  encountered an I/O error (code: 1) while reading /var/folders/4k/l2kr8jm91j1295wc2b5zjhs00000gn/T/_Users_modi_Library_Developer_Xcode_DerivedData_OpenTalk-dicrssxeejjsywhgdurqbctbzphe_SourcePackages_workspace-state.json.lock
+

@@ -120,9 +120,9 @@ struct LegalDocumentView: View {
         for (index, part) in parts.enumerated() {
             if index % 2 == 1 {
                 // Bold part
-                result = result + Text(part).bold().foregroundColor(.white)
+                result = Text("\(result)\(Text(part).bold().foregroundColor(.white))")
             } else {
-                result = result + Text(part)
+                result = Text("\(result)\(Text(part))")
             }
         }
         return result

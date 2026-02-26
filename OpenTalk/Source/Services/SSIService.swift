@@ -230,10 +230,9 @@ class AppleNativeStrategy: AIStrategy {
     func connect(messages: [Message]) -> AsyncThrowingStream<String, Error> {
         AsyncThrowingStream { continuation in
             #if canImport(FoundationModels)
-            if #available(iOS 18.0, *) {
+            if #available(iOS 26.0, *) {
                 Task {
                     do {
-                        let model = try await SystemLanguageModel.default
                         let session = LanguageModelSession()
                         
                         // Convert messages to Apple context
@@ -244,8 +243,14 @@ class AppleNativeStrategy: AIStrategy {
                         // We use the system's local generative capacity
                         // Placeholder for actual Apple Intelligence generation call
                         // Since exact final public API signatures can vary by beta, we use a compliant pattern
-                        for try await responseChunk in try await session.generateResponse(to: prompt) {
-                            continuation.yield(responseChunk.text)
+                        var accumulated = ""
+                        for try await responseChunk in session.streamResponse(to: prompt) {
+                            let currentContent = responseChunk.content
+                            let delta = String(currentContent.dropFirst(accumulated.count))
+                            accumulated = currentContent
+                            if !delta.isEmpty {
+                                continuation.yield(delta)
+                            }
                         }
                         continuation.finish()
                     } catch {
@@ -281,7 +286,7 @@ class AppleNativeStrategy: AIStrategy {
                 if let floatData = pcmBuffer.floatChannelData {
                     for frame in 0..<frameLength {
                         for channel in 0..<channels {
-                            var sample = floatData[channel][frame]
+                            let sample = floatData[channel][frame]
                             // Conver to 16bit PCM for simple WAV header compatibility if needed
                             // For simplicity, we can return the raw float data if L2D supports it, 
                             // but usually 16bit INT is safest.
@@ -310,26 +315,26 @@ class AppleNativeStrategy: AIStrategy {
     private func createWavHeader(dataSize: Int) -> Data {
         var header = Data()
         header.append("RIFF".data(using: .utf8)!)
-        var totalSize = Int32(dataSize + 36)
+        let totalSize = Int32(dataSize + 36)
         withUnsafeBytes(of: totalSize) { header.append(contentsOf: $0) }
         header.append("WAVE".data(using: .utf8)!)
         header.append("fmt ".data(using: .utf8)!)
-        var fmtSize: Int32 = 16
+        let fmtSize: Int32 = 16
         withUnsafeBytes(of: fmtSize) { header.append(contentsOf: $0) }
-        var format: Int16 = 1 // PCM
+        let format: Int16 = 1 // PCM
         withUnsafeBytes(of: format) { header.append(contentsOf: $0) }
-        var channels: Int16 = 1
+        let channels: Int16 = 1
         withUnsafeBytes(of: channels) { header.append(contentsOf: $0) }
-        var sampleRate: Int32 = 22050 // AVSpeechSynthesizer default approx
+        let sampleRate: Int32 = 22050 // AVSpeechSynthesizer default approx
         withUnsafeBytes(of: sampleRate) { header.append(contentsOf: $0) }
-        var byteRate: Int32 = 22050 * 2
+        let byteRate: Int32 = 22050 * 2
         withUnsafeBytes(of: byteRate) { header.append(contentsOf: $0) }
-        var blockAlign: Int16 = 2
+        let blockAlign: Int16 = 2
         withUnsafeBytes(of: blockAlign) { header.append(contentsOf: $0) }
-        var bitsPerSample: Int16 = 16
+        let bitsPerSample: Int16 = 16
         withUnsafeBytes(of: bitsPerSample) { header.append(contentsOf: $0) }
         header.append("data".data(using: .utf8)!)
-        var subchunk2Size = Int32(dataSize)
+        let subchunk2Size = Int32(dataSize)
         withUnsafeBytes(of: subchunk2Size) { header.append(contentsOf: $0) }
         return header
     }
